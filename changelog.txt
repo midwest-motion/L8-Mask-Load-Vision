@@ -1,0 +1,9 @@
+﻿3/20/16 Added Background worker to check for connection status
+Help Manual Update
+Make Locate Buttons bigger/Force Ready button Back color changed/Make Axis Status alarms red/Saved images path change/Center cameras on Both Tabs
+
+3/22/16 Set ip address to for plant network to 10.53.45.93 and change computer name to  WEVNHE6SS1VIS
+
+3/23/16 Double squaring Radio buttons did not default to disabled when single squaring selected and new part loaded
+Changed flow diagram/picture
+
