@@ -208,9 +208,8 @@ Public Class frmMain
       updnScoreLimitNorthGlass.Enabled = PasswordValue
       updnScoreLimitNorthMask.Enabled = PasswordValue
       updnScoreLimitSouthGlass.Enabled = PasswordValue
-      updnScoreLimitSouthMask.Enabled = PasswordValue
-      Exit Sub
-    Catch ex As Exception
+            Exit Sub
+        Catch ex As Exception
       ShowVBErrors(ex.Message)
     End Try
   End Sub
@@ -611,98 +610,104 @@ Public Class frmMain
           HSLoc(LocSouthGlass).ShowProperties(True, , 1 + 4 + 8 + 16)
       End Select
       SaveHexsight()
-      SaveSearchBoxes()
-    Catch ex As Exception
+            SaveSearchBoxesMain()
+        Catch ex As Exception
       ShowVBErrors(ex.Message)
     End Try
   End Sub
 #End Region
 
-  Private Sub SaveSearchBoxes()
-    'This updates all of the slider values and labels
-    Try
-      'North Mask
-      NorthMask.CenterX = HSLoc(NorthSide).ToolPositionX
-      frmDataBase.SetValue("Partdata", "Value", "NMaskSearchCenterX", NorthMask.CenterX.ToString("0.00"))
-      NorthMask.CenterY = HSLoc(NorthSide).ToolPositionY
-      frmDataBase.SetValue("Partdata", "Value", "NMaskSearchCenterY", NorthMask.CenterY.ToString("0.00"))
-      NorthMask.CenterR = HSLoc(NorthSide).ToolRotation
-      frmDataBase.SetValue("Partdata", "Value", "NMaskSearchCenterR", NorthMask.CenterR.ToString("0.00"))
-      NorthMask.Width = HSLoc(NorthSide).ToolWidth
-      frmDataBase.SetValue("Partdata", "Value", "NMaskSearchWidth", NorthMask.Width.ToString("0.00"))
-      NorthMask.Height = HSLoc(NorthSide).ToolHeight
-      frmDataBase.SetValue("Partdata", "Value", "NMaskSearchWidth", NorthMask.Height.ToString("0.00"))
-      'South Mask
-      SouthMask.CenterX = HSLoc(SouthSide).ToolPositionX
-      frmDataBase.SetValue("Partdata", "Value", "SMaskSearch", SouthMask.CenterX.ToString("0.00"))
-      SouthMask.CenterY = HSLoc(SouthSide).ToolPositionY
-      frmDataBase.SetValue("Partdata", "Value", "SMaskSearchCenterY", SouthMask.CenterY.ToString("0.00"))
-      SouthMask.CenterR = HSLoc(SouthSide).ToolRotation
-      frmDataBase.SetValue("Partdata", "Value", "SMaskSearchCenterR", SouthMask.CenterR.ToString("0.00"))
-      SouthMask.Width = HSLoc(SouthSide).ToolWidth
-      frmDataBase.SetValue("Partdata", "Value", "SMaskSearchWidth", SouthMask.Width.ToString("0.00"))
-      SouthMask.Height = HSLoc(SouthSide).ToolHeight
-      frmDataBase.SetValue("Partdata", "Value", "SMaskSearchWidth", SouthMask.Height.ToString("0.00"))
-      'North Glass
-      NorthGlass.CenterX = HSLoc(NorthSide).ToolPositionX
-      frmDataBase.SetValue("Partdata", "Value", "NGlassSearchCenterX", NorthGlass.CenterX.ToString("0.00"))
-      NorthGlass.CenterY = HSLoc(NorthSide).ToolPositionY
-      frmDataBase.SetValue("Partdata", "Value", "NGlassSearchCenterY", NorthGlass.CenterY.ToString("0.00"))
-      NorthGlass.CenterR = HSLoc(NorthSide).ToolRotation
-      frmDataBase.SetValue("Partdata", "Value", "NGlassSearchCenterR", NorthGlass.CenterR.ToString("0.00"))
-      NorthGlass.Width = HSLoc(NorthSide).ToolWidth
-      frmDataBase.SetValue("Partdata", "Value", "NGlassSearchWidth", NorthGlass.Width.ToString("0.00"))
-      NorthGlass.Height = HSLoc(NorthSide).ToolHeight
-      frmDataBase.SetValue("Partdata", "Value", "NGlassSearchWidth", NorthGlass.Height.ToString("0.00"))
-      'South Glass
-      SouthGlass.CenterX = HSLoc(SouthSide).ToolPositionX
-      frmDataBase.SetValue("Partdata", "Value", "SGlassSearchCenterX", SouthGlass.CenterX.ToString("0.00"))
-      SouthGlass.CenterY = HSLoc(SouthSide).ToolPositionY
-      frmDataBase.SetValue("Partdata", "Value", "SGlassSearchCenterY", SouthGlass.CenterY.ToString("0.00"))
-      SouthGlass.CenterR = HSLoc(SouthSide).ToolRotation
-      frmDataBase.SetValue("Partdata", "Value", "SGlassSearchCenterR", SouthGlass.CenterR.ToString("0.00"))
-      SouthGlass.Width = HSLoc(SouthSide).ToolWidth
-      frmDataBase.SetValue("Partdata", "Value", "SGlassSearchWidth", SouthGlass.Width.ToString("0.00"))
-      SouthGlass.Height = HSLoc(SouthSide).ToolHeight
-      frmDataBase.SetValue("Partdata", "Value", "SGlassSearchWidth", SouthGlass.Height.ToString("0.00"))
-    Catch ex As Exception
-      ShowVBErrors(ex.Message)
-    End Try
-  End Sub
+    Private Sub SaveSearchBoxesMain()
+        SaveSearchBoxes(NorthMask, "NMask", HSLoc(LocNorthMask))
+        SaveSearchBoxes(SouthMask, "SMask", HSLoc(LocSouthMask))
+        SaveSearchBoxes(NorthGlass, "NGlass", HSLoc(LocNorthGlass))
+        SaveSearchBoxes(SouthGlass, "SGlass", HSLoc(LocSouthGlass))
+    End Sub
+
+    Private Sub SaveSearchBoxes(SearchArea As SearchArea, DatabaseString As String, Locator As HSLOCATORLib.HSLocator)
+        'This saves all of the HexSight Search Box variables
+        Try
+            SearchArea.CenterX = Locator.ToolPositionX
+            frmDataBase.SetValue("Partdata", "Value", DatabaseString & "SearchCenterX", SearchArea.CenterX.ToString("0.00"))
+            SearchArea.CenterY = Locator.ToolPositionY
+            frmDataBase.SetValue("Partdata", "Value", DatabaseString & "SearchCenterY", SearchArea.CenterY.ToString("0.00"))
+            SearchArea.CenterR = Locator.ToolRotation
+            frmDataBase.SetValue("Partdata", "Value", DatabaseString & "SearchCenterR", SearchArea.CenterR.ToString("0.00"))
+            SearchArea.Width = Locator.ToolWidth
+            frmDataBase.SetValue("Partdata", "Value", DatabaseString & "SearchWidth", SearchArea.Width.ToString("0.00"))
+            SearchArea.Height = Locator.ToolHeight
+            frmDataBase.SetValue("Partdata", "Value", DatabaseString & "SearchWidth", SearchArea.Height.ToString("0.00"))
+            ''South Mask
+            'SouthMask.CenterX = HSLoc(SouthSide).ToolPositionX
+            'frmDataBase.SetValue("Partdata", "Value", "SMaskSearch", SouthMask.CenterX.ToString("0.00"))
+            'SouthMask.CenterY = HSLoc(SouthSide).ToolPositionY
+            'frmDataBase.SetValue("Partdata", "Value", "SMaskSearchCenterY", SouthMask.CenterY.ToString("0.00"))
+            'SouthMask.CenterR = HSLoc(SouthSide).ToolRotation
+            'frmDataBase.SetValue("Partdata", "Value", "SMaskSearchCenterR", SouthMask.CenterR.ToString("0.00"))
+            'SouthMask.Width = HSLoc(SouthSide).ToolWidth
+            'frmDataBase.SetValue("Partdata", "Value", "SMaskSearchWidth", SouthMask.Width.ToString("0.00"))
+            'SouthMask.Height = HSLoc(SouthSide).ToolHeight
+            'frmDataBase.SetValue("Partdata", "Value", "SMaskSearchWidth", SouthMask.Height.ToString("0.00"))
+            ''North Glass
+            'NorthGlass.CenterX = HSLoc(NorthSide).ToolPositionX
+            'frmDataBase.SetValue("Partdata", "Value", "NGlassSearchCenterX", NorthGlass.CenterX.ToString("0.00"))
+            'NorthGlass.CenterY = HSLoc(NorthSide).ToolPositionY
+            'frmDataBase.SetValue("Partdata", "Value", "NGlassSearchCenterY", NorthGlass.CenterY.ToString("0.00"))
+            'NorthGlass.CenterR = HSLoc(NorthSide).ToolRotation
+            'frmDataBase.SetValue("Partdata", "Value", "NGlassSearchCenterR", NorthGlass.CenterR.ToString("0.00"))
+            'NorthGlass.Width = HSLoc(NorthSide).ToolWidth
+            'frmDataBase.SetValue("Partdata", "Value", "NGlassSearchWidth", NorthGlass.Width.ToString("0.00"))
+            'NorthGlass.Height = HSLoc(NorthSide).ToolHeight
+            'frmDataBase.SetValue("Partdata", "Value", "NGlassSearchWidth", NorthGlass.Height.ToString("0.00"))
+            ''South Glass
+            'SouthGlass.CenterX = HSLoc(SouthSide).ToolPositionX
+            'frmDataBase.SetValue("Partdata", "Value", "SGlassSearchCenterX", SouthGlass.CenterX.ToString("0.00"))
+            'SouthGlass.CenterY = HSLoc(SouthSide).ToolPositionY
+            'frmDataBase.SetValue("Partdata", "Value", "SGlassSearchCenterY", SouthGlass.CenterY.ToString("0.00"))
+            'SouthGlass.CenterR = HSLoc(SouthSide).ToolRotation
+            'frmDataBase.SetValue("Partdata", "Value", "SGlassSearchCenterR", SouthGlass.CenterR.ToString("0.00"))
+            'SouthGlass.Width = HSLoc(SouthSide).ToolWidth
+            'frmDataBase.SetValue("Partdata", "Value", "SGlassSearchWidth", SouthGlass.Width.ToString("0.00"))
+            'SouthGlass.Height = HSLoc(SouthSide).ToolHeight
+            'frmDataBase.SetValue("Partdata", "Value", "SGlassSearchWidth", SouthGlass.Height.ToString("0.00"))
+        Catch ex As Exception
+            ShowVBErrors(ex.Message)
+        End Try
+    End Sub
 
 #Region "Vision Routines"
 
-  'Public Function FindCamera(CamID) As Boolean
-  '  Dim CameraList(1) As uEye.Types.CameraInformation
-  '  Dim Status As uEye.Defines.Status
-  '  Dim Count As Integer
-  '  Dim CamID As Integer
-  '  Dim CamIDNorth As Integer
-  '  Dim CamIDSouth As Integer
-  '  Dim NumberOfCamerasInUse As Integer
+    'Public Function FindCamera(CamID) As Boolean
+    '  Dim CameraList(1) As uEye.Types.CameraInformation
+    '  Dim Status As uEye.Defines.Status
+    '  Dim Count As Integer
+    '  Dim CamID As Integer
+    '  Dim CamIDNorth As Integer
+    '  Dim CamIDSouth As Integer
+    '  Dim NumberOfCamerasInUse As Integer
 
-  '  Try
-  '    'CamIDNorth = CInt(frmDataBase.GetValue("Settings", "Value", "North Camera"))
-  '    'CamIDSouth = CInt(frmDataBase.GetValue("Settings", "Value", "South Camera"))
-  '    Status = uEye.Info.Camera.GetNumberOfDevices(NumberOfCamerasInUse)
-  '    ' NumberOfCamerasInUse = Count
-  '    For Count = 0 To Count - 1
-  '      Status = uEye.Info.Camera.GetCameraList(CameraList)
-  '      CamID = CameraList(Count).CameraID
-  '      Select Case CamID
-  '        Case CamIDNorth
-  '          NorthSide = 0
-  '        Case CamIDSouth
-  '          SouthSide = 1
-  '      End Select
-  '    Next Count
-  '    FindCameras = True
-  '  Catch ex As Exception
-  '    FindCameras = False
-  '  End Try
-  'End Function
+    '  Try
+    '    'CamIDNorth = CInt(frmDataBase.GetValue("Settings", "Value", "North Camera"))
+    '    'CamIDSouth = CInt(frmDataBase.GetValue("Settings", "Value", "South Camera"))
+    '    Status = uEye.Info.Camera.GetNumberOfDevices(NumberOfCamerasInUse)
+    '    ' NumberOfCamerasInUse = Count
+    '    For Count = 0 To Count - 1
+    '      Status = uEye.Info.Camera.GetCameraList(CameraList)
+    '      CamID = CameraList(Count).CameraID
+    '      Select Case CamID
+    '        Case CamIDNorth
+    '          NorthSide = 0
+    '        Case CamIDSouth
+    '          SouthSide = 1
+    '      End Select
+    '    Next Count
+    '    FindCameras = True
+    '  Catch ex As Exception
+    '    FindCameras = False
+    '  End Try
+    'End Function
 
-  Private Function InitVision() As Boolean
+    Private Function InitVision() As Boolean
     Dim Success As Boolean
     Try
 
@@ -711,7 +716,7 @@ Public Class frmMain
       'VisionDatabasePath = ConfigPath & "Vision.cfg"
       Success = HSApp.ProcessManager.LoadConfiguration(0, VisionDatabasePath)
       If Not Success Then
-        MsgBox("Could Not locate the Vision Database:   " & vbCr & VisionDatabasePath & vbCr &
+        MsgBox("Could Not locate the Vision Database:    " & vbCr & VisionDatabasePath & vbCr &
                                           "You need to locate this database yourself in the next dialog",
                                               MsgBoxStyle.Critical, "Vision Database Load Error")
         HSApp.ProcessManager.LoadConfiguration(0, "")
