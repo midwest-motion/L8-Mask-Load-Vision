@@ -1988,20 +1988,27 @@ Public Class frmMain
     End Try
   End Sub
 
-  Private Sub UpdateSearchBoxes()
+  Private Sub updateSearchBoxesMain()
+    UpdateSearchBoxes(NorthMask, "NMask", HSLoc(LocNorthMask))
+    UpdateSearchBoxes(SouthMask, "SMask", HSLoc(LocSouthMask))
+    UpdateSearchBoxes(NorthGlass, "NGlass", HSLoc(LocNorthGlass))
+    UpdateSearchBoxes(SouthGlass, "SGlass", HSLoc(LocSouthGlass))
+  End Sub
+
+  Private Sub UpdateSearchBoxes(SearchArea As SearchArea, DataBaseString As String, Locator As HSLOCATORLib.HSLocator)
     'This updates all of the slider values and labels
     Try
       'North Mask
-      NorthMask.CenterX = CSng(frmDataBase.GetValue("Partdata", "Value", "NMaskSearchCenterX"))
-      HSLoc(NorthSide).ToolPositionX = NorthMask.CenterX
-      NorthMask.CenterY = CSng(frmDataBase.GetValue("Partdata", "Value", "NMaskSearchCenterY"))
-      HSLoc(NorthSide).ToolPositionY = NorthMask.CenterY
-      NorthMask.CenterR = CSng(frmDataBase.GetValue("Partdata", "Value", "NMaskSearchCenterR"))
-      HSLoc(NorthSide).ToolPositionR = NorthMask.CenterR
-      NorthMask.Width = CSng(frmDataBase.GetValue("Partdata", "Value", "NMaskSearchWidth"))
-      HSLoc(NorthSide).ToolWidth = NorthMask.Width
-      NorthMask.Height = CSng(frmDataBase.GetValue("Partdata", "Value", "NMaskSearchHeight"))
-      HSLoc(NorthSide).ToolHeight = NorthMask.Height
+      SearchArea.CenterX = CSng(frmDataBase.GetValue("Partdata", "Value", DataBaseString & "SearchCenterX"))
+      Locator.ToolPositionX = SearchArea.CenterX
+      SearchArea.CenterY = CSng(frmDataBase.GetValue("Partdata", "Value", DataBaseString & "SearchCenterY"))
+      Locator.ToolPositionX = SearchArea.CenterY
+      SearchArea.CenterR = CSng(frmDataBase.GetValue("Partdata", "Value", DataBaseString & "SearchCenterR"))
+      Locator.ToolPositionX = SearchArea.CenterR
+      SearchArea.Width = CSng(frmDataBase.GetValue("Partdata", "Value", DataBaseString & "SearchWidth"))
+      Locator.ToolWidth = SearchArea.Width
+      SearchArea.Height = CSng(frmDataBase.GetValue("Partdata", "Value", DataBaseString & "SearchHeight"))
+      Locator.ToolHeight = SearchArea.Height
       'South Mask
       SouthMask.CenterX = CSng(frmDataBase.GetValue("Partdata", "Value", "SMaskSearchCenterX"))
       HSLoc(SouthSide).ToolPositionX = SouthMask.CenterX
