@@ -636,41 +636,8 @@ Public Class frmMain
             SearchArea.Width = Locator.ToolWidth
             frmDataBase.SetValue("Partdata", "Value", DatabaseString & "SearchWidth", SearchArea.Width.ToString("0.00"))
             SearchArea.Height = Locator.ToolHeight
-            frmDataBase.SetValue("Partdata", "Value", DatabaseString & "SearchWidth", SearchArea.Height.ToString("0.00"))
-            ''South Mask
-            'SouthMask.CenterX = HSLoc(SouthSide).ToolPositionX
-            'frmDataBase.SetValue("Partdata", "Value", "SMaskSearch", SouthMask.CenterX.ToString("0.00"))
-            'SouthMask.CenterY = HSLoc(SouthSide).ToolPositionY
-            'frmDataBase.SetValue("Partdata", "Value", "SMaskSearchCenterY", SouthMask.CenterY.ToString("0.00"))
-            'SouthMask.CenterR = HSLoc(SouthSide).ToolRotation
-            'frmDataBase.SetValue("Partdata", "Value", "SMaskSearchCenterR", SouthMask.CenterR.ToString("0.00"))
-            'SouthMask.Width = HSLoc(SouthSide).ToolWidth
-            'frmDataBase.SetValue("Partdata", "Value", "SMaskSearchWidth", SouthMask.Width.ToString("0.00"))
-            'SouthMask.Height = HSLoc(SouthSide).ToolHeight
-            'frmDataBase.SetValue("Partdata", "Value", "SMaskSearchWidth", SouthMask.Height.ToString("0.00"))
-            ''North Glass
-            'NorthGlass.CenterX = HSLoc(NorthSide).ToolPositionX
-            'frmDataBase.SetValue("Partdata", "Value", "NGlassSearchCenterX", NorthGlass.CenterX.ToString("0.00"))
-            'NorthGlass.CenterY = HSLoc(NorthSide).ToolPositionY
-            'frmDataBase.SetValue("Partdata", "Value", "NGlassSearchCenterY", NorthGlass.CenterY.ToString("0.00"))
-            'NorthGlass.CenterR = HSLoc(NorthSide).ToolRotation
-            'frmDataBase.SetValue("Partdata", "Value", "NGlassSearchCenterR", NorthGlass.CenterR.ToString("0.00"))
-            'NorthGlass.Width = HSLoc(NorthSide).ToolWidth
-            'frmDataBase.SetValue("Partdata", "Value", "NGlassSearchWidth", NorthGlass.Width.ToString("0.00"))
-            'NorthGlass.Height = HSLoc(NorthSide).ToolHeight
-            'frmDataBase.SetValue("Partdata", "Value", "NGlassSearchWidth", NorthGlass.Height.ToString("0.00"))
-            ''South Glass
-            'SouthGlass.CenterX = HSLoc(SouthSide).ToolPositionX
-            'frmDataBase.SetValue("Partdata", "Value", "SGlassSearchCenterX", SouthGlass.CenterX.ToString("0.00"))
-            'SouthGlass.CenterY = HSLoc(SouthSide).ToolPositionY
-            'frmDataBase.SetValue("Partdata", "Value", "SGlassSearchCenterY", SouthGlass.CenterY.ToString("0.00"))
-            'SouthGlass.CenterR = HSLoc(SouthSide).ToolRotation
-            'frmDataBase.SetValue("Partdata", "Value", "SGlassSearchCenterR", SouthGlass.CenterR.ToString("0.00"))
-            'SouthGlass.Width = HSLoc(SouthSide).ToolWidth
-            'frmDataBase.SetValue("Partdata", "Value", "SGlassSearchWidth", SouthGlass.Width.ToString("0.00"))
-            'SouthGlass.Height = HSLoc(SouthSide).ToolHeight
-            'frmDataBase.SetValue("Partdata", "Value", "SGlassSearchWidth", SouthGlass.Height.ToString("0.00"))
-        Catch ex As Exception
+      frmDataBase.SetValue("Partdata", "Value", DatabaseString & "SearchWidth", SearchArea.Height.ToString("0.00"))
+    Catch ex As Exception
             ShowVBErrors(ex.Message)
         End Try
     End Sub
