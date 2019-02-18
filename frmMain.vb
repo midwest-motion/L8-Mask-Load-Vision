@@ -624,7 +624,7 @@ Public Class frmMain
     SaveSearchBox(SouthGlass, "SGlass", HSLoc(LocSouthGlass))
   End Sub
 
-  Private Sub SaveSearchBox(SearchArea As SearchArea, DatabaseString As String, Locator As HSLOCATORLib.HSLocator)
+  Private Sub SaveSearchBox(ByRef SearchArea As SearchArea, ByVal DatabaseString As String, ByRef Locator As HSLOCATORLib.HSLocator)
     'This saves all of the HexSight Search Box variables
     Try
       SearchArea.CenterX = Locator.ToolPositionX
@@ -637,39 +637,6 @@ Public Class frmMain
       frmDataBase.SetValue("Partdata", "Value", DatabaseString & "SearchWidth", SearchArea.Width.ToString("0.00"))
       SearchArea.Height = Locator.ToolHeight
       frmDataBase.SetValue("Partdata", "Value", DatabaseString & "SearchWidth", SearchArea.Height.ToString("0.00"))
-      ''South Mask
-      'SouthMask.CenterX = HSLoc(SouthSide).ToolPositionX
-      'frmDataBase.SetValue("Partdata", "Value", "SMaskSearch", SouthMask.CenterX.ToString("0.00"))
-      'SouthMask.CenterY = HSLoc(SouthSide).ToolPositionY
-      'frmDataBase.SetValue("Partdata", "Value", "SMaskSearchCenterY", SouthMask.CenterY.ToString("0.00"))
-      'SouthMask.CenterR = HSLoc(SouthSide).ToolRotation
-      'frmDataBase.SetValue("Partdata", "Value", "SMaskSearchCenterR", SouthMask.CenterR.ToString("0.00"))
-      'SouthMask.Width = HSLoc(SouthSide).ToolWidth
-      'frmDataBase.SetValue("Partdata", "Value", "SMaskSearchWidth", SouthMask.Width.ToString("0.00"))
-      'SouthMask.Height = HSLoc(SouthSide).ToolHeight
-      'frmDataBase.SetValue("Partdata", "Value", "SMaskSearchWidth", SouthMask.Height.ToString("0.00"))
-      ''North Glass
-      'NorthGlass.CenterX = HSLoc(NorthSide).ToolPositionX
-      'frmDataBase.SetValue("Partdata", "Value", "NGlassSearchCenterX", NorthGlass.CenterX.ToString("0.00"))
-      'NorthGlass.CenterY = HSLoc(NorthSide).ToolPositionY
-      'frmDataBase.SetValue("Partdata", "Value", "NGlassSearchCenterY", NorthGlass.CenterY.ToString("0.00"))
-      'NorthGlass.CenterR = HSLoc(NorthSide).ToolRotation
-      'frmDataBase.SetValue("Partdata", "Value", "NGlassSearchCenterR", NorthGlass.CenterR.ToString("0.00"))
-      'NorthGlass.Width = HSLoc(NorthSide).ToolWidth
-      'frmDataBase.SetValue("Partdata", "Value", "NGlassSearchWidth", NorthGlass.Width.ToString("0.00"))
-      'NorthGlass.Height = HSLoc(NorthSide).ToolHeight
-      'frmDataBase.SetValue("Partdata", "Value", "NGlassSearchWidth", NorthGlass.Height.ToString("0.00"))
-      ''South Glass
-      'SouthGlass.CenterX = HSLoc(SouthSide).ToolPositionX
-      'frmDataBase.SetValue("Partdata", "Value", "SGlassSearchCenterX", SouthGlass.CenterX.ToString("0.00"))
-      'SouthGlass.CenterY = HSLoc(SouthSide).ToolPositionY
-      'frmDataBase.SetValue("Partdata", "Value", "SGlassSearchCenterY", SouthGlass.CenterY.ToString("0.00"))
-      'SouthGlass.CenterR = HSLoc(SouthSide).ToolRotation
-      'frmDataBase.SetValue("Partdata", "Value", "SGlassSearchCenterR", SouthGlass.CenterR.ToString("0.00"))
-      'SouthGlass.Width = HSLoc(SouthSide).ToolWidth
-      'frmDataBase.SetValue("Partdata", "Value", "SGlassSearchWidth", SouthGlass.Width.ToString("0.00"))
-      'SouthGlass.Height = HSLoc(SouthSide).ToolHeight
-      'frmDataBase.SetValue("Partdata", "Value", "SGlassSearchWidth", SouthGlass.Height.ToString("0.00"))
     Catch ex As Exception
       ShowVBErrors(ex.Message)
     End Try
@@ -1544,6 +1511,13 @@ Public Class frmMain
     End Try
   End Sub
 
+  Private Sub AddAllRectangleMarkers()
+    AddRectangleMarker(LocNorthMask)
+    AddRectangleMarker(LocNorthGlass)
+    AddRectangleMarker(LocSouthMask)
+    AddRectangleMarker(LocSouthGlass)
+  End Sub
+
   Private Sub AddRectangleMarker(Side As Integer)
     Try
       Select Case Side
@@ -1552,31 +1526,79 @@ Public Class frmMain
             'Mask
             .AddRectangleMarker("Search Area Mask", NorthMask.CenterX, NorthMask.CenterY, NorthMask.Width, NorthMask.Height, True)
             .set_MarkerDisplayName("Search Area Mask", True)
-            .set_MarkerLineStyle("Search Area Mask", HSDISPLAYLib.hsMarkerLineStyle.hsDash)
             .set_MarkerColor("Search Area Mask", HSDISPLAYLib.hsColor.hsBlue)
+            .set_RectangleMarkerConstraints("Search Area Mask", HSDISPLAYLib.hsRectangleMarkerConstraints.hsRectangleCornerBasedEdition)
+            If Not mnuPassword.Checked Then
+              .set_MarkerLineStyle("Search Area Mask", HSDISPLAYLib.hsMarkerLineStyle.hsDash)
+              .set_RectangleMarkerConstraints("Search Area Mask", HSDISPLAYLib.hsRectangleMarkerConstraints.hsRectangleNoEdit)
+            Else
+              .set_MarkerLineStyle("Search Area Mask", HSDISPLAYLib.hsMarkerLineStyle.hsSolid)
+              .set_RectangleMarkerConstraints("Search Area Mask", HSDISPLAYLib.hsRectangleMarkerConstraints.hsRectangleNoConstraints)
+            End If
             'Glass
             .AddRectangleMarker("Search Area Glass", NorthGlass.CenterX, NorthGlass.CenterY, NorthGlass.Width, NorthGlass.Height, True)
             .set_MarkerDisplayName("Search Area Glass", True)
-            .set_MarkerLineStyle("Search Area Glass", HSDISPLAYLib.hsMarkerLineStyle.hsDash)
-            .set_MarkerColor("Search Area Glass", HSDISPLAYLib.hsColor.hsGreen)
+            .set_MarkerColor("Search Area Glass", HSDISPLAYLib.hsColor.hsBlue)
+            .set_RectangleMarkerConstraints("Search Area Glass", HSDISPLAYLib.hsRectangleMarkerConstraints.hsRectangleCornerBasedEdition)
+            If Not mnuPassword.Checked Then
+              .set_MarkerLineStyle("Search Area Glass", HSDISPLAYLib.hsMarkerLineStyle.hsDash)
+              .set_RectangleMarkerConstraints("Search Area Glass", HSDISPLAYLib.hsRectangleMarkerConstraints.hsRectangleNoEdit)
+            Else
+              .set_MarkerLineStyle("Search Area Glass", HSDISPLAYLib.hsMarkerLineStyle.hsSolid)
+              .set_RectangleMarkerConstraints("Search Area Glass", HSDISPLAYLib.hsRectangleMarkerConstraints.hsRectangleNoConstraints)
+            End If
           End With
         Case SouthSide
           With HSDisplaySouth
             'Mask
             .AddRectangleMarker("Search Area Mask", SouthMask.CenterX, SouthMask.CenterY, SouthMask.Width, SouthMask.Height, True)
             .set_MarkerDisplayName("Search Area Mask", True)
-            .set_MarkerLineStyle("Search Area Mask", HSDISPLAYLib.hsMarkerLineStyle.hsDash)
             .set_MarkerColor("Search Area Mask", HSDISPLAYLib.hsColor.hsBlue)
+            .set_RectangleMarkerConstraints("Search Area Mask", HSDISPLAYLib.hsRectangleMarkerConstraints.hsRectangleCornerBasedEdition)
+            If Not mnuPassword.Checked Then
+              .set_MarkerLineStyle("Search Area Mask", HSDISPLAYLib.hsMarkerLineStyle.hsDash)
+              .set_RectangleMarkerConstraints("Search Area Mask", HSDISPLAYLib.hsRectangleMarkerConstraints.hsRectangleNoEdit)
+            Else
+              .set_MarkerLineStyle("Search Area Mask", HSDISPLAYLib.hsMarkerLineStyle.hsSolid)
+              .set_RectangleMarkerConstraints("Search Area Mask", HSDISPLAYLib.hsRectangleMarkerConstraints.hsRectangleNoConstraints)
+            End If
             'Glass
             .AddRectangleMarker("Search Area Glass", SouthGlass.CenterX, SouthGlass.CenterY, SouthGlass.Width, SouthGlass.Height, True)
             .set_MarkerDisplayName("Search Area Glass", True)
-            .set_MarkerLineStyle("Search Area Glass", HSDISPLAYLib.hsMarkerLineStyle.hsDash)
-            .set_MarkerColor("Search Area Glass", HSDISPLAYLib.hsColor.hsGreen)
+            .set_MarkerColor("Search Area Glass", HSDISPLAYLib.hsColor.hsBlue)
+            .set_RectangleMarkerConstraints("Search Area Glass", HSDISPLAYLib.hsRectangleMarkerConstraints.hsRectangleCornerBasedEdition)
+            If Not mnuPassword.Checked Then
+              .set_MarkerLineStyle("Search Area Glass", HSDISPLAYLib.hsMarkerLineStyle.hsDash)
+              .set_RectangleMarkerConstraints("Search Area Glass", HSDISPLAYLib.hsRectangleMarkerConstraints.hsRectangleNoEdit)
+            Else
+              .set_MarkerLineStyle("Search Area Glass", HSDISPLAYLib.hsMarkerLineStyle.hsSolid)
+              .set_RectangleMarkerConstraints("Search Area Glass", HSDISPLAYLib.hsRectangleMarkerConstraints.hsRectangleNoConstraints)
+            End If
           End With
       End Select
     Catch ex As Exception
       ShowVBErrors(ex.Message)
     End Try
+  End Sub
+
+  Private Sub HSDisplay_RectangleMarkerChange(ByVal sender As Object, ByVal e As AxHSDISPLAYLib._DHSDisplayEvents_RectangleMarkerChangeEvent) Handles _
+     HSDisplayNorth.RectangleMarkerChange,
+     HSDisplaySouth.RectangleMarkerChange
+    If Not mnuPassword.Checked Then Exit Sub
+    If sender.name.contains("North") Then
+      'Update the Locator Search Area
+      HSLoc(LocNorthMask).ToolPositionX = e.x
+      HSLoc(LocNorthMask).ToolPositionY = e.y
+      HSLoc(LocNorthMask).ToolWidth = e.width
+      HSLoc(LocNorthMask).ToolHeight = e.height
+    End If
+    If sender.name.contains("West") Then 'e.name = "West Pickup Area" Then
+      'Update the Locator Search Area
+      HSLoc(LocSouthMask).ToolPositionX = e.x
+      HSLoc(LocSouthMask).ToolPositionY = e.y
+      HSLoc(LocSouthMask).ToolWidth = e.width
+      HSLoc(LocSouthMask).ToolHeight = e.height
+    End If
   End Sub
 
 #End Region
@@ -1927,8 +1949,9 @@ Public Class frmMain
       frmSplash.lblStatus.Text = "Camera Settings"
       'Update Camera Images with current exposures, contrast, gain
       UpdateUpDownControls()
+      UpdateAllRectangleMarkers()
+      AddAllRectangleMarkers()
       SetCameraSettings()
-      UpdateAllSearchBoxes()
     Catch ex As Exception
       ShowVBErrors(ex.Message)
     End Try
@@ -1988,27 +2011,22 @@ Public Class frmMain
     End Try
   End Sub
 
-  Private Sub UpdateAllSearchBoxes()
-    UpdateSearchBox(NorthMask, "NMask", HSLoc(LocNorthMask))
-    UpdateSearchBox(SouthMask, "SMask", HSLoc(LocSouthMask))
-    UpdateSearchBox(NorthGlass, "NGlass", HSLoc(LocNorthGlass))
-    UpdateSearchBox(SouthGlass, "SGlass", HSLoc(LocSouthGlass))
+  Private Sub UpdateAllRectangleMarkers()
+    UpdateSearchBox(NorthMask, HSLoc(LocNorthMask))
+    UpdateSearchBox(SouthMask, HSLoc(LocSouthMask))
+    UpdateSearchBox(NorthGlass, HSLoc(LocNorthGlass))
+    UpdateSearchBox(SouthGlass, HSLoc(LocSouthGlass))
   End Sub
 
-  Private Sub UpdateSearchBox(SearchArea As SearchArea, DataBaseString As String, Locator As HSLOCATORLib.HSLocator)
+  Private Sub UpdateSearchBox(ByRef SearchArea As SearchArea, ByRef Locator As HSLOCATORLib.HSLocator)
     'This updates all of the slider values and labels
     Try
       'North Mask
-      SearchArea.CenterX = CSng(frmDataBase.GetValue("Partdata", "Value", DataBaseString & "SearchCenterX"))
-      Locator.ToolPositionX = SearchArea.CenterX
-      SearchArea.CenterY = CSng(frmDataBase.GetValue("Partdata", "Value", DataBaseString & "SearchCenterY"))
-      Locator.ToolPositionX = SearchArea.CenterY
-      SearchArea.CenterR = CSng(frmDataBase.GetValue("Partdata", "Value", DataBaseString & "SearchCenterR"))
-      Locator.ToolPositionX = SearchArea.CenterR
-      SearchArea.Width = CSng(frmDataBase.GetValue("Partdata", "Value", DataBaseString & "SearchWidth"))
-      Locator.ToolWidth = SearchArea.Width
-      SearchArea.Height = CSng(frmDataBase.GetValue("Partdata", "Value", DataBaseString & "SearchHeight"))
-      Locator.ToolHeight = SearchArea.Height
+      SearchArea.CenterX = Locator.ToolPositionX
+      SearchArea.CenterY = Locator.ToolPositionY
+      SearchArea.CenterR = Locator.ToolRotation
+      SearchArea.Width = Locator.ToolWidth
+      SearchArea.Height = Locator.ToolHeight
     Catch ex As Exception
       ShowVBErrors(ex.Message)
     End Try

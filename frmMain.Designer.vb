@@ -2340,7 +2340,7 @@
     Me.tabVisionSouth.Location = New System.Drawing.Point(4, 25)
     Me.tabVisionSouth.Name = "tabVisionSouth"
     Me.tabVisionSouth.Padding = New System.Windows.Forms.Padding(3)
-    Me.tabVisionSouth.Size = New System.Drawing.Size(1509, 957)
+    Me.tabVisionSouth.Size = New System.Drawing.Size(1509, 963)
     Me.tabVisionSouth.TabIndex = 1
     Me.tabVisionSouth.Text = "South Camera"
     Me.tabVisionSouth.UseVisualStyleBackColor = True
