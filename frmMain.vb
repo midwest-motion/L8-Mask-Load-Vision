@@ -52,6 +52,8 @@ Public Class frmMain
   '
   'Timers
   Private WithEvents IOTimer As New Timer
+  Private WithEvents SaveMarkersTimer As New Timer
+  Private MarkerChanged As Boolean = False
 #End Region
 
 #Region "Form Load/Unload"
@@ -208,6 +210,8 @@ Public Class frmMain
       updnScoreLimitNorthGlass.Enabled = PasswordValue
       updnScoreLimitNorthMask.Enabled = PasswordValue
       updnScoreLimitSouthGlass.Enabled = PasswordValue
+      'Rectangle markers
+      AddAllRectangleMarkers()
       Exit Sub
     Catch ex As Exception
       ShowVBErrors(ex.Message)
@@ -517,61 +521,6 @@ Public Class frmMain
     End Select
   End Sub
 
-  'Private Sub SetReferencePoints()
-  '  Dim HSModel As HSLOCATORLib.HSModelEditorInterface
-  '  Select Case Side
-  '    Case NorthSide
-  '      Try
-  '        '
-  '        'North Side
-  '        HSModel = HSLoc(NorthSide).ShowModelEditor(False, "North")
-  '        With HSModel
-  '          Try
-  '            .ReferencePointPositionX(0) = 0
-  '            .ReferencePointPositionY(0) = 0
-  '          Catch
-  '          End Try
-  '        End With
-  '        HSModel.Apply()
-  '        HSModel.EndDialog(HSLOCATORLib.hsModelDialogResult.hsResultOK)
-  '        'Save Model Database
-  '        HSLoc(NorthSide).SaveModelDatabase(CurrentFilePath & "North.hdb")
-  '        HSLoc(NorthSide).CompactMemory()
-  '        '
-  '      Catch ex As Exception
-  '        MsgBox("Problem modifying the model file reference point" & vbCr &
-  '                                "You may need need to modify the model" & vbCr &
-  '                                "through the Hexsight Interface" & vbCr &
-  '                                ex.Message, MsgBoxStyle.Critical + MsgBoxStyle.SystemModal)
-  '      End Try
-  '    Case SouthSide
-  '      Try
-  '        '
-  '        'South Side
-  '        HSModel = HSLoc(SouthSide).ShowModelEditor(False, "South")
-  '        With HSModel
-  '          Try
-  '            .ReferencePointPositionX(0) = 0
-  '            .ReferencePointPositionY(0) = 0
-  '          Catch
-  '          End Try
-  '        End With
-  '        HSModel.Apply()
-  '        HSModel.EndDialog(HSLOCATORLib.hsModelDialogResult.hsResultOK)
-  '        'Save Model Database
-  '        HSLoc(SouthSide).SaveModelDatabase(CurrentFilePath & "South.hdb")
-  '        HSLoc(SouthSide).CompactMemory()
-  '        '
-  '      Catch ex As Exception
-  '        MsgBox("Problem modifying the model file reference point" & vbCr &
-  '                                "You may need need to modify the model" & vbCr &
-  '                                "through the Hexsight Interface" & vbCr &
-  '                                ex.Message, MsgBoxStyle.Critical + MsgBoxStyle.SystemModal)
-  '      End Try
-  '  End Select
-
-  'End Sub
-
   Private Sub btnDetails_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles btnDetailsNorthGlass.Click, btnDetailsSouthMask.Click
     Dim MessageID As Short
     Dim Description As String = ""
@@ -610,37 +559,13 @@ Public Class frmMain
           HSLoc(LocSouthGlass).ShowProperties(True, , 1 + 4 + 8 + 16)
       End Select
       SaveHexsight()
-      SaveAllSearchBoxes()
+      SaveAllRectangleMarkers()
+      AddAllRectangleMarkers()
     Catch ex As Exception
       ShowVBErrors(ex.Message)
     End Try
   End Sub
 #End Region
-
-  Private Sub SaveAllSearchBoxes()
-    SaveSearchBox(NorthMask, "NMask", HSLoc(LocNorthMask))
-    SaveSearchBox(SouthMask, "SMask", HSLoc(LocSouthMask))
-    SaveSearchBox(NorthGlass, "NGlass", HSLoc(LocNorthGlass))
-    SaveSearchBox(SouthGlass, "SGlass", HSLoc(LocSouthGlass))
-  End Sub
-
-  Private Sub SaveSearchBox(ByRef SearchArea As SearchArea, ByVal DatabaseString As String, ByRef Locator As HSLOCATORLib.HSLocator)
-    'This saves all of the HexSight Search Box variables
-    Try
-      SearchArea.CenterX = Locator.ToolPositionX
-      frmDataBase.SetValue("Partdata", "Value", DatabaseString & "SearchCenterX", SearchArea.CenterX.ToString("0.00"))
-      SearchArea.CenterY = Locator.ToolPositionY
-      frmDataBase.SetValue("Partdata", "Value", DatabaseString & "SearchCenterY", SearchArea.CenterY.ToString("0.00"))
-      SearchArea.CenterR = Locator.ToolRotation
-      frmDataBase.SetValue("Partdata", "Value", DatabaseString & "SearchCenterR", SearchArea.CenterR.ToString("0.00"))
-      SearchArea.Width = Locator.ToolWidth
-      frmDataBase.SetValue("Partdata", "Value", DatabaseString & "SearchWidth", SearchArea.Width.ToString("0.00"))
-      SearchArea.Height = Locator.ToolHeight
-      frmDataBase.SetValue("Partdata", "Value", DatabaseString & "SearchWidth", SearchArea.Height.ToString("0.00"))
-    Catch ex As Exception
-      ShowVBErrors(ex.Message)
-    End Try
-  End Sub
 
 #Region "Vision Routines"
 
@@ -1586,21 +1511,88 @@ Public Class frmMain
      HSDisplaySouth.RectangleMarkerChange
     If Not mnuPassword.Checked Then Exit Sub
     If sender.name.contains("North") Then
-      'Update the Locator Search Area
-      HSLoc(LocNorthMask).ToolPositionX = e.x
-      HSLoc(LocNorthMask).ToolPositionY = e.y
-      HSLoc(LocNorthMask).ToolWidth = e.width
-      HSLoc(LocNorthMask).ToolHeight = e.height
+      If e.name.Contains("Mask") Then
+        'Update the Locator Search Area
+        HSLoc(LocNorthMask).ToolPositionX = e.x
+        HSLoc(LocNorthMask).ToolPositionY = e.y
+        HSLoc(LocNorthMask).ToolWidth = e.width
+        HSLoc(LocNorthMask).ToolHeight = e.height
+      Else
+        HSLoc(LocNorthGlass).ToolPositionX = e.x
+        HSLoc(LocNorthGlass).ToolPositionY = e.y
+        HSLoc(LocNorthGlass).ToolWidth = e.width
+        HSLoc(LocNorthGlass).ToolHeight = e.height
+      End If
+    Else
+      If e.name.Contains("Mask") Then
+        'Update the Locator Search Area
+        HSLoc(LocSouthMask).ToolPositionX = e.x
+        HSLoc(LocSouthMask).ToolPositionY = e.y
+        HSLoc(LocSouthMask).ToolWidth = e.width
+        HSLoc(LocSouthMask).ToolHeight = e.height
+      Else
+        HSLoc(LocSouthGlass).ToolPositionX = e.x
+        HSLoc(LocSouthGlass).ToolPositionY = e.y
+        HSLoc(LocSouthGlass).ToolWidth = e.width
+        HSLoc(LocSouthGlass).ToolHeight = e.height
+      End If
     End If
-    If sender.name.contains("West") Then 'e.name = "West Pickup Area" Then
-      'Update the Locator Search Area
-      HSLoc(LocSouthMask).ToolPositionX = e.x
-      HSLoc(LocSouthMask).ToolPositionY = e.y
-      HSLoc(LocSouthMask).ToolWidth = e.width
-      HSLoc(LocSouthMask).ToolHeight = e.height
-    End If
+    MarkerChanged = True
+    SaveMarkersTimer.Interval = 3000
+    SaveMarkersTimer.Enabled = True
   End Sub
 
+  Private Sub UpdateAllRectangleMarkers()
+    UpdateRectangleMarker(NorthMask, HSLoc(LocNorthMask))
+    UpdateRectangleMarker(SouthMask, HSLoc(LocSouthMask))
+    UpdateRectangleMarker(NorthGlass, HSLoc(LocNorthGlass))
+    UpdateRectangleMarker(SouthGlass, HSLoc(LocSouthGlass))
+  End Sub
+
+  Private Sub UpdateRectangleMarker(ByRef SearchArea As SearchArea, ByRef Locator As HSLOCATORLib.HSLocator)
+    'This updates all of the slider values and labels
+    Try
+      'North Mask
+      SearchArea.CenterX = Locator.ToolPositionX
+      SearchArea.CenterY = Locator.ToolPositionY
+      SearchArea.CenterR = Locator.ToolRotation
+      SearchArea.Width = Locator.ToolWidth
+      SearchArea.Height = Locator.ToolHeight
+    Catch ex As Exception
+      ShowVBErrors(ex.Message)
+    End Try
+  End Sub
+
+
+  Private Sub SaveAllRectangleMarkers()
+    SaveRectangleMarker(NorthMask, "North Mask.hdb", HSLoc(LocNorthMask))
+    SaveRectangleMarker(SouthMask, "South Mask.hdb", HSLoc(LocSouthMask))
+    SaveRectangleMarker(NorthGlass, "North Glass.hdb", HSLoc(LocNorthGlass))
+    SaveRectangleMarker(SouthGlass, "South Glass.hdb", HSLoc(LocSouthGlass))
+  End Sub
+
+  Private Sub SaveRectangleMarker(ByRef SearchArea As SearchArea, ByVal ModelName As String, ByRef Locator As HSLOCATORLib.HSLocator)
+    'This saves all of the HexSight Search Box variables
+    Try
+      SearchArea.CenterX = Locator.ToolPositionX
+      SearchArea.CenterY = Locator.ToolPositionY
+      SearchArea.CenterR = Locator.ToolRotation
+      SearchArea.Width = Locator.ToolWidth
+      SearchArea.Height = Locator.ToolHeight
+      Locator.SaveModelDatabase(CurrentFilePath & ModelName)
+    Catch ex As Exception
+      ShowVBErrors(ex.Message)
+    End Try
+  End Sub
+
+  Private Sub btnClearMarkersBoth_Click(sender As Object, e As EventArgs) Handles btnClearMarkersBoth.Click
+    HSDisplayNorth.set_ScenePenWidth(0, HSDISPLAYLib.hsPenWidth.hsPenWidthNone)
+    HSDisplayNorth.set_ScenePenWidth(1, HSDISPLAYLib.hsPenWidth.hsPenWidthNone)
+    HSDisplayNorth.RemoveAllMarker()
+    HSDisplaySouth.set_ScenePenWidth(0, HSDISPLAYLib.hsPenWidth.hsPenWidthNone)
+    HSDisplaySouth.set_ScenePenWidth(1, HSDISPLAYLib.hsPenWidth.hsPenWidthNone)
+    HSDisplaySouth.RemoveAllMarker()
+  End Sub
 #End Region
 
 #Region "Timers"
@@ -1609,7 +1601,6 @@ Public Class frmMain
     Try
       tmrDelay.Enabled = False
     Catch ex As Exception
-      Dim MethodName As String = System.Reflection.MethodBase.GetCurrentMethod().Name
       ShowVBErrors(ex.Message)
     End Try
   End Sub
@@ -1635,8 +1626,20 @@ Public Class frmMain
     Catch ex As Exception
       ShowVBErrors(ex.Message)
     End Try
-
   End Sub
+
+  Private Sub tmrSaveMarkers(sender As Object, e As EventArgs) Handles SaveMarkersTimer.Tick
+    Try
+      If MarkerChanged Then
+        SaveAllRectangleMarkers()
+        MarkerChanged = False
+        SaveMarkersTimer.Enabled = False
+      End If
+    Catch ex As Exception
+      ShowVBErrors(ex.Message)
+    End Try
+  End Sub
+
 #End Region
 
 #Region "Up Downs"
@@ -2011,27 +2014,6 @@ Public Class frmMain
     End Try
   End Sub
 
-  Private Sub UpdateAllRectangleMarkers()
-    UpdateSearchBox(NorthMask, HSLoc(LocNorthMask))
-    UpdateSearchBox(SouthMask, HSLoc(LocSouthMask))
-    UpdateSearchBox(NorthGlass, HSLoc(LocNorthGlass))
-    UpdateSearchBox(SouthGlass, HSLoc(LocSouthGlass))
-  End Sub
-
-  Private Sub UpdateSearchBox(ByRef SearchArea As SearchArea, ByRef Locator As HSLOCATORLib.HSLocator)
-    'This updates all of the slider values and labels
-    Try
-      'North Mask
-      SearchArea.CenterX = Locator.ToolPositionX
-      SearchArea.CenterY = Locator.ToolPositionY
-      SearchArea.CenterR = Locator.ToolRotation
-      SearchArea.Width = Locator.ToolWidth
-      SearchArea.Height = Locator.ToolHeight
-    Catch ex As Exception
-      ShowVBErrors(ex.Message)
-    End Try
-  End Sub
-
   Private Sub GetSettings()
     Try
       PartName = frmDataBase.GetValue("Settings", "Value", "Current Part Name")
@@ -2133,14 +2115,5 @@ Public Class frmMain
   End Sub
 
 #End Region
-
-  Private Sub btnClearMarkersBoth_Click(sender As Object, e As EventArgs) Handles btnClearMarkersBoth.Click
-    HSDisplayNorth.set_ScenePenWidth(0, HSDISPLAYLib.hsPenWidth.hsPenWidthNone)
-    HSDisplayNorth.set_ScenePenWidth(1, HSDISPLAYLib.hsPenWidth.hsPenWidthNone)
-    HSDisplayNorth.RemoveAllMarker()
-    HSDisplaySouth.set_ScenePenWidth(0, HSDISPLAYLib.hsPenWidth.hsPenWidthNone)
-    HSDisplaySouth.set_ScenePenWidth(1, HSDISPLAYLib.hsPenWidth.hsPenWidthNone)
-    HSDisplaySouth.RemoveAllMarker()
-  End Sub
 
 End Class
