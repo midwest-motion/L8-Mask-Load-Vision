@@ -139,16 +139,10 @@
     Me.lblFinalStatus = New System.Windows.Forms.Label()
     Me.chkRepeatSnapBoth = New System.Windows.Forms.CheckBox()
     Me.chkRepeatLocateBoth = New System.Windows.Forms.CheckBox()
-    Me._Label6_10 = New System.Windows.Forms.Label()
-    Me._txtScoreCopy_2 = New System.Windows.Forms.TextBox()
-    Me._Label6_8 = New System.Windows.Forms.Label()
-    Me._txtScoreCopy_3 = New System.Windows.Forms.TextBox()
-    Me._Label6_9 = New System.Windows.Forms.Label()
-    Me.Label17 = New System.Windows.Forms.Label()
-    Me._txtScoreCopy_0 = New System.Windows.Forms.TextBox()
-    Me._Label6_7 = New System.Windows.Forms.Label()
-    Me.Label16 = New System.Windows.Forms.Label()
-    Me._txtScoreCopy_1 = New System.Windows.Forms.TextBox()
+    Me.lblSouthGlassPlaceHolder = New System.Windows.Forms.Label()
+    Me.lblSouthMaskPlaceHolder = New System.Windows.Forms.Label()
+    Me.lblNorthGlassPlaceHolder = New System.Windows.Forms.Label()
+    Me.lblNorthMaskPlaceHolder = New System.Windows.Forms.Label()
     Me._Frame1_1 = New System.Windows.Forms.GroupBox()
     Me._txtPoint_5 = New System.Windows.Forms.TextBox()
     Me._txtPoint_4 = New System.Windows.Forms.TextBox()
@@ -303,23 +297,11 @@
     Me._Label8_3 = New System.Windows.Forms.Label()
     Me._Label8_2 = New System.Windows.Forms.Label()
     Me._lblSnapAfterLocate_1 = New System.Windows.Forms.Label()
-    Me._SSTab1_TabPage2 = New System.Windows.Forms.TabPage()
-    Me.btnOKOffsets = New System.Windows.Forms.Button()
-    Me.lblRshift = New System.Windows.Forms.Label()
-    Me.LblXShift = New System.Windows.Forms.Label()
-    Me.lblYShift = New System.Windows.Forms.Label()
-    Me._Label10_0 = New System.Windows.Forms.Label()
-    Me._Label10_1 = New System.Windows.Forms.Label()
-    Me._Label10_2 = New System.Windows.Forms.Label()
-    Me._Label11_0 = New System.Windows.Forms.Label()
-    Me._Label11_1 = New System.Windows.Forms.Label()
-    Me.lblRotate = New System.Windows.Forms.Label()
-    Me.txtXshift = New System.Windows.Forms.TextBox()
-    Me.txtYShift = New System.Windows.Forms.TextBox()
-    Me.txtRLinear = New System.Windows.Forms.TextBox()
     Me.grpCommStatus = New System.Windows.Forms.GroupBox()
     Me.txtCommStatus = New System.Windows.Forms.TextBox()
     Me.grpShiftOffset = New System.Windows.Forms.GroupBox()
+    Me.updnXShift = New System.Windows.Forms.NumericUpDown()
+    Me.updnYShift = New System.Windows.Forms.NumericUpDown()
     Me.Label21 = New System.Windows.Forms.Label()
     Me.Label20 = New System.Windows.Forms.Label()
     Me.Label18 = New System.Windows.Forms.Label()
@@ -348,8 +330,10 @@
     Me.lblPiece2DescR = New System.Windows.Forms.Label()
     Me.grpVBErrors = New System.Windows.Forms.GroupBox()
     Me.lstVBError = New System.Windows.Forms.ListBox()
-    Me.updnYShift = New System.Windows.Forms.NumericUpDown()
-    Me.updnXShift = New System.Windows.Forms.NumericUpDown()
+    Me.lblNorthMaskScore = New System.Windows.Forms.Label()
+    Me.lblNorthGlassScore = New System.Windows.Forms.Label()
+    Me.lblSouthGlassScore = New System.Windows.Forms.Label()
+    Me.lblSouthMaskScore = New System.Windows.Forms.Label()
     Me.MainMenu1.SuspendLayout()
     CType(Me.updnExposureNorth, System.ComponentModel.ISupportInitialize).BeginInit()
     CType(Me.updnContrastNorth, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -398,15 +382,14 @@
     Me.SSTab1.SuspendLayout()
     Me._SSTab1_TabPage0.SuspendLayout()
     Me._SSTab1_TabPage1.SuspendLayout()
-    Me._SSTab1_TabPage2.SuspendLayout()
     Me.grpCommStatus.SuspendLayout()
     Me.grpShiftOffset.SuspendLayout()
+    CType(Me.updnXShift, System.ComponentModel.ISupportInitialize).BeginInit()
+    CType(Me.updnYShift, System.ComponentModel.ISupportInitialize).BeginInit()
     CType(Me.updnRLinear, System.ComponentModel.ISupportInitialize).BeginInit()
     CType(Me.updnRShift, System.ComponentModel.ISupportInitialize).BeginInit()
     Me.grpCombinedOffsetDetail.SuspendLayout()
     Me.grpVBErrors.SuspendLayout()
-    CType(Me.updnYShift, System.ComponentModel.ISupportInitialize).BeginInit()
-    CType(Me.updnXShift, System.ComponentModel.ISupportInitialize).BeginInit()
     Me.SuspendLayout()
     '
     'MainMenu1
@@ -1195,17 +1178,15 @@
     'tabVisionBoth
     '
     Me.tabVisionBoth.BackColor = System.Drawing.SystemColors.Control
+    Me.tabVisionBoth.Controls.Add(Me.lblSouthMaskScore)
+    Me.tabVisionBoth.Controls.Add(Me.lblSouthGlassScore)
+    Me.tabVisionBoth.Controls.Add(Me.lblNorthGlassScore)
+    Me.tabVisionBoth.Controls.Add(Me.lblNorthMaskScore)
     Me.tabVisionBoth.Controls.Add(Me.GroupBox1)
-    Me.tabVisionBoth.Controls.Add(Me._Label6_10)
-    Me.tabVisionBoth.Controls.Add(Me._txtScoreCopy_2)
-    Me.tabVisionBoth.Controls.Add(Me._Label6_8)
-    Me.tabVisionBoth.Controls.Add(Me._txtScoreCopy_3)
-    Me.tabVisionBoth.Controls.Add(Me._Label6_9)
-    Me.tabVisionBoth.Controls.Add(Me.Label17)
-    Me.tabVisionBoth.Controls.Add(Me._txtScoreCopy_0)
-    Me.tabVisionBoth.Controls.Add(Me._Label6_7)
-    Me.tabVisionBoth.Controls.Add(Me.Label16)
-    Me.tabVisionBoth.Controls.Add(Me._txtScoreCopy_1)
+    Me.tabVisionBoth.Controls.Add(Me.lblSouthGlassPlaceHolder)
+    Me.tabVisionBoth.Controls.Add(Me.lblSouthMaskPlaceHolder)
+    Me.tabVisionBoth.Controls.Add(Me.lblNorthGlassPlaceHolder)
+    Me.tabVisionBoth.Controls.Add(Me.lblNorthMaskPlaceHolder)
     Me.tabVisionBoth.Controls.Add(Me._Frame1_1)
     Me.tabVisionBoth.Controls.Add(Me._Frame1_0)
     Me.tabVisionBoth.Controls.Add(Me.grpSouth)
@@ -1280,139 +1261,57 @@
     Me.chkRepeatLocateBoth.Text = "Repeat"
     Me.chkRepeatLocateBoth.UseVisualStyleBackColor = False
     '
-    '_Label6_10
+    'lblSouthGlassPlaceHolder
     '
-    Me._Label6_10.BackColor = System.Drawing.SystemColors.Control
-    Me._Label6_10.Cursor = System.Windows.Forms.Cursors.Default
-    Me._Label6_10.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me._Label6_10.ForeColor = System.Drawing.SystemColors.ControlText
-    Me._Label6_10.Location = New System.Drawing.Point(1435, 861)
-    Me._Label6_10.Name = "_Label6_10"
-    Me._Label6_10.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me._Label6_10.Size = New System.Drawing.Size(62, 17)
-    Me._Label6_10.TabIndex = 187
-    Me._Label6_10.Text = "Glass Score"
+    Me.lblSouthGlassPlaceHolder.BackColor = System.Drawing.SystemColors.Control
+    Me.lblSouthGlassPlaceHolder.Cursor = System.Windows.Forms.Cursors.Default
+    Me.lblSouthGlassPlaceHolder.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.lblSouthGlassPlaceHolder.ForeColor = System.Drawing.SystemColors.Highlight
+    Me.lblSouthGlassPlaceHolder.Location = New System.Drawing.Point(1445, 861)
+    Me.lblSouthGlassPlaceHolder.Name = "lblSouthGlassPlaceHolder"
+    Me.lblSouthGlassPlaceHolder.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.lblSouthGlassPlaceHolder.Size = New System.Drawing.Size(50, 13)
+    Me.lblSouthGlassPlaceHolder.TabIndex = 187
+    Me.lblSouthGlassPlaceHolder.Text = "Glass Score"
     '
-    '_txtScoreCopy_2
+    'lblSouthMaskPlaceHolder
     '
-    Me._txtScoreCopy_2.AcceptsReturn = True
-    Me._txtScoreCopy_2.BackColor = System.Drawing.SystemColors.Window
-    Me._txtScoreCopy_2.Cursor = System.Windows.Forms.Cursors.IBeam
-    Me._txtScoreCopy_2.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me._txtScoreCopy_2.ForeColor = System.Drawing.SystemColors.WindowText
-    Me._txtScoreCopy_2.Location = New System.Drawing.Point(1435, 878)
-    Me._txtScoreCopy_2.MaxLength = 0
-    Me._txtScoreCopy_2.Name = "_txtScoreCopy_2"
-    Me._txtScoreCopy_2.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me._txtScoreCopy_2.Size = New System.Drawing.Size(60, 20)
-    Me._txtScoreCopy_2.TabIndex = 186
+    Me.lblSouthMaskPlaceHolder.BackColor = System.Drawing.SystemColors.Control
+    Me.lblSouthMaskPlaceHolder.Cursor = System.Windows.Forms.Cursors.Default
+    Me.lblSouthMaskPlaceHolder.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.lblSouthMaskPlaceHolder.ForeColor = System.Drawing.SystemColors.Highlight
+    Me.lblSouthMaskPlaceHolder.Location = New System.Drawing.Point(1447, 247)
+    Me.lblSouthMaskPlaceHolder.Name = "lblSouthMaskPlaceHolder"
+    Me.lblSouthMaskPlaceHolder.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.lblSouthMaskPlaceHolder.Size = New System.Drawing.Size(48, 14)
+    Me.lblSouthMaskPlaceHolder.TabIndex = 185
+    Me.lblSouthMaskPlaceHolder.Text = "Mask Score"
     '
-    '_Label6_8
+    'lblNorthGlassPlaceHolder
     '
-    Me._Label6_8.BackColor = System.Drawing.SystemColors.Control
-    Me._Label6_8.Cursor = System.Windows.Forms.Cursors.Default
-    Me._Label6_8.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me._Label6_8.ForeColor = System.Drawing.SystemColors.ControlText
-    Me._Label6_8.Location = New System.Drawing.Point(1435, 247)
-    Me._Label6_8.Name = "_Label6_8"
-    Me._Label6_8.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me._Label6_8.Size = New System.Drawing.Size(62, 17)
-    Me._Label6_8.TabIndex = 185
-    Me._Label6_8.Text = "Mask Score"
+    Me.lblNorthGlassPlaceHolder.BackColor = System.Drawing.SystemColors.Control
+    Me.lblNorthGlassPlaceHolder.Cursor = System.Windows.Forms.Cursors.Default
+    Me.lblNorthGlassPlaceHolder.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.lblNorthGlassPlaceHolder.ForeColor = System.Drawing.SystemColors.Highlight
+    Me.lblNorthGlassPlaceHolder.Location = New System.Drawing.Point(20, 844)
+    Me.lblNorthGlassPlaceHolder.Name = "lblNorthGlassPlaceHolder"
+    Me.lblNorthGlassPlaceHolder.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.lblNorthGlassPlaceHolder.Size = New System.Drawing.Size(48, 14)
+    Me.lblNorthGlassPlaceHolder.TabIndex = 182
+    Me.lblNorthGlassPlaceHolder.Text = "Glass Score"
     '
-    '_txtScoreCopy_3
+    'lblNorthMaskPlaceHolder
     '
-    Me._txtScoreCopy_3.AcceptsReturn = True
-    Me._txtScoreCopy_3.BackColor = System.Drawing.SystemColors.Window
-    Me._txtScoreCopy_3.Cursor = System.Windows.Forms.Cursors.IBeam
-    Me._txtScoreCopy_3.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me._txtScoreCopy_3.ForeColor = System.Drawing.SystemColors.WindowText
-    Me._txtScoreCopy_3.Location = New System.Drawing.Point(1435, 264)
-    Me._txtScoreCopy_3.MaxLength = 0
-    Me._txtScoreCopy_3.Name = "_txtScoreCopy_3"
-    Me._txtScoreCopy_3.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me._txtScoreCopy_3.Size = New System.Drawing.Size(60, 20)
-    Me._txtScoreCopy_3.TabIndex = 184
-    '
-    '_Label6_9
-    '
-    Me._Label6_9.BackColor = System.Drawing.SystemColors.Control
-    Me._Label6_9.Cursor = System.Windows.Forms.Cursors.Default
-    Me._Label6_9.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me._Label6_9.ForeColor = System.Drawing.SystemColors.ControlText
-    Me._Label6_9.Location = New System.Drawing.Point(8, 844)
-    Me._Label6_9.Name = "_Label6_9"
-    Me._Label6_9.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me._Label6_9.Size = New System.Drawing.Size(62, 17)
-    Me._Label6_9.TabIndex = 182
-    Me._Label6_9.Text = "Glass Score"
-    '
-    'Label17
-    '
-    Me.Label17.BackColor = System.Drawing.SystemColors.Control
-    Me.Label17.Cursor = System.Windows.Forms.Cursors.Default
-    Me.Label17.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.Label17.ForeColor = System.Drawing.Color.FromArgb(CType(CType(128, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer))
-    Me.Label17.Location = New System.Drawing.Point(3, 767)
-    Me.Label17.Name = "Label17"
-    Me.Label17.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.Label17.Size = New System.Drawing.Size(71, 73)
-    Me.Label17.TabIndex = 183
-    Me.Label17.Text = "Note: The glass should always be below the red dotted line."
-    '
-    '_txtScoreCopy_0
-    '
-    Me._txtScoreCopy_0.AcceptsReturn = True
-    Me._txtScoreCopy_0.BackColor = System.Drawing.SystemColors.Window
-    Me._txtScoreCopy_0.Cursor = System.Windows.Forms.Cursors.IBeam
-    Me._txtScoreCopy_0.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me._txtScoreCopy_0.ForeColor = System.Drawing.SystemColors.WindowText
-    Me._txtScoreCopy_0.Location = New System.Drawing.Point(8, 861)
-    Me._txtScoreCopy_0.MaxLength = 0
-    Me._txtScoreCopy_0.Name = "_txtScoreCopy_0"
-    Me._txtScoreCopy_0.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me._txtScoreCopy_0.Size = New System.Drawing.Size(60, 20)
-    Me._txtScoreCopy_0.TabIndex = 181
-    '
-    '_Label6_7
-    '
-    Me._Label6_7.BackColor = System.Drawing.SystemColors.Control
-    Me._Label6_7.Cursor = System.Windows.Forms.Cursors.Default
-    Me._Label6_7.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me._Label6_7.ForeColor = System.Drawing.SystemColors.ControlText
-    Me._Label6_7.Location = New System.Drawing.Point(22, 203)
-    Me._Label6_7.Name = "_Label6_7"
-    Me._Label6_7.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me._Label6_7.Size = New System.Drawing.Size(39, 14)
-    Me._Label6_7.TabIndex = 179
-    Me._Label6_7.Text = "Mask Score"
-    '
-    'Label16
-    '
-    Me.Label16.BackColor = System.Drawing.SystemColors.Control
-    Me.Label16.Cursor = System.Windows.Forms.Cursors.Default
-    Me.Label16.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.Label16.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(0, Byte), Integer))
-    Me.Label16.Location = New System.Drawing.Point(5, 252)
-    Me.Label16.Name = "Label16"
-    Me.Label16.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.Label16.Size = New System.Drawing.Size(71, 77)
-    Me.Label16.TabIndex = 180
-    Me.Label16.Text = "Note: The mask should always be above the green dotted line."
-    '
-    '_txtScoreCopy_1
-    '
-    Me._txtScoreCopy_1.AcceptsReturn = True
-    Me._txtScoreCopy_1.BackColor = System.Drawing.SystemColors.Window
-    Me._txtScoreCopy_1.Cursor = System.Windows.Forms.Cursors.IBeam
-    Me._txtScoreCopy_1.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me._txtScoreCopy_1.ForeColor = System.Drawing.SystemColors.WindowText
-    Me._txtScoreCopy_1.Location = New System.Drawing.Point(10, 220)
-    Me._txtScoreCopy_1.MaxLength = 0
-    Me._txtScoreCopy_1.Name = "_txtScoreCopy_1"
-    Me._txtScoreCopy_1.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me._txtScoreCopy_1.Size = New System.Drawing.Size(60, 20)
-    Me._txtScoreCopy_1.TabIndex = 178
+    Me.lblNorthMaskPlaceHolder.BackColor = System.Drawing.SystemColors.Control
+    Me.lblNorthMaskPlaceHolder.Cursor = System.Windows.Forms.Cursors.Default
+    Me.lblNorthMaskPlaceHolder.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.lblNorthMaskPlaceHolder.ForeColor = System.Drawing.SystemColors.Highlight
+    Me.lblNorthMaskPlaceHolder.Location = New System.Drawing.Point(21, 203)
+    Me.lblNorthMaskPlaceHolder.Name = "lblNorthMaskPlaceHolder"
+    Me.lblNorthMaskPlaceHolder.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.lblNorthMaskPlaceHolder.Size = New System.Drawing.Size(39, 14)
+    Me.lblNorthMaskPlaceHolder.TabIndex = 179
+    Me.lblNorthMaskPlaceHolder.Text = "Score"
     '
     '_Frame1_1
     '
@@ -2951,7 +2850,7 @@
     Me.tabVisionDebug.Controls.Add(Me.grpGlassCombined)
     Me.tabVisionDebug.Location = New System.Drawing.Point(4, 25)
     Me.tabVisionDebug.Name = "tabVisionDebug"
-    Me.tabVisionDebug.Size = New System.Drawing.Size(1509, 930)
+    Me.tabVisionDebug.Size = New System.Drawing.Size(1509, 963)
     Me.tabVisionDebug.TabIndex = 3
     Me.tabVisionDebug.Text = "Debug"
     Me.tabVisionDebug.UseVisualStyleBackColor = True
@@ -3213,7 +3112,6 @@
     '
     Me.SSTab1.Controls.Add(Me._SSTab1_TabPage0)
     Me.SSTab1.Controls.Add(Me._SSTab1_TabPage1)
-    Me.SSTab1.Controls.Add(Me._SSTab1_TabPage2)
     Me.SSTab1.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
     Me.SSTab1.ItemSize = New System.Drawing.Size(42, 18)
     Me.SSTab1.Location = New System.Drawing.Point(3, 334)
@@ -3397,202 +3295,6 @@
     Me._lblSnapAfterLocate_1.TabIndex = 11
     Me._lblSnapAfterLocate_1.Text = "Time to wait after vision locaton before snapping a picture."
     '
-    '_SSTab1_TabPage2
-    '
-    Me._SSTab1_TabPage2.Controls.Add(Me.btnOKOffsets)
-    Me._SSTab1_TabPage2.Controls.Add(Me.lblRshift)
-    Me._SSTab1_TabPage2.Controls.Add(Me.LblXShift)
-    Me._SSTab1_TabPage2.Controls.Add(Me.lblYShift)
-    Me._SSTab1_TabPage2.Controls.Add(Me._Label10_0)
-    Me._SSTab1_TabPage2.Controls.Add(Me._Label10_1)
-    Me._SSTab1_TabPage2.Controls.Add(Me._Label10_2)
-    Me._SSTab1_TabPage2.Controls.Add(Me._Label11_0)
-    Me._SSTab1_TabPage2.Controls.Add(Me._Label11_1)
-    Me._SSTab1_TabPage2.Controls.Add(Me.lblRotate)
-    Me._SSTab1_TabPage2.Controls.Add(Me.txtXshift)
-    Me._SSTab1_TabPage2.Controls.Add(Me.txtYShift)
-    Me._SSTab1_TabPage2.Controls.Add(Me.txtRLinear)
-    Me._SSTab1_TabPage2.Location = New System.Drawing.Point(4, 22)
-    Me._SSTab1_TabPage2.Name = "_SSTab1_TabPage2"
-    Me._SSTab1_TabPage2.Size = New System.Drawing.Size(344, 116)
-    Me._SSTab1_TabPage2.TabIndex = 2
-    Me._SSTab1_TabPage2.Text = "Offsets"
-    '
-    'btnOKOffsets
-    '
-    Me.btnOKOffsets.BackColor = System.Drawing.Color.Transparent
-    Me.btnOKOffsets.Cursor = System.Windows.Forms.Cursors.Default
-    Me.btnOKOffsets.FlatStyle = System.Windows.Forms.FlatStyle.System
-    Me.btnOKOffsets.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.btnOKOffsets.ForeColor = System.Drawing.SystemColors.ControlText
-    Me.btnOKOffsets.Location = New System.Drawing.Point(344, 38)
-    Me.btnOKOffsets.Name = "btnOKOffsets"
-    Me.btnOKOffsets.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.btnOKOffsets.Size = New System.Drawing.Size(114, 26)
-    Me.btnOKOffsets.TabIndex = 62
-    Me.btnOKOffsets.TabStop = False
-    Me.btnOKOffsets.Text = "OK"
-    Me.btnOKOffsets.UseVisualStyleBackColor = False
-    '
-    'lblRshift
-    '
-    Me.lblRshift.BackColor = System.Drawing.SystemColors.Control
-    Me.lblRshift.Cursor = System.Windows.Forms.Cursors.Default
-    Me.lblRshift.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.lblRshift.ForeColor = System.Drawing.SystemColors.ControlText
-    Me.lblRshift.Location = New System.Drawing.Point(7, 88)
-    Me.lblRshift.Name = "lblRshift"
-    Me.lblRshift.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.lblRshift.Size = New System.Drawing.Size(136, 18)
-    Me.lblRshift.TabIndex = 13
-    Me.lblRshift.Text = "Amount to shift the mask "
-    '
-    'LblXShift
-    '
-    Me.LblXShift.BackColor = System.Drawing.SystemColors.Control
-    Me.LblXShift.Cursor = System.Windows.Forms.Cursors.Default
-    Me.LblXShift.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.LblXShift.ForeColor = System.Drawing.SystemColors.ControlText
-    Me.LblXShift.Location = New System.Drawing.Point(9, 22)
-    Me.LblXShift.Name = "LblXShift"
-    Me.LblXShift.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.LblXShift.Size = New System.Drawing.Size(134, 18)
-    Me.LblXShift.TabIndex = 14
-    Me.LblXShift.Text = "Amount to shift the mask "
-    '
-    'lblYShift
-    '
-    Me.lblYShift.BackColor = System.Drawing.SystemColors.Control
-    Me.lblYShift.Cursor = System.Windows.Forms.Cursors.Default
-    Me.lblYShift.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.lblYShift.ForeColor = System.Drawing.SystemColors.ControlText
-    Me.lblYShift.Location = New System.Drawing.Point(7, 54)
-    Me.lblYShift.Name = "lblYShift"
-    Me.lblYShift.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.lblYShift.Size = New System.Drawing.Size(136, 19)
-    Me.lblYShift.TabIndex = 15
-    Me.lblYShift.Text = "Amount to shift the mask "
-    '
-    '_Label10_0
-    '
-    Me._Label10_0.BackColor = System.Drawing.SystemColors.Control
-    Me._Label10_0.Cursor = System.Windows.Forms.Cursors.Default
-    Me._Label10_0.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me._Label10_0.ForeColor = System.Drawing.SystemColors.ControlText
-    Me._Label10_0.Location = New System.Drawing.Point(6, 40)
-    Me._Label10_0.Name = "_Label10_0"
-    Me._Label10_0.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me._Label10_0.Size = New System.Drawing.Size(221, 15)
-    Me._Label10_0.TabIndex = 21
-    Me._Label10_0.Text = "Shift the Mask East / West"
-    '
-    '_Label10_1
-    '
-    Me._Label10_1.BackColor = System.Drawing.SystemColors.Control
-    Me._Label10_1.Cursor = System.Windows.Forms.Cursors.Default
-    Me._Label10_1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me._Label10_1.ForeColor = System.Drawing.SystemColors.ControlText
-    Me._Label10_1.Location = New System.Drawing.Point(7, 6)
-    Me._Label10_1.Name = "_Label10_1"
-    Me._Label10_1.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me._Label10_1.Size = New System.Drawing.Size(221, 15)
-    Me._Label10_1.TabIndex = 22
-    Me._Label10_1.Text = "Shift the Mask North / South"
-    '
-    '_Label10_2
-    '
-    Me._Label10_2.BackColor = System.Drawing.SystemColors.Control
-    Me._Label10_2.Cursor = System.Windows.Forms.Cursors.Default
-    Me._Label10_2.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me._Label10_2.ForeColor = System.Drawing.SystemColors.ControlText
-    Me._Label10_2.Location = New System.Drawing.Point(6, 73)
-    Me._Label10_2.Name = "_Label10_2"
-    Me._Label10_2.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me._Label10_2.Size = New System.Drawing.Size(221, 15)
-    Me._Label10_2.TabIndex = 23
-    Me._Label10_2.Text = "Rotate the South Corner East - West"
-    '
-    '_Label11_0
-    '
-    Me._Label11_0.BackColor = System.Drawing.SystemColors.Control
-    Me._Label11_0.Cursor = System.Windows.Forms.Cursors.Default
-    Me._Label11_0.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me._Label11_0.ForeColor = System.Drawing.SystemColors.ControlText
-    Me._Label11_0.Location = New System.Drawing.Point(312, 8)
-    Me._Label11_0.Name = "_Label11_0"
-    Me._Label11_0.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me._Label11_0.Size = New System.Drawing.Size(29, 15)
-    Me._Label11_0.TabIndex = 24
-    Me._Label11_0.Text = "mm"
-    '
-    '_Label11_1
-    '
-    Me._Label11_1.BackColor = System.Drawing.SystemColors.Control
-    Me._Label11_1.Cursor = System.Windows.Forms.Cursors.Default
-    Me._Label11_1.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me._Label11_1.ForeColor = System.Drawing.SystemColors.ControlText
-    Me._Label11_1.Location = New System.Drawing.Point(309, 40)
-    Me._Label11_1.Name = "_Label11_1"
-    Me._Label11_1.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me._Label11_1.Size = New System.Drawing.Size(29, 15)
-    Me._Label11_1.TabIndex = 25
-    Me._Label11_1.Text = "mm"
-    '
-    'lblRotate
-    '
-    Me.lblRotate.BackColor = System.Drawing.SystemColors.Control
-    Me.lblRotate.Cursor = System.Windows.Forms.Cursors.Default
-    Me.lblRotate.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.lblRotate.ForeColor = System.Drawing.SystemColors.ControlText
-    Me.lblRotate.Location = New System.Drawing.Point(309, 71)
-    Me.lblRotate.Name = "lblRotate"
-    Me.lblRotate.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.lblRotate.Size = New System.Drawing.Size(29, 15)
-    Me.lblRotate.TabIndex = 26
-    Me.lblRotate.Text = "mm"
-    '
-    'txtXshift
-    '
-    Me.txtXshift.AcceptsReturn = True
-    Me.txtXshift.BackColor = System.Drawing.SystemColors.Window
-    Me.txtXshift.Cursor = System.Windows.Forms.Cursors.IBeam
-    Me.txtXshift.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.txtXshift.ForeColor = System.Drawing.SystemColors.WindowText
-    Me.txtXshift.Location = New System.Drawing.Point(230, 6)
-    Me.txtXshift.MaxLength = 0
-    Me.txtXshift.Name = "txtXshift"
-    Me.txtXshift.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.txtXshift.Size = New System.Drawing.Size(78, 20)
-    Me.txtXshift.TabIndex = 16
-    '
-    'txtYShift
-    '
-    Me.txtYShift.AcceptsReturn = True
-    Me.txtYShift.BackColor = System.Drawing.SystemColors.Window
-    Me.txtYShift.Cursor = System.Windows.Forms.Cursors.IBeam
-    Me.txtYShift.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.txtYShift.ForeColor = System.Drawing.SystemColors.WindowText
-    Me.txtYShift.Location = New System.Drawing.Point(230, 37)
-    Me.txtYShift.MaxLength = 0
-    Me.txtYShift.Name = "txtYShift"
-    Me.txtYShift.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.txtYShift.Size = New System.Drawing.Size(78, 20)
-    Me.txtYShift.TabIndex = 17
-    '
-    'txtRLinear
-    '
-    Me.txtRLinear.AcceptsReturn = True
-    Me.txtRLinear.BackColor = System.Drawing.SystemColors.Window
-    Me.txtRLinear.Cursor = System.Windows.Forms.Cursors.IBeam
-    Me.txtRLinear.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.txtRLinear.ForeColor = System.Drawing.SystemColors.WindowText
-    Me.txtRLinear.Location = New System.Drawing.Point(230, 68)
-    Me.txtRLinear.MaxLength = 0
-    Me.txtRLinear.Name = "txtRLinear"
-    Me.txtRLinear.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.txtRLinear.Size = New System.Drawing.Size(78, 20)
-    Me.txtRLinear.TabIndex = 18
-    '
     'grpCommStatus
     '
     Me.grpCommStatus.Controls.Add(Me.txtCommStatus)
@@ -3642,6 +3344,34 @@
     Me.grpShiftOffset.TabIndex = 218
     Me.grpShiftOffset.TabStop = False
     Me.grpShiftOffset.Text = "Shift Offset"
+    '
+    'updnXShift
+    '
+    Me.updnXShift.DecimalPlaces = 1
+    Me.updnXShift.Increment = New Decimal(New Integer() {5, 0, 0, 65536})
+    Me.updnXShift.Location = New System.Drawing.Point(2, 32)
+    Me.updnXShift.Maximum = New Decimal(New Integer() {500, 0, 0, 0})
+    Me.updnXShift.Minimum = New Decimal(New Integer() {500, 0, 0, -2147483648})
+    Me.updnXShift.Name = "updnXShift"
+    Me.updnXShift.Size = New System.Drawing.Size(67, 22)
+    Me.updnXShift.TabIndex = 237
+    Me.updnXShift.Tag = ""
+    Me.updnXShift.UpDownAlign = System.Windows.Forms.LeftRightAlignment.Left
+    Me.updnXShift.Value = New Decimal(New Integer() {1, 0, 0, 0})
+    '
+    'updnYShift
+    '
+    Me.updnYShift.DecimalPlaces = 1
+    Me.updnYShift.Increment = New Decimal(New Integer() {5, 0, 0, 65536})
+    Me.updnYShift.Location = New System.Drawing.Point(114, 32)
+    Me.updnYShift.Maximum = New Decimal(New Integer() {500, 0, 0, 0})
+    Me.updnYShift.Minimum = New Decimal(New Integer() {500, 0, 0, -2147483648})
+    Me.updnYShift.Name = "updnYShift"
+    Me.updnYShift.Size = New System.Drawing.Size(67, 22)
+    Me.updnYShift.TabIndex = 236
+    Me.updnYShift.Tag = ""
+    Me.updnYShift.UpDownAlign = System.Windows.Forms.LeftRightAlignment.Left
+    Me.updnYShift.Value = New Decimal(New Integer() {1, 0, 0, 0})
     '
     'Label21
     '
@@ -3995,33 +3725,41 @@
     Me.lstVBError.TabIndex = 24
     Me.lstVBError.TabStop = False
     '
-    'updnYShift
+    'lblNorthMaskScore
     '
-    Me.updnYShift.DecimalPlaces = 1
-    Me.updnYShift.Increment = New Decimal(New Integer() {5, 0, 0, 65536})
-    Me.updnYShift.Location = New System.Drawing.Point(114, 32)
-    Me.updnYShift.Maximum = New Decimal(New Integer() {500, 0, 0, 0})
-    Me.updnYShift.Minimum = New Decimal(New Integer() {500, 0, 0, -2147483648})
-    Me.updnYShift.Name = "updnYShift"
-    Me.updnYShift.Size = New System.Drawing.Size(67, 22)
-    Me.updnYShift.TabIndex = 236
-    Me.updnYShift.Tag = ""
-    Me.updnYShift.UpDownAlign = System.Windows.Forms.LeftRightAlignment.Left
-    Me.updnYShift.Value = New Decimal(New Integer() {1, 0, 0, 0})
+    Me.lblNorthMaskScore.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+    Me.lblNorthMaskScore.Location = New System.Drawing.Point(9, 217)
+    Me.lblNorthMaskScore.Name = "lblNorthMaskScore"
+    Me.lblNorthMaskScore.Size = New System.Drawing.Size(59, 23)
+    Me.lblNorthMaskScore.TabIndex = 189
+    Me.lblNorthMaskScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
     '
-    'updnXShift
+    'lblNorthGlassScore
     '
-    Me.updnXShift.DecimalPlaces = 1
-    Me.updnXShift.Increment = New Decimal(New Integer() {5, 0, 0, 65536})
-    Me.updnXShift.Location = New System.Drawing.Point(2, 32)
-    Me.updnXShift.Maximum = New Decimal(New Integer() {500, 0, 0, 0})
-    Me.updnXShift.Minimum = New Decimal(New Integer() {500, 0, 0, -2147483648})
-    Me.updnXShift.Name = "updnXShift"
-    Me.updnXShift.Size = New System.Drawing.Size(67, 22)
-    Me.updnXShift.TabIndex = 237
-    Me.updnXShift.Tag = ""
-    Me.updnXShift.UpDownAlign = System.Windows.Forms.LeftRightAlignment.Left
-    Me.updnXShift.Value = New Decimal(New Integer() {1, 0, 0, 0})
+    Me.lblNorthGlassScore.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+    Me.lblNorthGlassScore.Location = New System.Drawing.Point(9, 858)
+    Me.lblNorthGlassScore.Name = "lblNorthGlassScore"
+    Me.lblNorthGlassScore.Size = New System.Drawing.Size(59, 23)
+    Me.lblNorthGlassScore.TabIndex = 190
+    Me.lblNorthGlassScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+    '
+    'lblSouthGlassScore
+    '
+    Me.lblSouthGlassScore.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+    Me.lblSouthGlassScore.Location = New System.Drawing.Point(1436, 874)
+    Me.lblSouthGlassScore.Name = "lblSouthGlassScore"
+    Me.lblSouthGlassScore.Size = New System.Drawing.Size(59, 23)
+    Me.lblSouthGlassScore.TabIndex = 191
+    Me.lblSouthGlassScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+    '
+    'lblSouthMaskScore
+    '
+    Me.lblSouthMaskScore.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+    Me.lblSouthMaskScore.Location = New System.Drawing.Point(1436, 264)
+    Me.lblSouthMaskScore.Name = "lblSouthMaskScore"
+    Me.lblSouthMaskScore.Size = New System.Drawing.Size(59, 23)
+    Me.lblSouthMaskScore.TabIndex = 192
+    Me.lblSouthMaskScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
     '
     'frmMain
     '
@@ -4057,7 +3795,6 @@
     CType(Me.picLogo, System.ComponentModel.ISupportInitialize).EndInit()
     Me.tabCameraControls.ResumeLayout(False)
     Me.tabVisionBoth.ResumeLayout(False)
-    Me.tabVisionBoth.PerformLayout()
     Me.GroupBox1.ResumeLayout(False)
     Me._Frame1_1.ResumeLayout(False)
     Me._Frame1_1.PerformLayout()
@@ -4110,19 +3847,17 @@
     Me._SSTab1_TabPage0.PerformLayout()
     Me._SSTab1_TabPage1.ResumeLayout(False)
     Me._SSTab1_TabPage1.PerformLayout()
-    Me._SSTab1_TabPage2.ResumeLayout(False)
-    Me._SSTab1_TabPage2.PerformLayout()
     Me.grpCommStatus.ResumeLayout(False)
     Me.grpCommStatus.PerformLayout()
     Me.grpShiftOffset.ResumeLayout(False)
     Me.grpShiftOffset.PerformLayout()
+    CType(Me.updnXShift, System.ComponentModel.ISupportInitialize).EndInit()
+    CType(Me.updnYShift, System.ComponentModel.ISupportInitialize).EndInit()
     CType(Me.updnRLinear, System.ComponentModel.ISupportInitialize).EndInit()
     CType(Me.updnRShift, System.ComponentModel.ISupportInitialize).EndInit()
     Me.grpCombinedOffsetDetail.ResumeLayout(False)
     Me.grpCombinedOffsetDetail.PerformLayout()
     Me.grpVBErrors.ResumeLayout(False)
-    CType(Me.updnYShift, System.ComponentModel.ISupportInitialize).EndInit()
-    CType(Me.updnXShift, System.ComponentModel.ISupportInitialize).EndInit()
     Me.ResumeLayout(False)
     Me.PerformLayout()
 
@@ -4241,16 +3976,10 @@
   Public WithEvents lblPiece2DescR As System.Windows.Forms.Label
   Public WithEvents grpVBErrors As System.Windows.Forms.GroupBox
   Public WithEvents lstVBError As System.Windows.Forms.ListBox
-  Public WithEvents _Label6_10 As Label
-  Public WithEvents _txtScoreCopy_2 As TextBox
-  Public WithEvents _Label6_8 As Label
-  Public WithEvents _txtScoreCopy_3 As TextBox
-  Public WithEvents _Label6_9 As Label
-  Public WithEvents Label17 As Label
-  Public WithEvents _txtScoreCopy_0 As TextBox
-  Public WithEvents _Label6_7 As Label
-  Public WithEvents Label16 As Label
-  Public WithEvents _txtScoreCopy_1 As TextBox
+  Public WithEvents lblSouthGlassPlaceHolder As Label
+  Public WithEvents lblSouthMaskPlaceHolder As Label
+  Public WithEvents lblNorthGlassPlaceHolder As Label
+  Public WithEvents lblNorthMaskPlaceHolder As Label
   Public WithEvents _Frame1_1 As GroupBox
   Public WithEvents _txtPoint_5 As TextBox
   Public WithEvents _txtPoint_4 As TextBox
@@ -4301,20 +4030,6 @@
   Public WithEvents _Label8_3 As Label
   Public WithEvents _Label8_2 As Label
   Public WithEvents _lblSnapAfterLocate_1 As Label
-  Public WithEvents _SSTab1_TabPage2 As TabPage
-  Public WithEvents btnOKOffsets As Button
-  Public WithEvents lblRshift As Label
-  Public WithEvents LblXShift As Label
-  Public WithEvents lblYShift As Label
-  Public WithEvents _Label10_0 As Label
-  Public WithEvents _Label10_1 As Label
-  Public WithEvents _Label10_2 As Label
-  Public WithEvents _Label11_0 As Label
-  Public WithEvents _Label11_1 As Label
-  Public WithEvents lblRotate As Label
-  Public WithEvents txtXshift As TextBox
-  Public WithEvents txtYShift As TextBox
-  Public WithEvents txtRLinear As TextBox
   Public WithEvents txtRCombined As TextBox
   Public WithEvents txtYCombined As TextBox
   Public WithEvents txtXCombined As TextBox
@@ -4390,5 +4105,9 @@
   Public WithEvents lblFinalStatus As Label
   Public WithEvents updnXShift As NumericUpDown
   Public WithEvents updnYShift As NumericUpDown
+  Friend WithEvents lblSouthMaskScore As Label
+  Friend WithEvents lblSouthGlassScore As Label
+  Friend WithEvents lblNorthGlassScore As Label
+  Friend WithEvents lblNorthMaskScore As Label
 #End Region
 End Class

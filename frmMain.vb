@@ -34,8 +34,6 @@ Public Class frmMain
   Public FinalImageSouth As New HSCLASSLIBRARYLib.HSImage
   Private HSLoc(3) As HSLOCATORLib.HSLocator
   Private Calibrate As HSACQUISITIONDEVICELib.HSCalibrationDistortionInterface
-  'Public NorthCameraId As Int32 = 0
-  'Public SouthCameraId As Int32 = 1
   Public helperNorth As New SnapshotHelper
   Public helperSouth As New SnapshotHelper
   Private VisionSuccess As Boolean
@@ -1014,6 +1012,7 @@ Public Class frmMain
               lblVisionPoseYNorthGlass.Text = LocatorResults(Side).Y.ToString("N2")
               lblVisionPoseRNorthGlass.Text = LocatorResults(Side).R.ToString("N2")
               lblVisionPoseScoreNorthGlass.Text = LocatorResults(Side).Score.ToString("N2")
+              lblNorthGlassScore.Text = lblVisionPoseScoreNorthGlass.Text
               LocatorResults(Side).Success = True
               '
               'Check Limits
@@ -1026,6 +1025,7 @@ Public Class frmMain
               lblVisionPoseYNorthMask.Text = LocatorResults(Side).Y.ToString("N2")
               lblVisionPoseRNorthMask.Text = LocatorResults(Side).R.ToString("N2")
               lblVisionPoseScoreNorthMask.Text = LocatorResults(Side).Score.ToString("N2")
+              lblNorthMaskScore.Text = lblVisionPoseScoreNorthMask.Text
               LocatorResults(Side).Success = True
               '
               'Check Limits
@@ -1038,6 +1038,7 @@ Public Class frmMain
               lblVisionPoseYSouthMask.Text = LocatorResults(Side).Y.ToString("N2")
               lblVisionPoseRSouthMask.Text = LocatorResults(Side).R.ToString("N2")
               lblVisionPoseScoreSouthMask.Text = LocatorResults(Side).Score.ToString("N2")
+              lblSouthMaskScore.Text = lblVisionPoseScoreSouthMask.Text
               LocatorResults(Side).Success = True
               '
               'Check Limits
@@ -1050,6 +1051,7 @@ Public Class frmMain
               lblVisionPoseYSouthGlass.Text = LocatorResults(Side).Y.ToString("N2")
               lblVisionPoseRSouthGlass.Text = LocatorResults(Side).R.ToString("N2")
               lblVisionPoseScoreSouthGlass.Text = LocatorResults(Side).Score.ToString("N2")
+              lblSouthGlassScore.Text = lblVisionPoseScoreSouthGlass.Text
               LocatorResults(Side).Success = True
               '
               'Check Limits
@@ -1563,7 +1565,6 @@ Public Class frmMain
     End Try
   End Sub
 
-
   Private Sub SaveAllRectangleMarkers()
     SaveRectangleMarker(NorthMask, "North Mask.hdb", HSLoc(LocNorthMask))
     SaveRectangleMarker(SouthMask, "South Mask.hdb", HSLoc(LocSouthMask))
@@ -1592,6 +1593,37 @@ Public Class frmMain
     HSDisplaySouth.set_ScenePenWidth(0, HSDISPLAYLib.hsPenWidth.hsPenWidthNone)
     HSDisplaySouth.set_ScenePenWidth(1, HSDISPLAYLib.hsPenWidth.hsPenWidthNone)
     HSDisplaySouth.RemoveAllMarker()
+  End Sub
+
+  Static Sub Display_DblClick(Index As Integer)
+    If Index = 5 Then
+      NorthOldX = NorthX
+      NorthOldY = NorthY
+      northx = HSDisplayNorth(LocNorthGlass)focusx
+      Display(Index).AddPointMarker "Point", NorthX, NorthY, True
+    Display(Index).AddPointMarker "Old Point", NorthOldX, NorthOldY, True
+    Display(Index).AddLineMarker "Line", NorthX, NorthY, NorthOldX, NorthOldY, True
+    txtPoint(2).Text = txtPoint(1).Text
+      txtPoint(1).Text = Format(Str(NorthX), "0.0") + " ," + Format(Str(NorthY), "0.0")
+      txtPoint(3).Text = Format(Str(Sqr((NorthX - NorthOldX) ^ 2 + (NorthY - NorthOldY) ^ 2)), "0.0")
+    ElseIf Index = 6 Then
+      SouthOldX = SouthX
+      SouthOldY = SouthY
+      Display(Index).GetDisplayCoordinates SouthX, SouthY
+    Display(Index).AddPointMarker "Point", SouthX, SouthY, True
+    Display(Index).AddPointMarker "Old Point", SouthOldX, SouthOldY, True
+    Display(Index).AddLineMarker "Line", SouthX, SouthY, SouthOldX, SouthOldY, True
+    txtPoint(5).Text = txtPoint(4).Text
+      txtPoint(4).Text = Format(Str(SouthX), "0.0") + " ," + Format(Str(SouthY), "0.0")
+      txtPoint(6).Text = Format(Str(Sqr((SouthX - SouthOldX) ^ 2 + (SouthY - SouthOldY) ^ 2)), "0.0")
+    End If
+    If (Index = 5) Or (Index = 6) Then
+      Display(Index).MarkerColor("Point") = hsYellow
+      Display(Index).MarkerColor("Old Point") = hsYellow
+      Display(Index).MarkerColor("Point") = hsYellow
+      Display(Index).MarkerColor("Line") = hsYellow
+      txtPoint(0).Text = Format(Str((Val(txtPoint(6).Text) - Val(txtPoint(3).Text)) / 2), "0.0")
+    End If
   End Sub
 #End Region
 
