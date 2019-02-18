@@ -183,13 +183,13 @@ Public Class frmMain
       btnTrainNewNorthGlass.Enabled = PasswordValue
       btnSearchSettingsNorthGlass.Enabled = PasswordValue
       'North Mask
-      btnTrainExistingNorthmask.Enabled = PasswordValue
-      btnTrainNewNorthmask.Enabled = PasswordValue
-      btnSearchSettingsNorthmask.Enabled = PasswordValue
+      btnTrainExistingNorthMask.Enabled = PasswordValue
+      btnTrainNewNorthMask.Enabled = PasswordValue
+      btnSearchSettingsNorthMask.Enabled = PasswordValue
       'South Glass
       btnTrainExistingSouthGlass.Enabled = PasswordValue
       btnTrainNewSouthGlass.Enabled = PasswordValue
-      btnSearchSettingssouthGlass.Enabled = PasswordValue
+      btnSearchSettingsSouthGlass.Enabled = PasswordValue
       'South Mask
       btnTrainExistingSouthMask.Enabled = PasswordValue
       btnTrainNewSouthMask.Enabled = PasswordValue
@@ -208,8 +208,8 @@ Public Class frmMain
       updnScoreLimitNorthGlass.Enabled = PasswordValue
       updnScoreLimitNorthMask.Enabled = PasswordValue
       updnScoreLimitSouthGlass.Enabled = PasswordValue
-            Exit Sub
-        Catch ex As Exception
+      Exit Sub
+    Catch ex As Exception
       ShowVBErrors(ex.Message)
     End Try
   End Sub
@@ -350,10 +350,10 @@ Public Class frmMain
 #Region "Vision Controls"
 
   Private Sub btnTrainNew_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles _
-    btnTrainNewNorthMask.Click,
-    btnTrainNewNorthGlass.Click,
-    btnTrainNewSouthMask.Click,
-    btnTrainNewSouthGlass.Click
+  btnTrainNewNorthMask.Click,
+  btnTrainNewNorthGlass.Click,
+  btnTrainNewSouthMask.Click,
+  btnTrainNewSouthGlass.Click
     Dim Result As Short
     Dim HSModel As HSLOCATORLib.HSModelEditorInterface
     ' Dim ModelMask As HSCLASSLIBRARYLib.HSImage
@@ -381,8 +381,8 @@ Public Class frmMain
           TextString = "EXISTING glass model"
       End Select
       Result = MsgBox("Are you sure you want To DELETE the " & TextString & vbCr &
-                  "And create a New one In it's place?",
-      MsgBoxStyle.OkCancel Or MsgBoxStyle.SystemModal, "Are you Sure?")
+                "And create a New one In it's place?",
+    MsgBoxStyle.OkCancel Or MsgBoxStyle.SystemModal, "Are you Sure?")
       If Result = MsgBoxResult.Ok Then
         HSLoc(Side).NewModelDatabase()
         HSLoc(Side).AddModel(SideName(Side))
@@ -422,18 +422,18 @@ Public Class frmMain
       Exit Sub
     Catch ex As Exception
       MsgBox("Problem creating the model file" & vbCr &
-                      "You may need need to create the model" & vbCr &
-                      "through the Hexsight Interface" & vbCr &
-                      Err.Description, MsgBoxStyle.Critical Or MsgBoxStyle.SystemModal)
+                    "You may need need to create the model" & vbCr &
+                    "through the Hexsight Interface" & vbCr &
+                    Err.Description, MsgBoxStyle.Critical Or MsgBoxStyle.SystemModal)
       InRoutine = False
     End Try
   End Sub
 
   Private Sub btnTrainExisting_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles _
-    btnTrainExistingNorthMask.Click,
-    btnTrainExistingNorthGlass.Click,
-    btnTrainExistingSouthMask.Click,
-    btnTrainExistingSouthGlass.Click
+  btnTrainExistingNorthMask.Click,
+  btnTrainExistingNorthGlass.Click,
+  btnTrainExistingSouthMask.Click,
+  btnTrainExistingSouthGlass.Click
     Dim HSModel As HSLOCATORLib.HSModelEditorInterface
     Dim Side As Int16
     Try
@@ -464,15 +464,15 @@ Public Class frmMain
       Exit Sub
     Catch ex As Exception
       MsgBox("Problem accessing the model file" & vbCr &
-                          "You may need need to access the model" & vbCr &
-                          "through the Hexsight Interface",
-                          MsgBoxStyle.Critical Or MsgBoxStyle.SystemModal)
+                        "You may need need to access the model" & vbCr &
+                        "through the Hexsight Interface",
+                        MsgBoxStyle.Critical Or MsgBoxStyle.SystemModal)
     End Try
   End Sub
 
   Private Sub btnSnap_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
-    btnSnapNorth.Click,
-    btnSnapSouth.Click
+  btnSnapNorth.Click,
+  btnSnapSouth.Click
     Try
       Select Case sender.name
         Case "btnSnapNorth"
@@ -500,9 +500,9 @@ Public Class frmMain
           HSModel.EndDialog(HSLOCATORLib.hsModelDialogResult.hsResultOK)
         Catch ex As Exception
           MsgBox("Problem modifying the model file reference point" & vbCr &
-                          "You may need need to modify the model" & vbCr &
-                          "through the Hexsight Interface" & vbCr &
-                          ex.Message, MsgBoxStyle.Critical + MsgBoxStyle.SystemModal)
+                        "You may need need to modify the model" & vbCr &
+                        "through the Hexsight Interface" & vbCr &
+                        ex.Message, MsgBoxStyle.Critical + MsgBoxStyle.SystemModal)
         End Try
       Case SouthSide
         Try
@@ -510,9 +510,9 @@ Public Class frmMain
           HSModel.EndDialog(HSLOCATORLib.hsModelDialogResult.hsResultOK)
         Catch ex As Exception
           MsgBox("Problem modifying the model file reference point" & vbCr &
-                          "You may need need to modify the model" & vbCr &
-                          "through the Hexsight Interface" & vbCr &
-                          ex.Message, MsgBoxStyle.Critical + MsgBoxStyle.SystemModal)
+                        "You may need need to modify the model" & vbCr &
+                        "through the Hexsight Interface" & vbCr &
+                        ex.Message, MsgBoxStyle.Critical + MsgBoxStyle.SystemModal)
         End Try
     End Select
   End Sub
@@ -593,10 +593,10 @@ Public Class frmMain
   End Sub
 
   Private Sub btnSearch_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles _
-    btnSearchSettingsNorthGlass.Click,
-    btnSearchSettingsNorthMask.Click,
-    btnSearchSettingsSouthGlass.Click,
-    btnSearchSettingsSouthMask.Click
+  btnSearchSettingsNorthGlass.Click,
+  btnSearchSettingsNorthMask.Click,
+  btnSearchSettingsSouthGlass.Click,
+  btnSearchSettingsSouthMask.Click
     ' Dim Success As Boolean
     Try
       Select Case eventSender.name
@@ -610,104 +610,104 @@ Public Class frmMain
           HSLoc(LocSouthGlass).ShowProperties(True, , 1 + 4 + 8 + 16)
       End Select
       SaveHexsight()
-            SaveSearchBoxesMain()
-        Catch ex As Exception
+      SaveAllSearchBoxes()
+    Catch ex As Exception
       ShowVBErrors(ex.Message)
     End Try
   End Sub
 #End Region
 
-    Private Sub SaveSearchBoxesMain()
-        SaveSearchBoxes(NorthMask, "NMask", HSLoc(LocNorthMask))
-        SaveSearchBoxes(SouthMask, "SMask", HSLoc(LocSouthMask))
-        SaveSearchBoxes(NorthGlass, "NGlass", HSLoc(LocNorthGlass))
-        SaveSearchBoxes(SouthGlass, "SGlass", HSLoc(LocSouthGlass))
-    End Sub
+  Private Sub SaveAllSearchBoxes()
+    SaveSearchBox(NorthMask, "NMask", HSLoc(LocNorthMask))
+    SaveSearchBox(SouthMask, "SMask", HSLoc(LocSouthMask))
+    SaveSearchBox(NorthGlass, "NGlass", HSLoc(LocNorthGlass))
+    SaveSearchBox(SouthGlass, "SGlass", HSLoc(LocSouthGlass))
+  End Sub
 
-    Private Sub SaveSearchBoxes(SearchArea As SearchArea, DatabaseString As String, Locator As HSLOCATORLib.HSLocator)
-        'This saves all of the HexSight Search Box variables
-        Try
-            SearchArea.CenterX = Locator.ToolPositionX
-            frmDataBase.SetValue("Partdata", "Value", DatabaseString & "SearchCenterX", SearchArea.CenterX.ToString("0.00"))
-            SearchArea.CenterY = Locator.ToolPositionY
-            frmDataBase.SetValue("Partdata", "Value", DatabaseString & "SearchCenterY", SearchArea.CenterY.ToString("0.00"))
-            SearchArea.CenterR = Locator.ToolRotation
-            frmDataBase.SetValue("Partdata", "Value", DatabaseString & "SearchCenterR", SearchArea.CenterR.ToString("0.00"))
-            SearchArea.Width = Locator.ToolWidth
-            frmDataBase.SetValue("Partdata", "Value", DatabaseString & "SearchWidth", SearchArea.Width.ToString("0.00"))
-            SearchArea.Height = Locator.ToolHeight
-            frmDataBase.SetValue("Partdata", "Value", DatabaseString & "SearchWidth", SearchArea.Height.ToString("0.00"))
-            ''South Mask
-            'SouthMask.CenterX = HSLoc(SouthSide).ToolPositionX
-            'frmDataBase.SetValue("Partdata", "Value", "SMaskSearch", SouthMask.CenterX.ToString("0.00"))
-            'SouthMask.CenterY = HSLoc(SouthSide).ToolPositionY
-            'frmDataBase.SetValue("Partdata", "Value", "SMaskSearchCenterY", SouthMask.CenterY.ToString("0.00"))
-            'SouthMask.CenterR = HSLoc(SouthSide).ToolRotation
-            'frmDataBase.SetValue("Partdata", "Value", "SMaskSearchCenterR", SouthMask.CenterR.ToString("0.00"))
-            'SouthMask.Width = HSLoc(SouthSide).ToolWidth
-            'frmDataBase.SetValue("Partdata", "Value", "SMaskSearchWidth", SouthMask.Width.ToString("0.00"))
-            'SouthMask.Height = HSLoc(SouthSide).ToolHeight
-            'frmDataBase.SetValue("Partdata", "Value", "SMaskSearchWidth", SouthMask.Height.ToString("0.00"))
-            ''North Glass
-            'NorthGlass.CenterX = HSLoc(NorthSide).ToolPositionX
-            'frmDataBase.SetValue("Partdata", "Value", "NGlassSearchCenterX", NorthGlass.CenterX.ToString("0.00"))
-            'NorthGlass.CenterY = HSLoc(NorthSide).ToolPositionY
-            'frmDataBase.SetValue("Partdata", "Value", "NGlassSearchCenterY", NorthGlass.CenterY.ToString("0.00"))
-            'NorthGlass.CenterR = HSLoc(NorthSide).ToolRotation
-            'frmDataBase.SetValue("Partdata", "Value", "NGlassSearchCenterR", NorthGlass.CenterR.ToString("0.00"))
-            'NorthGlass.Width = HSLoc(NorthSide).ToolWidth
-            'frmDataBase.SetValue("Partdata", "Value", "NGlassSearchWidth", NorthGlass.Width.ToString("0.00"))
-            'NorthGlass.Height = HSLoc(NorthSide).ToolHeight
-            'frmDataBase.SetValue("Partdata", "Value", "NGlassSearchWidth", NorthGlass.Height.ToString("0.00"))
-            ''South Glass
-            'SouthGlass.CenterX = HSLoc(SouthSide).ToolPositionX
-            'frmDataBase.SetValue("Partdata", "Value", "SGlassSearchCenterX", SouthGlass.CenterX.ToString("0.00"))
-            'SouthGlass.CenterY = HSLoc(SouthSide).ToolPositionY
-            'frmDataBase.SetValue("Partdata", "Value", "SGlassSearchCenterY", SouthGlass.CenterY.ToString("0.00"))
-            'SouthGlass.CenterR = HSLoc(SouthSide).ToolRotation
-            'frmDataBase.SetValue("Partdata", "Value", "SGlassSearchCenterR", SouthGlass.CenterR.ToString("0.00"))
-            'SouthGlass.Width = HSLoc(SouthSide).ToolWidth
-            'frmDataBase.SetValue("Partdata", "Value", "SGlassSearchWidth", SouthGlass.Width.ToString("0.00"))
-            'SouthGlass.Height = HSLoc(SouthSide).ToolHeight
-            'frmDataBase.SetValue("Partdata", "Value", "SGlassSearchWidth", SouthGlass.Height.ToString("0.00"))
-        Catch ex As Exception
-            ShowVBErrors(ex.Message)
-        End Try
-    End Sub
+  Private Sub SaveSearchBox(SearchArea As SearchArea, DatabaseString As String, Locator As HSLOCATORLib.HSLocator)
+    'This saves all of the HexSight Search Box variables
+    Try
+      SearchArea.CenterX = Locator.ToolPositionX
+      frmDataBase.SetValue("Partdata", "Value", DatabaseString & "SearchCenterX", SearchArea.CenterX.ToString("0.00"))
+      SearchArea.CenterY = Locator.ToolPositionY
+      frmDataBase.SetValue("Partdata", "Value", DatabaseString & "SearchCenterY", SearchArea.CenterY.ToString("0.00"))
+      SearchArea.CenterR = Locator.ToolRotation
+      frmDataBase.SetValue("Partdata", "Value", DatabaseString & "SearchCenterR", SearchArea.CenterR.ToString("0.00"))
+      SearchArea.Width = Locator.ToolWidth
+      frmDataBase.SetValue("Partdata", "Value", DatabaseString & "SearchWidth", SearchArea.Width.ToString("0.00"))
+      SearchArea.Height = Locator.ToolHeight
+      frmDataBase.SetValue("Partdata", "Value", DatabaseString & "SearchWidth", SearchArea.Height.ToString("0.00"))
+      ''South Mask
+      'SouthMask.CenterX = HSLoc(SouthSide).ToolPositionX
+      'frmDataBase.SetValue("Partdata", "Value", "SMaskSearch", SouthMask.CenterX.ToString("0.00"))
+      'SouthMask.CenterY = HSLoc(SouthSide).ToolPositionY
+      'frmDataBase.SetValue("Partdata", "Value", "SMaskSearchCenterY", SouthMask.CenterY.ToString("0.00"))
+      'SouthMask.CenterR = HSLoc(SouthSide).ToolRotation
+      'frmDataBase.SetValue("Partdata", "Value", "SMaskSearchCenterR", SouthMask.CenterR.ToString("0.00"))
+      'SouthMask.Width = HSLoc(SouthSide).ToolWidth
+      'frmDataBase.SetValue("Partdata", "Value", "SMaskSearchWidth", SouthMask.Width.ToString("0.00"))
+      'SouthMask.Height = HSLoc(SouthSide).ToolHeight
+      'frmDataBase.SetValue("Partdata", "Value", "SMaskSearchWidth", SouthMask.Height.ToString("0.00"))
+      ''North Glass
+      'NorthGlass.CenterX = HSLoc(NorthSide).ToolPositionX
+      'frmDataBase.SetValue("Partdata", "Value", "NGlassSearchCenterX", NorthGlass.CenterX.ToString("0.00"))
+      'NorthGlass.CenterY = HSLoc(NorthSide).ToolPositionY
+      'frmDataBase.SetValue("Partdata", "Value", "NGlassSearchCenterY", NorthGlass.CenterY.ToString("0.00"))
+      'NorthGlass.CenterR = HSLoc(NorthSide).ToolRotation
+      'frmDataBase.SetValue("Partdata", "Value", "NGlassSearchCenterR", NorthGlass.CenterR.ToString("0.00"))
+      'NorthGlass.Width = HSLoc(NorthSide).ToolWidth
+      'frmDataBase.SetValue("Partdata", "Value", "NGlassSearchWidth", NorthGlass.Width.ToString("0.00"))
+      'NorthGlass.Height = HSLoc(NorthSide).ToolHeight
+      'frmDataBase.SetValue("Partdata", "Value", "NGlassSearchWidth", NorthGlass.Height.ToString("0.00"))
+      ''South Glass
+      'SouthGlass.CenterX = HSLoc(SouthSide).ToolPositionX
+      'frmDataBase.SetValue("Partdata", "Value", "SGlassSearchCenterX", SouthGlass.CenterX.ToString("0.00"))
+      'SouthGlass.CenterY = HSLoc(SouthSide).ToolPositionY
+      'frmDataBase.SetValue("Partdata", "Value", "SGlassSearchCenterY", SouthGlass.CenterY.ToString("0.00"))
+      'SouthGlass.CenterR = HSLoc(SouthSide).ToolRotation
+      'frmDataBase.SetValue("Partdata", "Value", "SGlassSearchCenterR", SouthGlass.CenterR.ToString("0.00"))
+      'SouthGlass.Width = HSLoc(SouthSide).ToolWidth
+      'frmDataBase.SetValue("Partdata", "Value", "SGlassSearchWidth", SouthGlass.Width.ToString("0.00"))
+      'SouthGlass.Height = HSLoc(SouthSide).ToolHeight
+      'frmDataBase.SetValue("Partdata", "Value", "SGlassSearchWidth", SouthGlass.Height.ToString("0.00"))
+    Catch ex As Exception
+      ShowVBErrors(ex.Message)
+    End Try
+  End Sub
 
 #Region "Vision Routines"
 
-    'Public Function FindCamera(CamID) As Boolean
-    '  Dim CameraList(1) As uEye.Types.CameraInformation
-    '  Dim Status As uEye.Defines.Status
-    '  Dim Count As Integer
-    '  Dim CamID As Integer
-    '  Dim CamIDNorth As Integer
-    '  Dim CamIDSouth As Integer
-    '  Dim NumberOfCamerasInUse As Integer
+  'Public Function FindCamera(CamID) As Boolean
+  '  Dim CameraList(1) As uEye.Types.CameraInformation
+  '  Dim Status As uEye.Defines.Status
+  '  Dim Count As Integer
+  '  Dim CamID As Integer
+  '  Dim CamIDNorth As Integer
+  '  Dim CamIDSouth As Integer
+  '  Dim NumberOfCamerasInUse As Integer
 
-    '  Try
-    '    'CamIDNorth = CInt(frmDataBase.GetValue("Settings", "Value", "North Camera"))
-    '    'CamIDSouth = CInt(frmDataBase.GetValue("Settings", "Value", "South Camera"))
-    '    Status = uEye.Info.Camera.GetNumberOfDevices(NumberOfCamerasInUse)
-    '    ' NumberOfCamerasInUse = Count
-    '    For Count = 0 To Count - 1
-    '      Status = uEye.Info.Camera.GetCameraList(CameraList)
-    '      CamID = CameraList(Count).CameraID
-    '      Select Case CamID
-    '        Case CamIDNorth
-    '          NorthSide = 0
-    '        Case CamIDSouth
-    '          SouthSide = 1
-    '      End Select
-    '    Next Count
-    '    FindCameras = True
-    '  Catch ex As Exception
-    '    FindCameras = False
-    '  End Try
-    'End Function
+  '  Try
+  '    'CamIDNorth = CInt(frmDataBase.GetValue("Settings", "Value", "North Camera"))
+  '    'CamIDSouth = CInt(frmDataBase.GetValue("Settings", "Value", "South Camera"))
+  '    Status = uEye.Info.Camera.GetNumberOfDevices(NumberOfCamerasInUse)
+  '    ' NumberOfCamerasInUse = Count
+  '    For Count = 0 To Count - 1
+  '      Status = uEye.Info.Camera.GetCameraList(CameraList)
+  '      CamID = CameraList(Count).CameraID
+  '      Select Case CamID
+  '        Case CamIDNorth
+  '          NorthSide = 0
+  '        Case CamIDSouth
+  '          SouthSide = 1
+  '      End Select
+  '    Next Count
+  '    FindCameras = True
+  '  Catch ex As Exception
+  '    FindCameras = False
+  '  End Try
+  'End Function
 
-    Private Function InitVision() As Boolean
+  Private Function InitVision() As Boolean
     Dim Success As Boolean
     Try
 
@@ -717,8 +717,8 @@ Public Class frmMain
       Success = HSApp.ProcessManager.LoadConfiguration(0, VisionDatabasePath)
       If Not Success Then
         MsgBox("Could Not locate the Vision Database:    " & vbCr & VisionDatabasePath & vbCr &
-                                          "You need to locate this database yourself in the next dialog",
-                                              MsgBoxStyle.Critical, "Vision Database Load Error")
+                                        "You need to locate this database yourself in the next dialog",
+                                            MsgBoxStyle.Critical, "Vision Database Load Error")
         HSApp.ProcessManager.LoadConfiguration(0, "")
       End If
       HSDb = HSApp.Database
@@ -825,23 +825,23 @@ Public Class frmMain
     Try
       'Setup the calibration
       Yes = MsgBox("Please enusure a few items are set up before starting the camera calibration." & vbCr & vbCr &
-                                  "1.  Write down the existing exposure setting" & vbCr &
-                                  "2.  Set the exposure slider so that the image Is crisp And white," & vbCr & vbCr &
-                                  "If you have already performed these steps then hit OK to continue, otherwise" & vbCr &
-                                  "Hit Cancel to perform these few steps.",
-                                  MsgBoxStyle.OkCancel & MsgBoxStyle.SystemModal, "Setup the Calibration")
+                                "1.  Write down the existing exposure setting" & vbCr &
+                                "2.  Set the exposure slider so that the image Is crisp And white," & vbCr & vbCr &
+                                "If you have already performed these steps then hit OK to continue, otherwise" & vbCr &
+                                "Hit Cancel to perform these few steps.",
+                                MsgBoxStyle.OkCancel & MsgBoxStyle.SystemModal, "Setup the Calibration")
       If Yes <> MsgBoxResult.Ok Then
         Calibrating = False
         Exit Sub
       End If
       'Start the calibration
       Yes = MsgBox("The Calibration dialog will now appear after you close this dialog box," & vbCr & vbCr &
-                                  "The green directional pointer should be on the dot surrounded by dashed circle." & vbCr &
-                                  "The X And Y arrows should be pointing in the same direction as the X And Y arrows on calibration grid" & vbCr & vbCr &
-                                  "To verify the calibration" & vbCr &
-                                  "Copy the X And Y values in the (Axis Origin) boxes to the (World vs Image)World boxes And click on the right arrow." & vbCr &
-                                  "The test point should move to the center of hole with a black circle around it" & vbCr & vbCr &
-                                  "Hit OK Or Cancel to continue", MsgBoxStyle.OkCancel & MsgBoxStyle.SystemModal, "Calibration Starting")
+                                "The green directional pointer should be on the dot surrounded by dashed circle." & vbCr &
+                                "The X And Y arrows should be pointing in the same direction as the X And Y arrows on calibration grid" & vbCr & vbCr &
+                                "To verify the calibration" & vbCr &
+                                "Copy the X And Y values in the (Axis Origin) boxes to the (World vs Image)World boxes And click on the right arrow." & vbCr &
+                                "The test point should move to the center of hole with a black circle around it" & vbCr & vbCr &
+                                "Hit OK Or Cancel to continue", MsgBoxStyle.OkCancel & MsgBoxStyle.SystemModal, "Calibration Starting")
       If Yes <> MsgBoxResult.Ok Then
         Calibrating = False
         Exit Sub
@@ -893,14 +893,14 @@ Public Class frmMain
   End Sub
 
   Public Sub btnLocate_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles _
-    btnLocateNorthMask.Click,
-    btnLocateNorthGlass.Click,
-    btnLocateSouthMask.Click,
-    btnLocateSouthGlass.Click,
-    btnLocateOnlyNorthMask.Click,
-    btnLocateOnlyNorthGlass.Click,
-    btnLocateOnlySouthMask.Click,
-    btnLocateOnlySouthGlass.Click
+  btnLocateNorthMask.Click,
+  btnLocateNorthGlass.Click,
+  btnLocateSouthMask.Click,
+  btnLocateSouthGlass.Click,
+  btnLocateOnlyNorthMask.Click,
+  btnLocateOnlyNorthGlass.Click,
+  btnLocateOnlySouthMask.Click,
+  btnLocateOnlySouthGlass.Click
     Try
       Select Case eventSender.name
         Case "btnLocateNorthMask"
@@ -1620,10 +1620,10 @@ Public Class frmMain
 #Region "Up Downs"
 
   Private Sub updnScoreLimit_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles _
-      updnScoreLimitNorthGlass.ValueChanged,
-      updnScoreLimitNorthMask.ValueChanged,
-      updnScoreLimitSouthGlass.ValueChanged,
-      updnScoreLimitSouthMask.ValueChanged
+    updnScoreLimitNorthGlass.ValueChanged,
+    updnScoreLimitNorthMask.ValueChanged,
+    updnScoreLimitSouthGlass.ValueChanged,
+    updnScoreLimitSouthMask.ValueChanged
     Dim updn As NumericUpDown
     If UpdatingPartData Then Exit Sub
     updn = DirectCast(sender, NumericUpDown)
@@ -1668,16 +1668,16 @@ Public Class frmMain
 #Region "Menus"
 
   Public Sub mnuDeletePart_DropDownItemClicked(ByVal sender As Object, ByVal e As System.Windows.Forms.ToolStripItemClickedEventArgs) Handles _
-      deleteABC.DropDownItemClicked,
-      deleteDEF.DropDownItemClicked,
-      deleteGHI.DropDownItemClicked,
-      deleteJKL.DropDownItemClicked,
-      deleteMNO.DropDownItemClicked,
-      deletePQR.DropDownItemClicked,
-      deleteSTU.DropDownItemClicked,
-      deleteVWX.DropDownItemClicked,
-      deleteYZ.DropDownItemClicked,
-      deleteOther.DropDownItemClicked
+    deleteABC.DropDownItemClicked,
+    deleteDEF.DropDownItemClicked,
+    deleteGHI.DropDownItemClicked,
+    deleteJKL.DropDownItemClicked,
+    deleteMNO.DropDownItemClicked,
+    deletePQR.DropDownItemClicked,
+    deleteSTU.DropDownItemClicked,
+    deleteVWX.DropDownItemClicked,
+    deleteYZ.DropDownItemClicked,
+    deleteOther.DropDownItemClicked
     '
     Dim DeleteName As String
     Dim Answer As Integer
@@ -1708,16 +1708,16 @@ Public Class frmMain
   End Sub
 
   Private Sub mnuLoadPart_DropDownItemClicked(ByVal sender As Object, ByVal e As System.Windows.Forms.ToolStripItemClickedEventArgs) Handles _
-          loadABC.DropDownItemClicked,
-          loadDEF.DropDownItemClicked,
-          loadGHI.DropDownItemClicked,
-          loadJKL.DropDownItemClicked,
-          loadMNO.DropDownItemClicked,
-          loadPQR.DropDownItemClicked,
-          loadSTU.DropDownItemClicked,
-          loadVWX.DropDownItemClicked,
-          loadYZ.DropDownItemClicked,
-          loadOther.DropDownItemClicked
+        loadABC.DropDownItemClicked,
+        loadDEF.DropDownItemClicked,
+        loadGHI.DropDownItemClicked,
+        loadJKL.DropDownItemClicked,
+        loadMNO.DropDownItemClicked,
+        loadPQR.DropDownItemClicked,
+        loadSTU.DropDownItemClicked,
+        loadVWX.DropDownItemClicked,
+        loadYZ.DropDownItemClicked,
+        loadOther.DropDownItemClicked
     mnuFile.HideDropDown()
     LoadPart(e.ClickedItem.Text)
   End Sub
@@ -1759,7 +1759,7 @@ Public Class frmMain
       End If
     Catch ex As Exception
       MsgBox("There was a problem creating the new directory, no changes were made" & vbCr &
-                                      "Error: " & Err.Description, MsgBoxStyle.SystemModal, "New Part Creation Error")
+                                    "Error: " & Err.Description, MsgBoxStyle.SystemModal, "New Part Creation Error")
     End Try
   End Sub
 
@@ -1816,7 +1816,7 @@ Public Class frmMain
     Try
       If ShowNote Then
         MsgBox("Note : Click on the page number in the table" & vbCr &
-                                          " of contents to jump to that item.", MsgBoxStyle.SystemModal)
+                                        " of contents to jump to that item.", MsgBoxStyle.SystemModal)
       End If
       Dim myProcess As System.Diagnostics.Process = New System.Diagnostics.Process()
       myProcess.StartInfo.FileName = HelpFile
@@ -1826,7 +1826,7 @@ Public Class frmMain
     Catch ex As Exception
       ShowVBErrors(ex.Message)
       MsgBox("The file that you tried to open was not available" & vbCr &
-                                  "It should be located:" & vbCr & HelpFile, MsgBoxStyle.SystemModal)
+                                "It should be located:" & vbCr & HelpFile, MsgBoxStyle.SystemModal)
     End Try
   End Sub
 
@@ -1894,7 +1894,7 @@ Public Class frmMain
     Try
       If Not PartList.CheckforFile(TempPartName) Then
         MsgBox("The Part Name '" & TempPartName & "' does not exist on this computer" & vbCr &
-                                        "You will need to manually load the correct part", MsgBoxStyle.SystemModal)
+                                      "You will need to manually load the correct part", MsgBoxStyle.SystemModal)
         Exit Sub
       Else
         PartName = TempPartName
@@ -1928,7 +1928,7 @@ Public Class frmMain
       'Update Camera Images with current exposures, contrast, gain
       UpdateUpDownControls()
       SetCameraSettings()
-      UpdateSearchBoxes()
+      UpdateAllSearchBoxes()
     Catch ex As Exception
       ShowVBErrors(ex.Message)
     End Try
@@ -1988,14 +1988,14 @@ Public Class frmMain
     End Try
   End Sub
 
-  Private Sub updateSearchBoxesMain()
-    UpdateSearchBoxes(NorthMask, "NMask", HSLoc(LocNorthMask))
-    UpdateSearchBoxes(SouthMask, "SMask", HSLoc(LocSouthMask))
-    UpdateSearchBoxes(NorthGlass, "NGlass", HSLoc(LocNorthGlass))
-    UpdateSearchBoxes(SouthGlass, "SGlass", HSLoc(LocSouthGlass))
+  Private Sub UpdateAllSearchBoxes()
+    UpdateSearchBox(NorthMask, "NMask", HSLoc(LocNorthMask))
+    UpdateSearchBox(SouthMask, "SMask", HSLoc(LocSouthMask))
+    UpdateSearchBox(NorthGlass, "NGlass", HSLoc(LocNorthGlass))
+    UpdateSearchBox(SouthGlass, "SGlass", HSLoc(LocSouthGlass))
   End Sub
 
-  Private Sub UpdateSearchBoxes(SearchArea As SearchArea, DataBaseString As String, Locator As HSLOCATORLib.HSLocator)
+  Private Sub UpdateSearchBox(SearchArea As SearchArea, DataBaseString As String, Locator As HSLOCATORLib.HSLocator)
     'This updates all of the slider values and labels
     Try
       'North Mask
@@ -2009,39 +2009,6 @@ Public Class frmMain
       Locator.ToolWidth = SearchArea.Width
       SearchArea.Height = CSng(frmDataBase.GetValue("Partdata", "Value", DataBaseString & "SearchHeight"))
       Locator.ToolHeight = SearchArea.Height
-      'South Mask
-      SouthMask.CenterX = CSng(frmDataBase.GetValue("Partdata", "Value", "SMaskSearchCenterX"))
-      HSLoc(SouthSide).ToolPositionX = SouthMask.CenterX
-      SouthMask.CenterY = CSng(frmDataBase.GetValue("Partdata", "Value", "SMaskSearchCenterY"))
-      HSLoc(SouthSide).ToolPositionY = SouthMask.CenterY
-      SouthMask.CenterR = CSng(frmDataBase.GetValue("Partdata", "Value", "SMaskSearchCenterR"))
-      HSLoc(SouthSide).ToolPositionR = SouthMask.CenterR
-      SouthMask.Width = CSng(frmDataBase.GetValue("Partdata", "Value", "SMaskSearchWidth"))
-      HSLoc(SouthSide).ToolWidth = SouthMask.Width
-      SouthMask.Height = CSng(frmDataBase.GetValue("Partdata", "Value", "SMaskSearchHeight"))
-      HSLoc(SouthSide).ToolHeight = SouthMask.Height
-      'North Glass
-      NorthGlass.CenterX = CSng(frmDataBase.GetValue("Partdata", "Value", "NGlassSearchCenterX"))
-      HSLoc(NorthSide).ToolPositionX = NorthGlass.CenterX
-      NorthGlass.CenterY = CSng(frmDataBase.GetValue("Partdata", "Value", "NGlassSearchCenterY"))
-      HSLoc(NorthSide).ToolPositionY = NorthGlass.CenterY
-      NorthGlass.CenterR = CSng(frmDataBase.GetValue("Partdata", "Value", "NGlassSearchCenterR"))
-      HSLoc(NorthSide).ToolPositionR = NorthGlass.CenterR
-      NorthGlass.Width = CSng(frmDataBase.GetValue("Partdata", "Value", "NGlassSearchWidth"))
-      HSLoc(NorthSide).ToolWidth = NorthGlass.Width
-      NorthGlass.Height = CSng(frmDataBase.GetValue("Partdata", "Value", "NGlassSearchHeight"))
-      HSLoc(NorthSide).ToolHeight = NorthGlass.Height
-      'South Glass
-      SouthGlass.CenterX = CSng(frmDataBase.GetValue("Partdata", "Value", "SGlassSearchCenterX"))
-      HSLoc(SouthSide).ToolPositionX = SouthGlass.CenterX
-      SouthGlass.CenterY = CSng(frmDataBase.GetValue("Partdata", "Value", "SGlassSearchCenterY"))
-      HSLoc(SouthSide).ToolPositionY = SouthGlass.CenterY
-      SouthGlass.CenterR = CSng(frmDataBase.GetValue("Partdata", "Value", "SGlassSearchCenterR"))
-      HSLoc(SouthSide).ToolPositionR = SouthGlass.CenterR
-      SouthGlass.Width = CSng(frmDataBase.GetValue("Partdata", "Value", "SGlassSearchWidth"))
-      HSLoc(SouthSide).ToolWidth = SouthGlass.Width
-      SouthGlass.Height = CSng(frmDataBase.GetValue("Partdata", "Value", "SGlassSearchHeight"))
-      HSLoc(SouthSide).ToolHeight = SouthGlass.Height
     Catch ex As Exception
       ShowVBErrors(ex.Message)
     End Try
@@ -2073,7 +2040,6 @@ Public Class frmMain
     Catch ex As Exception
       ShowVBErrors(ex.Message)
     End Try
-
   End Sub
 
   Private Sub tabVision(sender As Object, e As EventArgs) Handles tabCameraControls.Click
