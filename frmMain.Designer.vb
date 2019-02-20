@@ -135,6 +135,10 @@
     Me.picLogo = New System.Windows.Forms.PictureBox()
     Me.tabCameraControls = New System.Windows.Forms.TabControl()
     Me.tabVisionBoth = New System.Windows.Forms.TabPage()
+    Me.lblSouthMaskScore = New System.Windows.Forms.Label()
+    Me.lblSouthGlassScore = New System.Windows.Forms.Label()
+    Me.lblNorthGlassScore = New System.Windows.Forms.Label()
+    Me.lblNorthMaskScore = New System.Windows.Forms.Label()
     Me.GroupBox1 = New System.Windows.Forms.GroupBox()
     Me.lblFinalStatus = New System.Windows.Forms.Label()
     Me.chkRepeatSnapBoth = New System.Windows.Forms.CheckBox()
@@ -144,17 +148,17 @@
     Me.lblNorthGlassPlaceHolder = New System.Windows.Forms.Label()
     Me.lblNorthMaskPlaceHolder = New System.Windows.Forms.Label()
     Me._Frame1_1 = New System.Windows.Forms.GroupBox()
-    Me._txtPoint_5 = New System.Windows.Forms.TextBox()
-    Me._txtPoint_4 = New System.Windows.Forms.TextBox()
-    Me._txtPoint_6 = New System.Windows.Forms.TextBox()
+    Me.txtSouthSecondClick = New System.Windows.Forms.TextBox()
+    Me.txtSouthFirstClick = New System.Windows.Forms.TextBox()
+    Me.txtSouthDistance = New System.Windows.Forms.TextBox()
     Me._lblPoint_5 = New System.Windows.Forms.Label()
     Me._lblPoint_4 = New System.Windows.Forms.Label()
     Me._lblPoint_3 = New System.Windows.Forms.Label()
     Me._Frame1_0 = New System.Windows.Forms.GroupBox()
-    Me._txtPoint_0 = New System.Windows.Forms.TextBox()
-    Me._txtPoint_3 = New System.Windows.Forms.TextBox()
-    Me._txtPoint_1 = New System.Windows.Forms.TextBox()
-    Me._txtPoint_2 = New System.Windows.Forms.TextBox()
+    Me.txtCombinedOneHalf = New System.Windows.Forms.TextBox()
+    Me.txtNorthDistance = New System.Windows.Forms.TextBox()
+    Me.txtNorthFirstClick = New System.Windows.Forms.TextBox()
+    Me.txtNorthSecondClick = New System.Windows.Forms.TextBox()
     Me.Label5 = New System.Windows.Forms.Label()
     Me._lblPoint_2 = New System.Windows.Forms.Label()
     Me._lblPoint_0 = New System.Windows.Forms.Label()
@@ -330,10 +334,6 @@
     Me.lblPiece2DescR = New System.Windows.Forms.Label()
     Me.grpVBErrors = New System.Windows.Forms.GroupBox()
     Me.lstVBError = New System.Windows.Forms.ListBox()
-    Me.lblNorthMaskScore = New System.Windows.Forms.Label()
-    Me.lblNorthGlassScore = New System.Windows.Forms.Label()
-    Me.lblSouthGlassScore = New System.Windows.Forms.Label()
-    Me.lblSouthMaskScore = New System.Windows.Forms.Label()
     Me.MainMenu1.SuspendLayout()
     CType(Me.updnExposureNorth, System.ComponentModel.ISupportInitialize).BeginInit()
     CType(Me.updnContrastNorth, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1197,6 +1197,42 @@
     Me.tabVisionBoth.TabIndex = 2
     Me.tabVisionBoth.Text = "Both Cameras"
     '
+    'lblSouthMaskScore
+    '
+    Me.lblSouthMaskScore.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+    Me.lblSouthMaskScore.Location = New System.Drawing.Point(1436, 264)
+    Me.lblSouthMaskScore.Name = "lblSouthMaskScore"
+    Me.lblSouthMaskScore.Size = New System.Drawing.Size(59, 23)
+    Me.lblSouthMaskScore.TabIndex = 192
+    Me.lblSouthMaskScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+    '
+    'lblSouthGlassScore
+    '
+    Me.lblSouthGlassScore.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+    Me.lblSouthGlassScore.Location = New System.Drawing.Point(1436, 874)
+    Me.lblSouthGlassScore.Name = "lblSouthGlassScore"
+    Me.lblSouthGlassScore.Size = New System.Drawing.Size(59, 23)
+    Me.lblSouthGlassScore.TabIndex = 191
+    Me.lblSouthGlassScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+    '
+    'lblNorthGlassScore
+    '
+    Me.lblNorthGlassScore.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+    Me.lblNorthGlassScore.Location = New System.Drawing.Point(9, 858)
+    Me.lblNorthGlassScore.Name = "lblNorthGlassScore"
+    Me.lblNorthGlassScore.Size = New System.Drawing.Size(59, 23)
+    Me.lblNorthGlassScore.TabIndex = 190
+    Me.lblNorthGlassScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+    '
+    'lblNorthMaskScore
+    '
+    Me.lblNorthMaskScore.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+    Me.lblNorthMaskScore.Location = New System.Drawing.Point(9, 217)
+    Me.lblNorthMaskScore.Name = "lblNorthMaskScore"
+    Me.lblNorthMaskScore.Size = New System.Drawing.Size(59, 23)
+    Me.lblNorthMaskScore.TabIndex = 189
+    Me.lblNorthMaskScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+    '
     'GroupBox1
     '
     Me.GroupBox1.BackColor = System.Drawing.SystemColors.Control
@@ -1316,9 +1352,9 @@
     '_Frame1_1
     '
     Me._Frame1_1.BackColor = System.Drawing.SystemColors.Control
-    Me._Frame1_1.Controls.Add(Me._txtPoint_5)
-    Me._Frame1_1.Controls.Add(Me._txtPoint_4)
-    Me._Frame1_1.Controls.Add(Me._txtPoint_6)
+    Me._Frame1_1.Controls.Add(Me.txtSouthSecondClick)
+    Me._Frame1_1.Controls.Add(Me.txtSouthFirstClick)
+    Me._Frame1_1.Controls.Add(Me.txtSouthDistance)
     Me._Frame1_1.Controls.Add(Me._lblPoint_5)
     Me._Frame1_1.Controls.Add(Me._lblPoint_4)
     Me._Frame1_1.Controls.Add(Me._lblPoint_3)
@@ -1333,50 +1369,50 @@
     Me._Frame1_1.TabStop = False
     Me._Frame1_1.Text = "Distance Measurement (Double Click on Display)"
     '
-    '_txtPoint_5
+    'txtSouthSecondClick
     '
-    Me._txtPoint_5.AcceptsReturn = True
-    Me._txtPoint_5.BackColor = System.Drawing.SystemColors.Window
-    Me._txtPoint_5.Cursor = System.Windows.Forms.Cursors.IBeam
-    Me._txtPoint_5.Enabled = False
-    Me._txtPoint_5.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me._txtPoint_5.ForeColor = System.Drawing.SystemColors.WindowText
-    Me._txtPoint_5.Location = New System.Drawing.Point(94, 38)
-    Me._txtPoint_5.MaxLength = 0
-    Me._txtPoint_5.Name = "_txtPoint_5"
-    Me._txtPoint_5.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me._txtPoint_5.Size = New System.Drawing.Size(85, 20)
-    Me._txtPoint_5.TabIndex = 124
+    Me.txtSouthSecondClick.AcceptsReturn = True
+    Me.txtSouthSecondClick.BackColor = System.Drawing.SystemColors.Window
+    Me.txtSouthSecondClick.Cursor = System.Windows.Forms.Cursors.IBeam
+    Me.txtSouthSecondClick.Enabled = False
+    Me.txtSouthSecondClick.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.txtSouthSecondClick.ForeColor = System.Drawing.SystemColors.WindowText
+    Me.txtSouthSecondClick.Location = New System.Drawing.Point(94, 38)
+    Me.txtSouthSecondClick.MaxLength = 0
+    Me.txtSouthSecondClick.Name = "txtSouthSecondClick"
+    Me.txtSouthSecondClick.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.txtSouthSecondClick.Size = New System.Drawing.Size(85, 20)
+    Me.txtSouthSecondClick.TabIndex = 124
     '
-    '_txtPoint_4
+    'txtSouthFirstClick
     '
-    Me._txtPoint_4.AcceptsReturn = True
-    Me._txtPoint_4.BackColor = System.Drawing.SystemColors.Window
-    Me._txtPoint_4.Cursor = System.Windows.Forms.Cursors.IBeam
-    Me._txtPoint_4.Enabled = False
-    Me._txtPoint_4.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me._txtPoint_4.ForeColor = System.Drawing.SystemColors.WindowText
-    Me._txtPoint_4.Location = New System.Drawing.Point(94, 14)
-    Me._txtPoint_4.MaxLength = 0
-    Me._txtPoint_4.Name = "_txtPoint_4"
-    Me._txtPoint_4.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me._txtPoint_4.Size = New System.Drawing.Size(85, 20)
-    Me._txtPoint_4.TabIndex = 123
+    Me.txtSouthFirstClick.AcceptsReturn = True
+    Me.txtSouthFirstClick.BackColor = System.Drawing.SystemColors.Window
+    Me.txtSouthFirstClick.Cursor = System.Windows.Forms.Cursors.IBeam
+    Me.txtSouthFirstClick.Enabled = False
+    Me.txtSouthFirstClick.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.txtSouthFirstClick.ForeColor = System.Drawing.SystemColors.WindowText
+    Me.txtSouthFirstClick.Location = New System.Drawing.Point(94, 14)
+    Me.txtSouthFirstClick.MaxLength = 0
+    Me.txtSouthFirstClick.Name = "txtSouthFirstClick"
+    Me.txtSouthFirstClick.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.txtSouthFirstClick.Size = New System.Drawing.Size(85, 20)
+    Me.txtSouthFirstClick.TabIndex = 123
     '
-    '_txtPoint_6
+    'txtSouthDistance
     '
-    Me._txtPoint_6.AcceptsReturn = True
-    Me._txtPoint_6.BackColor = System.Drawing.SystemColors.Window
-    Me._txtPoint_6.Cursor = System.Windows.Forms.Cursors.IBeam
-    Me._txtPoint_6.Enabled = False
-    Me._txtPoint_6.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me._txtPoint_6.ForeColor = System.Drawing.SystemColors.WindowText
-    Me._txtPoint_6.Location = New System.Drawing.Point(94, 62)
-    Me._txtPoint_6.MaxLength = 0
-    Me._txtPoint_6.Name = "_txtPoint_6"
-    Me._txtPoint_6.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me._txtPoint_6.Size = New System.Drawing.Size(85, 20)
-    Me._txtPoint_6.TabIndex = 122
+    Me.txtSouthDistance.AcceptsReturn = True
+    Me.txtSouthDistance.BackColor = System.Drawing.SystemColors.Window
+    Me.txtSouthDistance.Cursor = System.Windows.Forms.Cursors.IBeam
+    Me.txtSouthDistance.Enabled = False
+    Me.txtSouthDistance.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.txtSouthDistance.ForeColor = System.Drawing.SystemColors.WindowText
+    Me.txtSouthDistance.Location = New System.Drawing.Point(94, 62)
+    Me.txtSouthDistance.MaxLength = 0
+    Me.txtSouthDistance.Name = "txtSouthDistance"
+    Me.txtSouthDistance.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.txtSouthDistance.Size = New System.Drawing.Size(85, 20)
+    Me.txtSouthDistance.TabIndex = 122
     '
     '_lblPoint_5
     '
@@ -1423,10 +1459,10 @@
     '_Frame1_0
     '
     Me._Frame1_0.BackColor = System.Drawing.SystemColors.Control
-    Me._Frame1_0.Controls.Add(Me._txtPoint_0)
-    Me._Frame1_0.Controls.Add(Me._txtPoint_3)
-    Me._Frame1_0.Controls.Add(Me._txtPoint_1)
-    Me._Frame1_0.Controls.Add(Me._txtPoint_2)
+    Me._Frame1_0.Controls.Add(Me.txtCombinedOneHalf)
+    Me._Frame1_0.Controls.Add(Me.txtNorthDistance)
+    Me._Frame1_0.Controls.Add(Me.txtNorthFirstClick)
+    Me._Frame1_0.Controls.Add(Me.txtNorthSecondClick)
     Me._Frame1_0.Controls.Add(Me.Label5)
     Me._Frame1_0.Controls.Add(Me._lblPoint_2)
     Me._Frame1_0.Controls.Add(Me._lblPoint_0)
@@ -1442,65 +1478,65 @@
     Me._Frame1_0.TabStop = False
     Me._Frame1_0.Text = "Distance Measurement (Double Click on Display)"
     '
-    '_txtPoint_0
+    'txtCombinedOneHalf
     '
-    Me._txtPoint_0.AcceptsReturn = True
-    Me._txtPoint_0.BackColor = System.Drawing.SystemColors.Window
-    Me._txtPoint_0.Cursor = System.Windows.Forms.Cursors.IBeam
-    Me._txtPoint_0.Enabled = False
-    Me._txtPoint_0.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me._txtPoint_0.ForeColor = System.Drawing.SystemColors.WindowText
-    Me._txtPoint_0.Location = New System.Drawing.Point(184, 62)
-    Me._txtPoint_0.MaxLength = 0
-    Me._txtPoint_0.Name = "_txtPoint_0"
-    Me._txtPoint_0.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me._txtPoint_0.Size = New System.Drawing.Size(45, 20)
-    Me._txtPoint_0.TabIndex = 180
+    Me.txtCombinedOneHalf.AcceptsReturn = True
+    Me.txtCombinedOneHalf.BackColor = System.Drawing.SystemColors.Window
+    Me.txtCombinedOneHalf.Cursor = System.Windows.Forms.Cursors.IBeam
+    Me.txtCombinedOneHalf.Enabled = False
+    Me.txtCombinedOneHalf.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.txtCombinedOneHalf.ForeColor = System.Drawing.SystemColors.WindowText
+    Me.txtCombinedOneHalf.Location = New System.Drawing.Point(184, 62)
+    Me.txtCombinedOneHalf.MaxLength = 0
+    Me.txtCombinedOneHalf.Name = "txtCombinedOneHalf"
+    Me.txtCombinedOneHalf.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.txtCombinedOneHalf.Size = New System.Drawing.Size(45, 20)
+    Me.txtCombinedOneHalf.TabIndex = 180
     '
-    '_txtPoint_3
+    'txtNorthDistance
     '
-    Me._txtPoint_3.AcceptsReturn = True
-    Me._txtPoint_3.BackColor = System.Drawing.SystemColors.Window
-    Me._txtPoint_3.Cursor = System.Windows.Forms.Cursors.IBeam
-    Me._txtPoint_3.Enabled = False
-    Me._txtPoint_3.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me._txtPoint_3.ForeColor = System.Drawing.SystemColors.WindowText
-    Me._txtPoint_3.Location = New System.Drawing.Point(94, 62)
-    Me._txtPoint_3.MaxLength = 0
-    Me._txtPoint_3.Name = "_txtPoint_3"
-    Me._txtPoint_3.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me._txtPoint_3.Size = New System.Drawing.Size(85, 20)
-    Me._txtPoint_3.TabIndex = 116
+    Me.txtNorthDistance.AcceptsReturn = True
+    Me.txtNorthDistance.BackColor = System.Drawing.SystemColors.Window
+    Me.txtNorthDistance.Cursor = System.Windows.Forms.Cursors.IBeam
+    Me.txtNorthDistance.Enabled = False
+    Me.txtNorthDistance.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.txtNorthDistance.ForeColor = System.Drawing.SystemColors.WindowText
+    Me.txtNorthDistance.Location = New System.Drawing.Point(94, 62)
+    Me.txtNorthDistance.MaxLength = 0
+    Me.txtNorthDistance.Name = "txtNorthDistance"
+    Me.txtNorthDistance.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.txtNorthDistance.Size = New System.Drawing.Size(85, 20)
+    Me.txtNorthDistance.TabIndex = 116
     '
-    '_txtPoint_1
+    'txtNorthFirstClick
     '
-    Me._txtPoint_1.AcceptsReturn = True
-    Me._txtPoint_1.BackColor = System.Drawing.SystemColors.Window
-    Me._txtPoint_1.Cursor = System.Windows.Forms.Cursors.IBeam
-    Me._txtPoint_1.Enabled = False
-    Me._txtPoint_1.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me._txtPoint_1.ForeColor = System.Drawing.SystemColors.WindowText
-    Me._txtPoint_1.Location = New System.Drawing.Point(94, 14)
-    Me._txtPoint_1.MaxLength = 0
-    Me._txtPoint_1.Name = "_txtPoint_1"
-    Me._txtPoint_1.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me._txtPoint_1.Size = New System.Drawing.Size(85, 20)
-    Me._txtPoint_1.TabIndex = 113
+    Me.txtNorthFirstClick.AcceptsReturn = True
+    Me.txtNorthFirstClick.BackColor = System.Drawing.SystemColors.Window
+    Me.txtNorthFirstClick.Cursor = System.Windows.Forms.Cursors.IBeam
+    Me.txtNorthFirstClick.Enabled = False
+    Me.txtNorthFirstClick.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.txtNorthFirstClick.ForeColor = System.Drawing.SystemColors.WindowText
+    Me.txtNorthFirstClick.Location = New System.Drawing.Point(94, 14)
+    Me.txtNorthFirstClick.MaxLength = 0
+    Me.txtNorthFirstClick.Name = "txtNorthFirstClick"
+    Me.txtNorthFirstClick.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.txtNorthFirstClick.Size = New System.Drawing.Size(85, 20)
+    Me.txtNorthFirstClick.TabIndex = 113
     '
-    '_txtPoint_2
+    'txtNorthSecondClick
     '
-    Me._txtPoint_2.AcceptsReturn = True
-    Me._txtPoint_2.BackColor = System.Drawing.SystemColors.Window
-    Me._txtPoint_2.Cursor = System.Windows.Forms.Cursors.IBeam
-    Me._txtPoint_2.Enabled = False
-    Me._txtPoint_2.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me._txtPoint_2.ForeColor = System.Drawing.SystemColors.WindowText
-    Me._txtPoint_2.Location = New System.Drawing.Point(94, 38)
-    Me._txtPoint_2.MaxLength = 0
-    Me._txtPoint_2.Name = "_txtPoint_2"
-    Me._txtPoint_2.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me._txtPoint_2.Size = New System.Drawing.Size(85, 20)
-    Me._txtPoint_2.TabIndex = 112
+    Me.txtNorthSecondClick.AcceptsReturn = True
+    Me.txtNorthSecondClick.BackColor = System.Drawing.SystemColors.Window
+    Me.txtNorthSecondClick.Cursor = System.Windows.Forms.Cursors.IBeam
+    Me.txtNorthSecondClick.Enabled = False
+    Me.txtNorthSecondClick.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.txtNorthSecondClick.ForeColor = System.Drawing.SystemColors.WindowText
+    Me.txtNorthSecondClick.Location = New System.Drawing.Point(94, 38)
+    Me.txtNorthSecondClick.MaxLength = 0
+    Me.txtNorthSecondClick.Name = "txtNorthSecondClick"
+    Me.txtNorthSecondClick.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.txtNorthSecondClick.Size = New System.Drawing.Size(85, 20)
+    Me.txtNorthSecondClick.TabIndex = 112
     '
     'Label5
     '
@@ -3725,42 +3761,6 @@
     Me.lstVBError.TabIndex = 24
     Me.lstVBError.TabStop = False
     '
-    'lblNorthMaskScore
-    '
-    Me.lblNorthMaskScore.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-    Me.lblNorthMaskScore.Location = New System.Drawing.Point(9, 217)
-    Me.lblNorthMaskScore.Name = "lblNorthMaskScore"
-    Me.lblNorthMaskScore.Size = New System.Drawing.Size(59, 23)
-    Me.lblNorthMaskScore.TabIndex = 189
-    Me.lblNorthMaskScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-    '
-    'lblNorthGlassScore
-    '
-    Me.lblNorthGlassScore.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-    Me.lblNorthGlassScore.Location = New System.Drawing.Point(9, 858)
-    Me.lblNorthGlassScore.Name = "lblNorthGlassScore"
-    Me.lblNorthGlassScore.Size = New System.Drawing.Size(59, 23)
-    Me.lblNorthGlassScore.TabIndex = 190
-    Me.lblNorthGlassScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-    '
-    'lblSouthGlassScore
-    '
-    Me.lblSouthGlassScore.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-    Me.lblSouthGlassScore.Location = New System.Drawing.Point(1436, 874)
-    Me.lblSouthGlassScore.Name = "lblSouthGlassScore"
-    Me.lblSouthGlassScore.Size = New System.Drawing.Size(59, 23)
-    Me.lblSouthGlassScore.TabIndex = 191
-    Me.lblSouthGlassScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-    '
-    'lblSouthMaskScore
-    '
-    Me.lblSouthMaskScore.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-    Me.lblSouthMaskScore.Location = New System.Drawing.Point(1436, 264)
-    Me.lblSouthMaskScore.Name = "lblSouthMaskScore"
-    Me.lblSouthMaskScore.Size = New System.Drawing.Size(59, 23)
-    Me.lblSouthMaskScore.TabIndex = 192
-    Me.lblSouthMaskScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-    '
     'frmMain
     '
     Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 16.0!)
@@ -3981,17 +3981,17 @@
   Public WithEvents lblNorthGlassPlaceHolder As Label
   Public WithEvents lblNorthMaskPlaceHolder As Label
   Public WithEvents _Frame1_1 As GroupBox
-  Public WithEvents _txtPoint_5 As TextBox
-  Public WithEvents _txtPoint_4 As TextBox
-  Public WithEvents _txtPoint_6 As TextBox
+  Public WithEvents txtSouthSecondClick As TextBox
+  Public WithEvents txtSouthFirstClick As TextBox
+  Public WithEvents txtSouthDistance As TextBox
   Public WithEvents _lblPoint_5 As Label
   Public WithEvents _lblPoint_4 As Label
   Public WithEvents _lblPoint_3 As Label
   Public WithEvents _Frame1_0 As GroupBox
-  Public WithEvents _txtPoint_0 As TextBox
-  Public WithEvents _txtPoint_3 As TextBox
-  Public WithEvents _txtPoint_1 As TextBox
-  Public WithEvents _txtPoint_2 As TextBox
+  Public WithEvents txtCombinedOneHalf As TextBox
+  Public WithEvents txtNorthDistance As TextBox
+  Public WithEvents txtNorthFirstClick As TextBox
+  Public WithEvents txtNorthSecondClick As TextBox
   Public WithEvents Label5 As Label
   Public WithEvents _lblPoint_2 As Label
   Public WithEvents _lblPoint_0 As Label

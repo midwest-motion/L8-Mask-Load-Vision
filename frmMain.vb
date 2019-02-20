@@ -52,6 +52,10 @@ Public Class frmMain
   Private WithEvents IOTimer As New Timer
   Private WithEvents SaveMarkersTimer As New Timer
   Private MarkerChanged As Boolean = False
+  Private NorthFirstPointX, NorthFirstPointY As Single
+  Private NorthSecondPointX, NorthSecondPointY As Single
+  Private SouthFirstPointX, SouthFirstPointY As Single
+  Private SouthSecondPointX, SouthSecondPointY As Single
 #End Region
 
 #Region "Form Load/Unload"
@@ -1438,6 +1442,74 @@ Public Class frmMain
     End Try
   End Sub
 
+  Private Sub AddPointMarkers()
+    Try
+      With HSDisplayNorth
+        'First Point
+        .AddPointMarker("Measure Point 1", 100, 101, True)
+        .set_MarkerDisplayName("Measure Point 1", True)
+        .set_MarkerColor("Measure Point 1", HSDISPLAYLib.hsColor.hsYellow)
+        .set_PointMarkerConstraints("Measure Point 1", HSDISPLAYLib.hsPointMarkerConstraints.hsPointNoConstraints)
+        'Second Point
+        .AddPointMarker("Measure Point 2", 100, 201, True)
+        .set_MarkerDisplayName("Measure Point 2", True)
+        .set_MarkerColor("Measure Point 2", HSDISPLAYLib.hsColor.hsYellow)
+        .set_PointMarkerConstraints("Measure Point 2", HSDISPLAYLib.hsPointMarkerConstraints.hsPointNoConstraints)
+        .AddLineMarker("Line", 100, 101, 100, 201, True)
+        .set_MarkerColor("Line", HSDISPLAYLib.hsColor.hsYellow)
+      End With
+      With HSDisplaySouth
+        'First Point
+        .AddPointMarker("Measure Point 1", 1000, 101, True)
+        .set_MarkerDisplayName("Measure Point 1", True)
+        .set_MarkerColor("Measure Point 1", HSDISPLAYLib.hsColor.hsYellow)
+        .set_PointMarkerConstraints("Measure Point 1", HSDISPLAYLib.hsPointMarkerConstraints.hsPointNoConstraints)
+        'Second Point
+        .AddPointMarker("Measure Point 2", 1000, 201, True)
+        .set_MarkerDisplayName("Measure Point 2", True)
+        .set_MarkerColor("Measure Point 2", HSDISPLAYLib.hsColor.hsYellow)
+        .set_PointMarkerConstraints("Measure Point 2", HSDISPLAYLib.hsPointMarkerConstraints.hsPointNoConstraints)
+        .AddLineMarker("Line", 100, 101, 100, 201, True)
+        .set_MarkerColor("Line", HSDISPLAYLib.hsColor.hsYellow)
+      End With
+    Catch ex As Exception
+      ShowVBErrors(ex.Message)
+    End Try
+  End Sub
+
+  Private Sub HSDisplay_PointMarkerChange(ByVal sender As Object, ByVal e As AxHSDISPLAYLib._DHSDisplayEvents_PointMarkerChangeEvent) Handles _
+    HSDisplayNorth.PointMarkerChange,
+    HSDisplaySouth.PointMarkerChange
+    If sender.name.contains("North") Then
+      If e.name.Contains("1") Then
+        NorthFirstPointX = e.x
+        NorthFirstPointY = e.y
+        txtNorthFirstClick.Text = e.x.ToString("0.0") + " ," + e.y.ToString("0.0")
+      End If
+      If e.name.Contains("2") Then
+        NorthSecondPointX = e.x
+        NorthSecondPointY = e.y
+        txtNorthSecondClick.Text = e.x.ToString("0.0") + " ," + e.y.ToString("0.0")
+      End If
+      txtNorthDistance.Text = Math.Sqrt((NorthFirstPointX - NorthSecondPointX) ^ 2 + (NorthFirstPointY - NorthSecondPointY) ^ 2).ToString("0.0")
+      HSDisplayNorth.AddLineMarker("Line", NorthFirstPointX, NorthFirstPointY, NorthSecondPointX, NorthSecondPointY, True)
+    Else
+      If e.name.Contains("1") Then
+        SouthFirstPointX = e.x
+        SouthFirstPointY = e.y
+        txtSouthFirstClick.Text = e.x.ToString("0.0") + " ," + e.y.ToString("0.0")
+      End If
+      If e.name.Contains("2") Then
+        SouthSecondPointX = e.x
+        SouthSecondPointY = e.y
+        txtSouthSecondClick.Text = e.x.ToString("0.0") + " ," + e.y.ToString("0.0")
+      End If
+      txtSouthDistance.Text = Math.Sqrt((SouthFirstPointX - SouthSecondPointX) ^ 2 + (SouthFirstPointY - SouthSecondPointY) ^ 2).ToString("0.0")
+      HSDisplaySouth.AddLineMarker("Line", SouthFirstPointX, SouthFirstPointY, SouthSecondPointX, SouthSecondPointY, True)
+    End If
+    txtCombinedOneHalf.Text = ((Val(txtSouthDistance.Text) - Val(txtNorthDistance.Text)) / 2).ToString("0.0")
+  End Sub
+
   Private Sub AddAllRectangleMarkers()
     AddRectangleMarker(LocNorthMask)
     AddRectangleMarker(LocNorthGlass)
@@ -1595,36 +1667,6 @@ Public Class frmMain
     HSDisplaySouth.RemoveAllMarker()
   End Sub
 
-  Static Sub Display_DblClick(Index As Integer)
-    If Index = 5 Then
-      NorthOldX = NorthX
-      NorthOldY = NorthY
-      northx = HSDisplayNorth(LocNorthGlass)focusx
-      Display(Index).AddPointMarker "Point", NorthX, NorthY, True
-    Display(Index).AddPointMarker "Old Point", NorthOldX, NorthOldY, True
-    Display(Index).AddLineMarker "Line", NorthX, NorthY, NorthOldX, NorthOldY, True
-    txtPoint(2).Text = txtPoint(1).Text
-      txtPoint(1).Text = Format(Str(NorthX), "0.0") + " ," + Format(Str(NorthY), "0.0")
-      txtPoint(3).Text = Format(Str(Sqr((NorthX - NorthOldX) ^ 2 + (NorthY - NorthOldY) ^ 2)), "0.0")
-    ElseIf Index = 6 Then
-      SouthOldX = SouthX
-      SouthOldY = SouthY
-      Display(Index).GetDisplayCoordinates SouthX, SouthY
-    Display(Index).AddPointMarker "Point", SouthX, SouthY, True
-    Display(Index).AddPointMarker "Old Point", SouthOldX, SouthOldY, True
-    Display(Index).AddLineMarker "Line", SouthX, SouthY, SouthOldX, SouthOldY, True
-    txtPoint(5).Text = txtPoint(4).Text
-      txtPoint(4).Text = Format(Str(SouthX), "0.0") + " ," + Format(Str(SouthY), "0.0")
-      txtPoint(6).Text = Format(Str(Sqr((SouthX - SouthOldX) ^ 2 + (SouthY - SouthOldY) ^ 2)), "0.0")
-    End If
-    If (Index = 5) Or (Index = 6) Then
-      Display(Index).MarkerColor("Point") = hsYellow
-      Display(Index).MarkerColor("Old Point") = hsYellow
-      Display(Index).MarkerColor("Point") = hsYellow
-      Display(Index).MarkerColor("Line") = hsYellow
-      txtPoint(0).Text = Format(Str((Val(txtPoint(6).Text) - Val(txtPoint(3).Text)) / 2), "0.0")
-    End If
-  End Sub
 #End Region
 
 #Region "Timers"
@@ -1986,6 +2028,7 @@ Public Class frmMain
       UpdateUpDownControls()
       UpdateAllRectangleMarkers()
       AddAllRectangleMarkers()
+      AddPointMarkers()
       SetCameraSettings()
     Catch ex As Exception
       ShowVBErrors(ex.Message)
