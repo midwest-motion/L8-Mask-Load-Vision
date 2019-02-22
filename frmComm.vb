@@ -6,7 +6,6 @@ Imports System.Threading
 Friend Class frmComm
   Inherits System.Windows.Forms.Form
 
-
   Private Sub frmComm_FormClosing(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
     Dim Cancel As Boolean = eventArgs.Cancel
     Dim UnloadMode As System.Windows.Forms.CloseReason = eventArgs.CloseReason

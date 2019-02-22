@@ -19,7 +19,7 @@ Public Class clsSerialHandler
         End Try
         'Set the port number
         Try
-          .CommPort = 5
+          .CommPort = 3
         Catch ex As Exception
           InitComm = "Unable to Assign Comm Port " & .CommPort.ToString
         End Try
@@ -47,19 +47,24 @@ Public Class clsSerialHandler
   End Function
 
   Public Function TestComm() As String
-    With SerialPort
-      If Not .PortOpen Then
-        'Open the port
-        .PortOpen = True
+    Try
+      With SerialPort
         If Not .PortOpen Then
-          TestComm = "Unable to Open Comm Port 3"
+          'Open the port
+          .PortOpen = True
+          If Not .PortOpen Then
+            TestComm = "Unable to Open Comm Port " & .CommPort.ToString
+          Else
+            TestComm = "Success"
+          End If
         Else
           TestComm = "Success"
         End If
-      Else
-        TestComm = "Success"
-      End If
-    End With
+      End With
+    Catch ex As Exception
+      frmMain.ShowVBErrors(ex.Message)
+      TestComm = "Error"
+    End Try
   End Function
 
   Public Sub SendDataToRobot(ByRef Data As String)
@@ -82,14 +87,57 @@ Public Class clsSerialHandler
       BigString = ""
       SerialPortReadIsDone = True
     End If
+    CheckRobotMessages()
+  End Sub
+
+  Private Sub CheckRobotMessages()
+    Dim EndMsg As Integer
+    Dim TempPartName As String
+    '
+    'Read data.
+    frmMain.DelayTimer 50
+    '
+    'Exit if there is just junk on the line
+    If Len(StringFromRobot) < 12 Then
+      Exit Sub
+    End If
+    frmComm.lstInputBuffer.Items.Add(StringFromRobot)
+    '
+    'truncate input string after the linefeed character
+    If StringFromRobot.Contains("FIND MASK AND GLASS") Then
+      frmMain.txtCommStatus.Text = "Received Robot Command '" + "FIND MASK AND GLASS + " '"
+      frmMain.LocateBoth()
+      SendDataToRobot(frmMain.txtCommStatus.Text)
+      Exit Sub
+    End If
+    '
+    'see if the robot got the offset correctly
+    CommandText = "X = "
+    Command = Mid(StringFromRobot, 1, Len(CommandText))
+    If Command() = CommandText Then
+      With frmMain
+        .txtCommStatus.Text = "Received Robot Command '" + CommandText + "'"
+        .CheckString = Mid(StringFromRobot, 1, Len(.OffsetString))
+      End With
+      Exit Sub
+    End If
+    '
+    'see if the robot requests a part change
+    If StringFromRobot.Contains("CHANGE PART NAME TO ") Then
+      TempPartName = StringFromRobot.IndexOf("CHANGE PART NAME TO ")
+      PartName = StringFromRobot.Substring(20)
+      If (TempPartName = "NO_PART") Or (TempPartName = PartName) Then
+        Exit Sub
+      End If
+      frmMain.LoadPart(PartName)
+      frmMain.txtCommStatus.Text = "Received Robot Command '" + StringFromRobot + "'"
+      Exit Sub
+    End If
   End Sub
 
   Private Sub SerialPort_CommError(ByVal ErrorFlag As DesktopSerialIO.SerialIO.SerialPort.CommErrorFlags) Handles SerialPort.CommError
     CommErrorString = ErrorFlag.ToString
   End Sub
-
-
-
 
   'Using the built in Windows Serial IO Namespace
   '

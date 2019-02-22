@@ -750,21 +750,21 @@ Public Class frmMain
         If Side = NorthSide Then
           .OriginPositionXWorld = 0
           .OriginPositionYWorld = 0
-          .OriginPositionX = 3679
-          .OriginPositionY = 175
-          .AxisXPositionX = 3609
-          .AxisXPositionY = 178
-          .AxisYPositionX = 3681
-          .AxisYPositionY = 247
+          .OriginPositionX = 1212
+          .OriginPositionY = 48
+          .AxisXPositionX = 1212
+          .AxisXPositionY = 107
+          .AxisYPositionX = 1153
+          .AxisYPositionY = 49.5
         Else
           .OriginPositionXWorld = 1000
           .OriginPositionYWorld = 0
-          .OriginPositionX = 3662
-          .OriginPositionY = 104
-          .AxisXPositionX = 3591
-          .AxisXPositionY = 106
-          .AxisYPositionX = 3662
-          .AxisYPositionY = 175
+          .OriginPositionX = 1212
+          .OriginPositionY = 48
+          .AxisXPositionX = 1212
+          .AxisXPositionY = 107
+          .AxisYPositionX = 1153
+          .AxisYPositionY = 49.5
         End If
         .UnitsLength = HSACQUISITIONDEVICELib.hsUnitsLength.hsMillimeter
         .DotConformity = 0.5
@@ -833,7 +833,7 @@ Public Class frmMain
     End Try
   End Sub
 
-  Private Sub LocateBoth() Handles btnLocateBoth.Click
+  Public Sub LocateBoth() Handles btnLocateBoth.Click
     Try
       Do
         '
@@ -2109,13 +2109,6 @@ Public Class frmMain
 #End Region
 
 #Region "Robot"
-
-  Private Sub ClearPositionData()
-    Try
-    Catch ex As Exception
-      ShowVBErrors(ex.Message)
-    End Try
-  End Sub
 
   Private Sub tabVision(sender As Object, e As EventArgs) Handles tabCameraControls.Click
     '
