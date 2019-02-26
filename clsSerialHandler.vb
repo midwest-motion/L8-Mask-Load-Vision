@@ -6,6 +6,7 @@ Public Class clsSerialHandler
   Public ReceiveBuffer As New StringBuilder(32768)
   Public StringFromRobot As String
   Public CommErrorString As String
+  Private SerialNumber As Integer
   Private WithEvents SerialPort As New DesktopSerialIO.SerialIO.SerialPort
   'Public WithEvents Com3 As New SerialPort("COM3")
 
@@ -90,12 +91,17 @@ Public Class clsSerialHandler
     CheckRobotMessages()
   End Sub
 
+  Public Sub test()
+    StringFromRobot = "Hi There"
+    CheckRobotMessages()
+    MsgBox(frmMain.CheckString)
+  End Sub
+
   Private Sub CheckRobotMessages()
-    Dim EndMsg As Integer
     Dim TempPartName As String
     '
     'Read data.
-    frmMain.DelayTimer 50
+    frmMain.DelayTimer(50)
     '
     'Exit if there is just junk on the line
     If Len(StringFromRobot) < 12 Then
@@ -106,17 +112,17 @@ Public Class clsSerialHandler
     'truncate input string after the linefeed character
     If StringFromRobot.Contains("FIND MASK AND GLASS") Then
       frmMain.txtCommStatus.Text = "Received Robot Command '" + "FIND MASK AND GLASS + " '"
-      frmMain.LocateBoth()
-      SendDataToRobot(frmMain.txtCommStatus.Text)
+      If ValidSerialNumber() Then
+        frmMain.LocateBoth()
+        SendDataToRobot(frmMain.txtCommStatus.Text)
+      End If
       Exit Sub
-    End If
-    '
-    'see if the robot got the offset correctly
-    CommandText = "X = "
-    Command = Mid(StringFromRobot, 1, Len(CommandText))
-    If Command() = CommandText Then
+      End If
+      '
+      'see if the robot got the offset correctly
+      If StringFromRobot.Contains("X = ") Then
       With frmMain
-        .txtCommStatus.Text = "Received Robot Command '" + CommandText + "'"
+        .txtCommStatus.Text = "Received Robot Command '" + StringFromRobot + "'"
         .CheckString = Mid(StringFromRobot, 1, Len(.OffsetString))
       End With
       Exit Sub
@@ -133,6 +139,61 @@ Public Class clsSerialHandler
       frmMain.txtCommStatus.Text = "Received Robot Command '" + StringFromRobot + "'"
       Exit Sub
     End If
+  End Sub
+
+  Private Function ValidSerialNumber() As Boolean
+    'Calls the cmdLocateCombined_click routine if a get offset request was received from the robot
+    With frmMain
+      '
+      'Get the serial number off of the end of the string
+      SerialNumber = Val(Trim(Mid(StringFromRobot, Len("FIND MASK AND GLASS") + 1, 100)))
+      If (SerialNumber < 1000) Or (SerialNumber > 1999) Then
+        MsgBox("An Invalid communication serial number was received from the robot" _
+        + vbCr + "This serial number is transmitted from the robot and then" _
+        + vbCr + "transmitted back with the offset to verify that the robot is" _
+        + vbCr + "receiving the correct offset. The serial number must be between 1000 and 2000." _
+        + vbCr + "The vision system won't send an offset until it gets a valid serial number", vbApplicationModal)
+        ValidSerialNumber = False
+      Else
+        ValidSerialNumber = True
+      End If
+    End With
+  End Function
+
+  Private Sub SendSerialNumberToRobot()
+    With frmMain
+      '
+      'see if new offset value is identical to the old one
+      If (.OldOffsetstring = .OffsetString) _
+      And Not LocatorResults(FinalOffset).Success Then
+        MsgBox("Previous total offset was the same as the current total offset" _
+        + vbCr + "This is an unusual instance. Watch the mask location." _
+        + vbCr + "You may need to quit the vision application and restart it.", vbApplicationModal)
+      End If
+      '
+      'If the part was sucessfully found then add the serial number back on to it
+      If LocatorResults(FinalOffset).Success Then
+        .OffsetString = .OffsetString + " SN = " + Str(SerialNumber)
+      End If
+      .OldOffsetstring = .OffsetString
+      '
+      'send the offset string
+      SendDataToRobot(.OffsetString)
+      frmComm.lstInputBuffer.Items.Add(.OffsetString)
+      .txtCommStatus.Text = "Sent Data '" & .OffsetString & "' to Robot"
+      '
+      'enable timer to snap a second picture
+      .tmrSnapAfterlocate.Interval = frmMain.varSnapAfterLocateDelay
+      .tmrSnapAfterLocate.Enabled = True
+      '
+      'enable a timer to verify that the offset was received and
+      'dont check if an error was sent to the robot
+      .CheckString = "Not Checked"
+      .tmrCheckOffset.Interval = 3500
+      If LocatorResults(FinalOffset).Success Then
+        .tmrCheckOffset.Enabled = True
+      End If
+    End With
   End Sub
 
   Private Sub SerialPort_CommError(ByVal ErrorFlag As DesktopSerialIO.SerialIO.SerialPort.CommErrorFlags) Handles SerialPort.CommError

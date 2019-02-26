@@ -334,6 +334,7 @@
     Me.lblPiece2DescR = New System.Windows.Forms.Label()
     Me.grpVBErrors = New System.Windows.Forms.GroupBox()
     Me.lstVBError = New System.Windows.Forms.ListBox()
+    Me.btnTest = New System.Windows.Forms.Button()
     Me.MainMenu1.SuspendLayout()
     CType(Me.updnExposureNorth, System.ComponentModel.ISupportInitialize).BeginInit()
     CType(Me.updnContrastNorth, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1178,6 +1179,7 @@
     'tabVisionBoth
     '
     Me.tabVisionBoth.BackColor = System.Drawing.SystemColors.Control
+    Me.tabVisionBoth.Controls.Add(Me.btnTest)
     Me.tabVisionBoth.Controls.Add(Me.lblSouthMaskScore)
     Me.tabVisionBoth.Controls.Add(Me.lblSouthGlassScore)
     Me.tabVisionBoth.Controls.Add(Me.lblNorthGlassScore)
@@ -3761,6 +3763,24 @@
     Me.lstVBError.TabIndex = 24
     Me.lstVBError.TabStop = False
     '
+    'btnTest
+    '
+    Me.btnTest.BackColor = System.Drawing.Color.Transparent
+    Me.btnTest.Cursor = System.Windows.Forms.Cursors.Default
+    Me.btnTest.FlatStyle = System.Windows.Forms.FlatStyle.System
+    Me.btnTest.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.btnTest.ForeColor = System.Drawing.SystemColors.ControlText
+    Me.btnTest.Location = New System.Drawing.Point(362, 60)
+    Me.btnTest.Name = "btnTest"
+    Me.btnTest.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.btnTest.Size = New System.Drawing.Size(138, 26)
+    Me.btnTest.TabIndex = 193
+    Me.btnTest.TabStop = False
+    Me.btnTest.Text = "Test"
+    Me.ToolTip1.SetToolTip(Me.btnTest, "Will locate the glass based on the trained model associated with the part.  Will " &
+        "continuously repeat if the repeat box is checked")
+    Me.btnTest.UseVisualStyleBackColor = False
+    '
     'frmMain
     '
     Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 16.0!)
@@ -4109,5 +4129,6 @@
   Friend WithEvents lblSouthGlassScore As Label
   Friend WithEvents lblNorthGlassScore As Label
   Friend WithEvents lblNorthMaskScore As Label
+  Public WithEvents btnTest As Button
 #End Region
 End Class

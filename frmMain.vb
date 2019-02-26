@@ -21,7 +21,7 @@ Public Class frmMain
   Public Loading As Boolean
   Public Deleting As Boolean
   Public Message As String
-  Public Side As Int16
+  Public Side As String
   Public SouthAlreadySnapped As Boolean
   '
   'Vision system module variables
@@ -56,6 +56,9 @@ Public Class frmMain
   Private NorthSecondPointX, NorthSecondPointY As Single
   Private SouthFirstPointX, SouthFirstPointY As Single
   Private SouthSecondPointX, SouthSecondPointY As Single
+  Public tmrSnapAfterlocate As New Timer
+  Public tmrCheckOffset As New Timer
+  Public varSnapAfterLocateDelay As Int16
 #End Region
 
 #Region "Form Load/Unload"
@@ -85,7 +88,6 @@ Public Class frmMain
       Me.Show()
       Application.DoEvents()
       ' tabCameraControls.SelectTab(tabVisionNorth)
-      frmSplash.lblStatus.Text = "Done!"
       Application.DoEvents()
       DelayTimer(250)
       Me.Height = SystemInformation.PrimaryMonitorSize.Height - 40
@@ -102,19 +104,21 @@ Public Class frmMain
       Application.DoEvents()
       tmrDisplayUpdate.Enabled = True
       'Snap some pictures
+      frmSplash.lblStatus.Text = "Snapping Images"
       Snap(NorthSide)
       Snap(SouthSide)
       Application.DoEvents()
+      'Tab controls
+      tabCameraControls.SelectTab(tabVisionBoth)
+      tabVision(tabVisionBoth, Nothing)
+      UpdatingPartData = False
+      'Open the Serial Port
+      frmSplash.lblStatus.Text = "Initializing the Serial Port"
+      Comm.InitComm()
       'Start the timer to connect vision and PLC
       IOTimer.Interval = 250
       IOTimer.Start()
       IOTimer.Enabled = True
-      'tab controls
-      tabCameraControls.SelectTab(tabVisionBoth)
-      tabVision(tabVisionBoth, Nothing)
-      UpdatingPartData = False
-      frmSplash.lblStatus.Text = "Initializing the Serial Port"
-      Comm.InitComm()
       Application.DoEvents()
     Catch ex As Exception
       ShowVBErrors(Err.Description)
@@ -1251,6 +1255,14 @@ Public Class frmMain
         LocatorResults(FinalOffset).Status = "Sucessfully Completed the Inspection"
         GenerateFinalOffset()
       End If
+      'Update the error string going to the robot
+      If Not LocatorResults(FinalGlassOffset).Success And LocatorResults(FinalMaskOffset).Success Then
+        OffsetString = "Glass not found"
+      ElseIf LocatorResults(FinalGlassOffset).Success And Not LocatorResults(FinalMaskOffset).Success Then
+        OffsetString = "Mask not found"
+      ElseIf Not LocatorResults(FinalGlassOffset).Success And Not LocatorResults(FinalGlassOffset).Success Then
+        OffsetString = "Glass and Mask not found"
+      End If
       lblFinalStatus.Text = LocatorResults(FinalOffset).Status
     Catch ex As Exception
       ShowVBErrors(ex.Message)
@@ -1365,7 +1377,6 @@ Public Class frmMain
         Else
           .Status = "Problem"
         End If
-        Debug.Print("Success =  " & .Success)
       End With
     Catch ex As Exception
       ShowVBErrors(ex.Message)
@@ -1469,7 +1480,7 @@ Public Class frmMain
         .set_MarkerDisplayName("Measure Point 2", True)
         .set_MarkerColor("Measure Point 2", HSDISPLAYLib.hsColor.hsYellow)
         .set_PointMarkerConstraints("Measure Point 2", HSDISPLAYLib.hsPointMarkerConstraints.hsPointNoConstraints)
-        .AddLineMarker("Line", 100, 101, 100, 201, True)
+        .AddLineMarker("Line", 1000, 101, 1000, 201, True)
         .set_MarkerColor("Line", HSDISPLAYLib.hsColor.hsYellow)
       End With
     Catch ex As Exception
@@ -1727,6 +1738,14 @@ Public Class frmMain
     If UpdatingPartData Then Exit Sub
     updn = DirectCast(sender, NumericUpDown)
     frmDataBase.SetValue("Settings", "Value", updn.Name, updn.Value)
+  End Sub
+
+  Private Sub LocateBoth(sender As Object, e As EventArgs) Handles btnLocateBoth.Click
+
+  End Sub
+
+  Private Sub btnTest_Click(sender As Object, e As EventArgs) Handles btnTest.Click
+    Comm.test()
   End Sub
 
   Private Sub CameraSettings_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles updnContrastNorth.ValueChanged, updnExposureNorth.ValueChanged, updnContrastSouth.ValueChanged, updnExposureSouth.ValueChanged
@@ -2097,10 +2116,7 @@ Public Class frmMain
       updnScoreLimitSouthGlass.Value = CSng(frmDataBase.GetValue("Settings", "Value", updnScoreLimitSouthGlass.Name))
       updnScoreLimitNorthMask.Value = CSng(frmDataBase.GetValue("Settings", "Value", updnScoreLimitNorthMask.Name))
       updnScoreLimitSouthMask.Value = CSng(frmDataBase.GetValue("Settings", "Value", updnScoreLimitSouthMask.Name))
-      updnExposureNorth.Value = CSng(frmDataBase.GetValue("Settings", "Value", updnExposureNorth.Name))
-      updnExposureSouth.Value = CSng(frmDataBase.GetValue("Settings", "Value", updnExposureSouth.Name))
-      updnContrastNorth.Value = CSng(frmDataBase.GetValue("Settings", "Value", updnContrastNorth.Name))
-      updnContrastSouth.Value = CSng(frmDataBase.GetValue("Settings", "Value", updnContrastSouth.Name))
+      varSnapAfterLocateDelay = CInt(frmDataBase.GetValue("Settings", "Value", updnScoreLimitSouthMask.Name))
     Catch ex As Exception
       ShowVBErrors(ex.Message)
     End Try
