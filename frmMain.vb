@@ -12,7 +12,6 @@ Public Class frmMain
 #Region "Declarations"
   '
   'General module level variables
-  'Nothing
   Public CurrentFilePath As String 'PartsPath + PartName
   Public VisionDatabasePath As String = Application.StartupPath + "\..\..\Config Data\Vision.cfg" 'App.Path + "\..\Config Data\Vision.cfg"
   Private CalibratePath As String = ConfigPath + "Calibration.cal"
