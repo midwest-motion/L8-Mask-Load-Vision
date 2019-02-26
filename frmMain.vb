@@ -1244,16 +1244,20 @@ Public Class frmMain
       If Not LocatorResults(LocNorthGlass).Success Or Not LocatorResults(LocNorthMask).Success Then
         LocatorResults(FinalOffset).Status = "Problem with North Side"
         lblFinalStatus.BackColor = Color.Red
+        LocatorResults(FinalOffset).Success = False
       ElseIf Not LocatorResults(LocSouthGlass).Success Or Not LocatorResults(LocSouthMask).Success Then
         LocatorResults(FinalOffset).Status = "Problem with South Side"
         lblFinalStatus.BackColor = Color.Red
+        LocatorResults(FinalOffset).Success = False
       ElseIf Not LocatorResults(LocSouthGlass).Success And Not LocatorResults(LocSouthMask).Success Then
         LocatorResults(FinalOffset).Status = "Problem with Both Sides"
         lblFinalStatus.BackColor = Color.Red
+        LocatorResults(FinalOffset).Success = False
       Else
         lblFinalStatus.BackColor = SystemColors.Control
         LocatorResults(FinalOffset).Status = "Sucessfully Completed the Inspection"
         GenerateFinalOffset()
+        LocatorResults(FinalOffset).Success = True
       End If
       'Update the error string going to the robot
       If Not LocatorResults(FinalGlassOffset).Success And LocatorResults(FinalMaskOffset).Success Then
