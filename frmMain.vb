@@ -3,8 +3,9 @@ Option Explicit On
 Imports System.ComponentModel
 Imports VB = Microsoft.VisualBasic
 Imports System.Math
-
-Imports System.Collections.Generic
+Imports System.Text
+Imports System.IO.Ports
+Imports System.Timers
 
 Public Class frmMain
   Inherits Windows.Forms.Form
@@ -47,18 +48,24 @@ Public Class frmMain
   Public OldOffsetstring As String
   Public OffsetString As String
   Public CheckString As String
-  '
-  'Timers
-  Private WithEvents IOTimer As New Timer
-  Private WithEvents SaveMarkersTimer As New Timer
   Private MarkerChanged As Boolean = False
   Private NorthFirstPointX, NorthFirstPointY As Single
   Private NorthSecondPointX, NorthSecondPointY As Single
   Private SouthFirstPointX, SouthFirstPointY As Single
   Private SouthSecondPointX, SouthSecondPointY As Single
-  Public tmrSnapAfterlocate As New Timer
-  Public tmrCheckOffset As New Timer
   Public varSnapAfterLocateDelay As Int16
+  '
+  'Timers
+  Public WithEvents SaveMarkersTimer As New Timer
+  Public WithEvents tmrSnapAfterlocate As New Timer
+  '
+  'Serial Handler
+  Private ReceiveBuffer As New StringBuilder(32768)
+  Private StringFromRobot As String
+  Private CommErrorString As String
+  Private SerialNumber As Integer
+  Private WithEvents SerialPort As New DesktopSerialIO.SerialIO.SerialPort
+
 #End Region
 
 #Region "Form Load/Unload"
@@ -74,7 +81,11 @@ Public Class frmMain
       Application.DoEvents()
       frmSplash.lblStatus.Text = "Get General Settings"
       GetSettings()
-      DelayTimer(250)
+      'Open the Serial Port
+      frmSplash.lblStatus.Text = "Initializing the Serial Port"
+      Application.DoEvents()
+      InitComm()
+      'Initialize the cameras
       frmSplash.lblStatus.Text = "Initializing Cameras"
       Application.DoEvents()
       Success = InitCameras()
@@ -112,14 +123,7 @@ Public Class frmMain
       tabCameraControls.SelectTab(tabVisionBoth)
       tabVision(tabVisionBoth, Nothing)
       UpdatingPartData = False
-      'Open the Serial Port
-      frmSplash.lblStatus.Text = "Initializing the Serial Port"
-      Comm.InitComm()
-      'Start the timer to connect vision and PLC
-      IOTimer.Interval = 250
-      IOTimer.Start()
-      IOTimer.Enabled = True
-      Application.DoEvents()
+      'Initialize Timers
     Catch ex As Exception
       ShowVBErrors(Err.Description)
     Finally
@@ -130,9 +134,6 @@ Public Class frmMain
   Public Sub frmMain_FormClosed(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.FormClosedEventArgs) Handles MyBase.FormClosed
     Try
       'destroy all the vision objects
-      IOTimer.Enabled = False
-      'tmrTime.Enabled = False
-      DelayTimer(IOTimer.Interval + 100)
       HSAcq = Nothing
       HSApp = Nothing
       HSLoc(LocNorthGlass) = Nothing
@@ -837,11 +838,11 @@ Public Class frmMain
     End Try
   End Sub
 
-  Public Sub LocateBoth() Handles btnLocateBoth.Click
+  Private Sub LocateBoth()
     Try
       Do
         '
-        btnLocateBoth.Enabled = False
+        'btnLocateBoth.Enabled = False
         Locate(LocNorthMask, True)
         Application.DoEvents()
         Locate(LocNorthGlass, True)
@@ -850,7 +851,7 @@ Public Class frmMain
         Application.DoEvents()
         Locate(LocSouthGlass, True)
         Application.DoEvents()
-        btnLocateBoth.Enabled = True
+        'btnLocateBoth.Enabled = True
         CalcFinalOffset()
       Loop While chkRepeatLocateBoth.CheckState
     Catch ex As Exception
@@ -1686,27 +1687,6 @@ Public Class frmMain
 
 #Region "Timers"
 
-  Private Sub tmrDelay_Tick1(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrDelay.Tick
-    Try
-      tmrDelay.Enabled = False
-    Catch ex As Exception
-      ShowVBErrors(ex.Message)
-    End Try
-  End Sub
-
-  Public Sub DelayTimer(ByRef TimeInterval As Integer)
-    Try
-      tmrDelay.Interval = TimeInterval
-      tmrDelay.Enabled = True
-      Do
-        System.Windows.Forms.Application.DoEvents()
-      Loop While tmrDelay.Enabled
-    Catch ex As Exception
-      ShowVBErrors(ex.Message)
-    End Try
-
-  End Sub
-
   Private Sub tmrDisplayUpdate_Tick(sender As Object, e As EventArgs) Handles tmrDisplayUpdate.Tick
     Try
       If InitSuccessNorth Then GetTemperature(helperNorth, lblTemperatureNorth)
@@ -1717,12 +1697,170 @@ Public Class frmMain
     End Try
   End Sub
 
-  Private Sub tmrSaveMarkers(sender As Object, e As EventArgs) Handles SaveMarkersTimer.Tick
+  Private Sub tmrSaveMarkers(sender As Object, e As EventArgs) Handles SaveMarkersTimer.Elapsed
     Try
       If MarkerChanged Then
         SaveAllRectangleMarkers()
         MarkerChanged = False
         SaveMarkersTimer.Enabled = False
+      End If
+    Catch ex As Exception
+      ShowVBErrors(ex.Message)
+    End Try
+  End Sub
+
+  Private Sub tmrSnapAfterLocate_Timer()
+    btnSnapBoth.PerformClick()
+    tmrSnapAfterlocate.Enabled = False
+  End Sub
+#End Region
+
+#Region "Serial Handler"
+
+  Public Sub CheckRobotMessages()
+    Dim TempPartName As String
+    Try
+      '
+      'Read data.
+      GeneralRoutines.DelayTimer(50)
+      '
+      'Exit if there is just junk on the line
+      If Len(StringFromRobot) < 12 Then
+        Exit Sub
+      End If
+      frmComm.lstInputBuffer.Items.Add(StringFromRobot)
+      '
+      'truncate input string after the linefeed character
+      If StringFromRobot.Contains("FIND MASK AND GLASS 1000") Then
+        'frmMain.txtCommStatus.Text = "Received Robot Command '" + "FIND MASK AND GLASS + "
+        If ValidSerialNumber() Then
+          'OperationString = "LocateBoth"
+          LocateBoth()
+          SendDataToRobot(txtCommStatus.Text)
+        End If
+        Exit Sub
+      End If
+      '
+      'see if the robot got the offset correctly
+      If StringFromRobot.Contains("X = ") Then
+        txtCommStatus.Text = "Received Robot Command '" + StringFromRobot + "'"
+        CheckString = StringFromRobot
+        Exit Sub
+      End If
+      '
+      'see if the robot requests a part change
+      If StringFromRobot.Contains("CHANGE PART NAME TO ") Then
+        TempPartName = StringFromRobot.IndexOf("CHANGE PART NAME TO ")
+        PartName = StringFromRobot.Substring(20)
+        If (TempPartName = "NO_PART") Or (TempPartName = PartName) Then
+          Exit Sub
+        End If
+        LoadPart(PartName)
+        txtCommStatus.Text = "Received Robot Command '" + StringFromRobot + "'"
+        Exit Sub
+      End If
+    Catch ex As Exception
+      ShowVBErrors(ex.Message)
+    End Try
+  End Sub
+
+  Public Function ValidSerialNumber() As Boolean
+    'Calls the cmdLocateCombined_click routine if a get offset request was received from the robot
+    'Get the serial number off of the end of the string
+    SerialNumber = Val(Trim(Mid(StringFromRobot, Len("FIND MASK AND GLASS") + 1, 100)))
+    If (SerialNumber < 1000) Or (SerialNumber > 1999) Then
+      MsgBox("An Invalid communication serial number was received from the robot" _
+        + vbCr + "This serial number is transmitted from the robot and then" _
+        + vbCr + "transmitted back with the offset to verify that the robot is" _
+        + vbCr + "receiving the correct offset. The serial number must be between 1000 and 2000." _
+        + vbCr + "The vision system won't send an offset until it gets a valid serial number", vbApplicationModal)
+      ValidSerialNumber = False
+    Else
+      ValidSerialNumber = True
+    End If
+  End Function
+
+  Public Function InitComm() As String
+    Try
+      With SerialPort
+        'Close the port
+        Try
+          .PortOpen = False
+        Catch
+        End Try
+        'Set the port number
+        Try
+          .CommPort = 3
+        Catch ex As Exception
+          InitComm = "Unable to Assign Comm Port " & .CommPort.ToString
+        End Try
+        'Set the other data
+        .BitRate = 9600
+        .StopBits = 1
+        .RTSEnable = False
+        .DTREnable = False
+        .DataBits = 8
+        .EnableOnComm = True
+        .Timeout = 500
+        'Open the port
+        .PortOpen = True
+        GeneralRoutines.DelayTimer(500)
+        If Not .PortOpen Then
+          InitComm = "Unable to Open Comm Port " & .CommPort.ToString
+        Else
+          InitComm = "Success"
+        End If
+      End With
+    Catch ex As Exception
+      ShowVBErrors(ex.Message)
+      InitComm = "Runtime Error"
+    End Try
+  End Function
+
+  Public Function TestComm() As String
+    Try
+      With SerialPort
+        If Not .PortOpen Then
+          'Open the port
+          .PortOpen = True
+          If Not .PortOpen Then
+            TestComm = "Unable to Open Comm Port " & .CommPort.ToString
+          Else
+            TestComm = "Success"
+          End If
+        Else
+          TestComm = "Success"
+        End If
+      End With
+    Catch ex As Exception
+      ShowVBErrors(ex.Message)
+      TestComm = "Error"
+    End Try
+  End Function
+
+  Public Sub SendDataToRobot(ByRef Data As String)
+    '
+    'send the offset string
+    Try
+      SerialPort.Output((UCase(Data)) & vbCr)
+    Catch ex As Exception
+      ShowVBErrors(ex.Message)
+    End Try
+  End Sub
+
+  Private Sub SerialPort_OnComm() Handles SerialPort.OnComm
+    Static BigString As String
+    Try
+      '
+      'Read data.
+      System.Threading.Thread.Sleep(10)
+      BigString = BigString + SerialPort.InputString
+      BigString = "FIND MASK AND GLASS 1000" & vbCr
+      If BigString.Contains(vbCr) Or BigString.Contains(Constants.vbLf) Then
+        StringFromRobot = BigString
+        BigString = ""
+        SerialPortReadIsDone = True
+        CheckRobotMessages()
       End If
     Catch ex As Exception
       ShowVBErrors(ex.Message)
@@ -1744,12 +1882,16 @@ Public Class frmMain
     frmDataBase.SetValue("Settings", "Value", updn.Name, updn.Value)
   End Sub
 
-  Private Sub LocateBoth(sender As Object, e As EventArgs) Handles btnLocateBoth.Click
-
+  Private Sub btn_LocateBoth(sender As Object, e As EventArgs) Handles btnLocateBoth.Click
+    LocateBoth()
   End Sub
 
   Private Sub btnTest_Click(sender As Object, e As EventArgs) Handles btnTest.Click
-    Comm.test()
+    SendDataToRobot("Hi There" & vbLf)
+  End Sub
+
+  Private Sub tmrDelay_Tick(sender As Object, e As EventArgs)
+    tmrDelay.Enabled = False
   End Sub
 
   Private Sub CameraSettings_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles updnContrastNorth.ValueChanged, updnExposureNorth.ValueChanged, updnContrastSouth.ValueChanged, updnExposureSouth.ValueChanged

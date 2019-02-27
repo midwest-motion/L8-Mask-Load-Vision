@@ -5,7 +5,6 @@ Module mVars
   Public Const Rad As Double = 180 / Math.PI
   Public NorthSide As Short = 0
   Public SouthSide As Short = 1
-
   Public Const LocNorthGlass As Short = 0
   Public Const LocNorthMask As Short = 1
   Public Const LocSouthGlass As Short = 2
@@ -35,7 +34,7 @@ Module mVars
 	Public s32Cam As Integer
   Public ConnectionFlag As Boolean
   Public SerialPortReadIsDone As Boolean = False
-  Public Comm As New clsSerialHandler
+  Public OperationString As String
   '
   Public Deposit As PointData
 	Public SavedDeposit As PointData

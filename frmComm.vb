@@ -19,7 +19,7 @@ Friend Class frmComm
   End Sub
 
   Private Sub cmdEnter_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdEnter.Click
-    Comm.SendDataToRobot(txtSendCommand.Text & vbCr)
+    frmMain.SendDataToRobot(txtSendCommand.Text & vbCr)
   End Sub
 
   Private Sub lstInputBuffer_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstInputBuffer.DoubleClick

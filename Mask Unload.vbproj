@@ -226,7 +226,6 @@
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include="AssemblyInfo.vb" />
-    <Compile Include="clsSerialHandler.vb" />
     <Compile Include="frmAlarmMsg.designer.vb">
       <DependentUpon>frmAlarmMsg.vb</DependentUpon>
     </Compile>
@@ -251,6 +250,7 @@
     <Compile Include="frmShowError.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="GeneralRoutines.vb" />
     <Compile Include="PicViewer.Designer.vb">
       <DependentUpon>PicViewer.vb</DependentUpon>
     </Compile>

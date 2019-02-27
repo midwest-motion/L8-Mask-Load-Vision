@@ -94,7 +94,6 @@
     Me.mnuSystemDocumentation = New System.Windows.Forms.ToolStripMenuItem()
     Me.lblPartLoaded = New System.Windows.Forms.Label()
     Me.lblPartTitle = New System.Windows.Forms.Label()
-    Me.tmrDelay = New System.Windows.Forms.Timer(Me.components)
     Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
     Me.lblVisionMessageSouthMask = New System.Windows.Forms.Label()
     Me.btnDetailsSouthMask = New System.Windows.Forms.Button()
@@ -127,6 +126,7 @@
     Me.btnTrainExistingSouthGlass = New System.Windows.Forms.Button()
     Me.btnDetailsSouthGlass = New System.Windows.Forms.Button()
     Me.lblVisionMessageSouthGlass = New System.Windows.Forms.Label()
+    Me.btnTest = New System.Windows.Forms.Button()
     Me.TmrPassword = New System.Windows.Forms.Timer(Me.components)
     Me.tmrDisplayUpdate = New System.Windows.Forms.Timer(Me.components)
     Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
@@ -334,7 +334,6 @@
     Me.lblPiece2DescR = New System.Windows.Forms.Label()
     Me.grpVBErrors = New System.Windows.Forms.GroupBox()
     Me.lstVBError = New System.Windows.Forms.ListBox()
-    Me.btnTest = New System.Windows.Forms.Button()
     Me.MainMenu1.SuspendLayout()
     CType(Me.updnExposureNorth, System.ComponentModel.ISupportInitialize).BeginInit()
     CType(Me.updnContrastNorth, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -566,10 +565,6 @@
     Me.lblPartTitle.Size = New System.Drawing.Size(483, 24)
     Me.lblPartTitle.TabIndex = 32
     Me.lblPartTitle.Text = "Nothing"
-    '
-    'tmrDelay
-    '
-    Me.tmrDelay.Interval = 1
     '
     'ToolTip1
     '
@@ -1115,6 +1110,24 @@
     Me.lblVisionMessageSouthGlass.TextAlign = System.Drawing.ContentAlignment.TopCenter
     Me.ToolTip1.SetToolTip(Me.lblVisionMessageSouthGlass, "The status of the most recent locate attempt.  Click the Details button for more " &
         "information. ")
+    '
+    'btnTest
+    '
+    Me.btnTest.BackColor = System.Drawing.Color.Transparent
+    Me.btnTest.Cursor = System.Windows.Forms.Cursors.Default
+    Me.btnTest.FlatStyle = System.Windows.Forms.FlatStyle.System
+    Me.btnTest.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.btnTest.ForeColor = System.Drawing.SystemColors.ControlText
+    Me.btnTest.Location = New System.Drawing.Point(362, 60)
+    Me.btnTest.Name = "btnTest"
+    Me.btnTest.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.btnTest.Size = New System.Drawing.Size(138, 26)
+    Me.btnTest.TabIndex = 193
+    Me.btnTest.TabStop = False
+    Me.btnTest.Text = "Test"
+    Me.ToolTip1.SetToolTip(Me.btnTest, "Will locate the glass based on the trained model associated with the part.  Will " &
+        "continuously repeat if the repeat box is checked")
+    Me.btnTest.UseVisualStyleBackColor = False
     '
     'TmrPassword
     '
@@ -3763,24 +3776,6 @@
     Me.lstVBError.TabIndex = 24
     Me.lstVBError.TabStop = False
     '
-    'btnTest
-    '
-    Me.btnTest.BackColor = System.Drawing.Color.Transparent
-    Me.btnTest.Cursor = System.Windows.Forms.Cursors.Default
-    Me.btnTest.FlatStyle = System.Windows.Forms.FlatStyle.System
-    Me.btnTest.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.btnTest.ForeColor = System.Drawing.SystemColors.ControlText
-    Me.btnTest.Location = New System.Drawing.Point(362, 60)
-    Me.btnTest.Name = "btnTest"
-    Me.btnTest.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.btnTest.Size = New System.Drawing.Size(138, 26)
-    Me.btnTest.TabIndex = 193
-    Me.btnTest.TabStop = False
-    Me.btnTest.Text = "Test"
-    Me.ToolTip1.SetToolTip(Me.btnTest, "Will locate the glass based on the trained model associated with the part.  Will " &
-        "continuously repeat if the repeat box is checked")
-    Me.btnTest.UseVisualStyleBackColor = False
-    '
     'frmMain
     '
     Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 16.0!)
@@ -3882,7 +3877,6 @@
     Me.PerformLayout()
 
   End Sub
-  Public WithEvents tmrDelay As System.Windows.Forms.Timer
   Friend WithEvents ToolTip1 As System.Windows.Forms.ToolTip
   Public WithEvents mnuSeperator2 As System.Windows.Forms.ToolStripSeparator
   Friend WithEvents mnuVerifyVisionAccuracy As System.Windows.Forms.ToolStripMenuItem
