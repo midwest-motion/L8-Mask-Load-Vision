@@ -7,6 +7,7 @@ Imports System.Text
 Imports System.IO.Ports
 Imports System.Timers
 
+
 Public Class frmMain
   Inherits Windows.Forms.Form
 
@@ -75,6 +76,7 @@ Public Class frmMain
     Dim Success As Boolean
     Dim I As Integer = 0
     Try
+      CheckForIllegalCrossThreadCalls = False
       My.Application.Log.WriteEntry(My.Application.Info.DirectoryPath & "SquareLog.txt", 0)
       frmSplash.Show()
       frmSplash.lblStatus.Text = "Loading General Settings"
@@ -226,7 +228,7 @@ Public Class frmMain
     End Try
   End Sub
 
-  Public Sub ShowVBErrors(ByRef exMessage As String, Optional ByRef Message As String = "")
+  Public Sub ShowVBErrors(ByRef RoutineName As String, Optional ByRef Message As String = "")
     Dim TimeStamp As Date
     Dim StackTrace As New Diagnostics.StackFrame(1)
     Dim StackMessage As String
@@ -235,11 +237,7 @@ Public Class frmMain
     StackLineNumber = StackTrace.GetFileLineNumber()
     Try
       TimeStamp = Now()
-      If Message <> "" Then
-        lstVBError.Items.Insert(0, Message & "  " & Message)
-      Else
-        lstVBError.Items.Insert(0, Message & "  " & exMessage)
-      End If
+      lstVBError.Items.Insert(0, RoutineName & "  " & Message)
       lstVBError.Items.Insert(0, "[" & StackMessage & "]")
       'CheckForIllegalCrossThreadCalls = False
       lstVBError.Items.Insert(0, "Line " & StackLineNumber.ToString & " [" & StackMessage & "] ")
@@ -249,7 +247,7 @@ Public Class frmMain
       End If
       Exit Sub
     Catch ex As Exception
-      MsgBox("ShowVBErrors Routine Error")
+      MsgBox("ShowVBErrors " & vbCr & RoutineName & vbCr & Message)
     End Try
   End Sub
 
@@ -1081,7 +1079,7 @@ Public Class frmMain
               lblVisionPoseRNorthGlass.Text = ""
               lblVisionPoseScoreNorthGlass.Text = ""
               lblVisionMessageNorthGlass.Text = "Model was Not Located - " & CStr(HSLoc(NorthSide).MessageDescription(0))
-              lblVisionMessageNorthGlass.BackColor = Color.Red
+              ' lblVisionMessageNorthGlass.BackColor = Color.Red
               LocatorResults(Side).Success = False
             Case LocNorthMask
               lblVisionPoseXNorthMask.Text = ""
@@ -1089,7 +1087,7 @@ Public Class frmMain
               lblVisionPoseRNorthMask.Text = ""
               lblVisionPoseScoreNorthMask.Text = ""
               lblVisionMessageNorthMask.Text = "Model was Not Located - " & CStr(HSLoc(SouthSide).MessageDescription(0))
-              lblVisionMessageNorthMask.BackColor = Color.Red
+              'lblVisionMessageNorthMask.BackColor = Color.Red
               LocatorResults(Side).Success = False
             Case LocSouthGlass
               lblVisionPoseXSouthGlass.Text = ""
@@ -1097,7 +1095,7 @@ Public Class frmMain
               lblVisionPoseRSouthGlass.Text = ""
               lblVisionPoseScoreSouthGlass.Text = ""
               lblVisionMessageSouthGlass.Text = "Model was Not Located - " & CStr(HSLoc(SouthSide).MessageDescription(0))
-              lblVisionMessageSouthGlass.BackColor = Color.Red
+              'lblVisionMessageSouthGlass.BackColor = Color.Red
               LocatorResults(Side).Success = False
             Case LocSouthMask
               lblVisionPoseXSouthMask.Text = ""
@@ -1105,7 +1103,7 @@ Public Class frmMain
               lblVisionPoseRSouthMask.Text = ""
               lblVisionPoseScoreSouthMask.Text = ""
               lblVisionMessageSouthMask.Text = "Model was Not Located - " & CStr(HSLoc(SouthSide).MessageDescription(0))
-              lblVisionMessageSouthMask.BackColor = Color.Red
+              'lblVisionMessageSouthMask.BackColor = Color.Red
               LocatorResults(Side).Success = False
           End Select
           AddRectangleMarker(Side)
@@ -1996,7 +1994,7 @@ Public Class frmMain
       Try
         FSO.DeleteFolder(KillPath, True)
       Catch ex As Exception
-        ShowVBErrors(ex, "Error Deleting the Directory")
+        ShowVBErrors("mnuDeletePart_DropDownItemClicked", ex.Message)
         Exit Sub
       End Try
       MsgBox("Part was permanently deleted", MsgBoxStyle.OkOnly)
@@ -2203,22 +2201,22 @@ Public Class frmMain
       Try
         Success = HSLoc(NorthSide).LoadModelDatabase(CurrentFilePath & "North Mask.hdb")
       Catch ex As Exception
-        ShowVBErrors(ex, "Unable to load the model file for the North Mask")
+        ShowVBErrors("LoadPart", "Unable to load the model file for the North Mask")
       End Try
       Try
         Success = HSLoc(SouthSide).LoadModelDatabase(CurrentFilePath & "South Mask.hdb")
       Catch ex As Exception
-        ShowVBErrors(ex, "Unable to load the model file for the South Mask")
+        ShowVBErrors("LoadPart", "Unable to load the model file for the South Mask")
       End Try
       Try
         Success = HSLoc(NorthSide).LoadModelDatabase(CurrentFilePath & "North Glass.hdb")
       Catch ex As Exception
-        ShowVBErrors(ex, "Unable to load the model file for the North Glass")
+        ShowVBErrors("LoadPart", "Unable to load the model file for the North Glass")
       End Try
       Try
         Success = HSLoc(NorthSide).LoadModelDatabase(CurrentFilePath & "South Glass.hdb")
       Catch ex As Exception
-        ShowVBErrors(ex, "Unable to load the model file for the South Glass")
+        ShowVBErrors("LoadPart", "Unable to load the model file for the South Glass")
       End Try
       HSDisplayNorth.RemoveAllMarker()
       frmSplash.lblStatus.Text = "Camera Settings"
