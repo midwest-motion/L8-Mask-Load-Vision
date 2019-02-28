@@ -157,7 +157,7 @@
       'Sort the list
       Array.Sort(Parts)
     Catch ex As Exception
-      frmMain.ShowVBErrors(ex.Message)
+      frmMain.ShowVBErrors("GetFileNames", ex.Message)
     End Try
   End Sub
 

@@ -54,16 +54,16 @@ Public Class frmMain
   Private SouthFirstPointX, SouthFirstPointY As Single
   Private SouthSecondPointX, SouthSecondPointY As Single
   Public varSnapAfterLocateDelay As Int16
-  '
   'Timers
   Public WithEvents SaveMarkersTimer As New Timer
   Public WithEvents tmrSnapAfterlocate As New Timer
-  '
+  Public WithEvents tmrOnComm As New Timer
   'Serial Handler
   Private ReceiveBuffer As New StringBuilder(32768)
   Private StringFromRobot As String
   Private CommErrorString As String
   Private SerialNumber As Integer
+  Private BigString As String
   Private WithEvents SerialPort As New DesktopSerialIO.SerialIO.SerialPort
 
 #End Region
@@ -113,7 +113,10 @@ Public Class frmMain
       UpdateUpDownControls()
       ToolTip1.AutoPopDelay = Integer.MaxValue
       Application.DoEvents()
+      'Timers
       tmrDisplayUpdate.Enabled = True
+      tmrOnComm.Interval = 3000
+      'tmrOnComm.Start()
       'Snap some pictures
       frmSplash.lblStatus.Text = "Snapping Images"
       Snap(NorthSide)
@@ -125,7 +128,7 @@ Public Class frmMain
       UpdatingPartData = False
       'Initialize Timers
     Catch ex As Exception
-      ShowVBErrors(Err.Description)
+      ShowVBErrors("frmMain_Load", ex.Message)
     Finally
       frmSplash.Hide()
     End Try
@@ -149,7 +152,6 @@ Public Class frmMain
       If Me.Text <> "Loading" Then
         MsgBox("Errors were encountered While quitting", MsgBoxStyle.SystemModal)
       End If
-      ShowVBErrors(ex.Message)
     End Try
   End Sub
 
@@ -166,9 +168,8 @@ Public Class frmMain
         End
       End If
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("CheckAppRunning", ex.Message)
     End Try
-
   End Sub
 
   Private Sub UpdateTabs()
@@ -221,7 +222,7 @@ Public Class frmMain
       AddAllRectangleMarkers()
       Exit Sub
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("ActivatePassword", ex.Message)
     End Try
   End Sub
 
@@ -234,16 +235,21 @@ Public Class frmMain
     StackLineNumber = StackTrace.GetFileLineNumber()
     Try
       TimeStamp = Now()
-      lstVBError.Items.Insert(0, Message & "  " & exMessage)
+      If Message <> "" Then
+        lstVBError.Items.Insert(0, Message & "  " & Message)
+      Else
+        lstVBError.Items.Insert(0, Message & "  " & exMessage)
+      End If
       lstVBError.Items.Insert(0, "[" & StackMessage & "]")
-      'lstVBError.Items.Insert(0, "Line " & StackLineNumber.ToString & " [" & StackMessage & "] ")
+      'CheckForIllegalCrossThreadCalls = False
+      lstVBError.Items.Insert(0, "Line " & StackLineNumber.ToString & " [" & StackMessage & "] ")
       lstVBError.Items.Insert(0, "")
       If lstVBError.Items.Count > 100 Then
         lstVBError.Items.RemoveAt(99)
       End If
       Exit Sub
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      MsgBox("ShowVBErrors Routine Error")
     End Try
   End Sub
 
@@ -251,7 +257,7 @@ Public Class frmMain
     Try
       lstVBError.Items.Clear()
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("lstVBError_DoubleClick", ex.Message)
     End Try
   End Sub
 
@@ -273,7 +279,7 @@ Public Class frmMain
       Success = helperSouth.SetSimpleFeature("gain", CSng(updnContrastSouth.Value))
       If Not Success Then ShowVBErrors("Unable To Set South Camera Contrast ")
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("SetCameraSettings", ex.Message)
     End Try
   End Sub
 
@@ -296,7 +302,7 @@ Public Class frmMain
       End If
       Return False
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("InitCameras", ex.Message)
       Return False
     End Try
   End Function
@@ -312,7 +318,7 @@ Public Class frmMain
         Success = helperSouth.GetSnapshot(ImageSouth)
       End If
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("GetCameraImage", ex.Message)
       Success = False
       AcquisitionError(Side)
     Finally
@@ -333,7 +339,7 @@ Public Class frmMain
         SetCameraSettings()
       End If
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("AcquisitionError", ex.Message)
     End Try
 
   End Sub
@@ -352,7 +358,7 @@ Public Class frmMain
         tempLabel.BackColor = Color.Red
       End If
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("GetTemperature", ex.Message)
     End Try
   End Sub
 
@@ -498,7 +504,7 @@ Public Class frmMain
           Loop While chkSnapRepeatSouth.Checked
       End Select
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("btnSnap_Click", ex.Message)
     End Try
   End Sub
 
@@ -543,9 +549,8 @@ Public Class frmMain
       Next MessageID
       MsgBox(Description, MsgBoxStyle.OkOnly Or MsgBoxStyle.SystemModal)
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("btnDetails_Click", ex.Message)
     End Try
-
   End Sub
 
   Private Sub btnSearch_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles _
@@ -569,7 +574,7 @@ Public Class frmMain
       SaveAllRectangleMarkers()
       AddAllRectangleMarkers()
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("btnSearch_Click", ex.Message)
     End Try
   End Sub
 #End Region
@@ -695,7 +700,7 @@ Public Class frmMain
       Return Success
       Exit Function
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("InitVision", ex.Message)
       Return False
     End Try
   End Function
@@ -705,7 +710,7 @@ Public Class frmMain
       Dim Status As Boolean
       Status = HSApp.ProcessManager.SaveConfiguration(0, VisionDatabasePath)
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("SaveHexsight", ex.Message)
     End Try
   End Sub
 
@@ -787,7 +792,7 @@ Public Class frmMain
       Calibrating = False
       System.Windows.Forms.Application.DoEvents()
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("CalibrateCam", ex.Message)
     End Try
   End Sub
 
@@ -834,7 +839,7 @@ Public Class frmMain
       GC.Collect()
       GC.WaitForPendingFinalizers()
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("btnLocate_Click", ex.Message)
     End Try
   End Sub
 
@@ -855,7 +860,7 @@ Public Class frmMain
         CalcFinalOffset()
       Loop While chkRepeatLocateBoth.CheckState
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("LocateBoth", ex.Message)
     End Try
   End Sub
 
@@ -922,7 +927,7 @@ Public Class frmMain
       InRoutine = False
       Return True
     Catch ex As Exception
-      ShowVBErrors(ex.Message, " Locator " & Side)
+      ShowVBErrors("Locate" & Side, ex.Message)
       InRoutine = False
       Return False
     End Try
@@ -974,7 +979,7 @@ Public Class frmMain
       '  Application.DoEvents()
       InRoutine = False
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("Snap", ex.Message)
     End Try
   End Sub
 
@@ -1129,7 +1134,7 @@ Public Class frmMain
         LocatorResults(Side).Success = 2
       End If
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("Find", ex.Message)
     End Try
   End Sub
 
@@ -1181,14 +1186,14 @@ Public Class frmMain
         End Select
       End If
     Catch ex As Exception
-      ShowVBErrors(Err.Description)
+      ShowVBErrors("UpdateVisionStatus", ex.Message)
     End Try
   End Sub
 
   Private Sub CheckVerificationLimits(Side As Int16)
     Try
     Catch ex As Exception
-      ShowVBErrors(ex.Message, " Locator" & Side)
+      ShowVBErrors("CheckVerificationLimits" & Side, ex.Message)
     End Try
   End Sub
 
@@ -1198,7 +1203,7 @@ Public Class frmMain
         frmDataBase.SetValue("Partdata", "Value", sender.Name, CStr(sender.Value))
       End If
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("updnlimit_ValueChanged", ex.Message)
     End Try
   End Sub
 
@@ -1270,7 +1275,7 @@ Public Class frmMain
       End If
       lblFinalStatus.Text = LocatorResults(FinalOffset).Status
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("CalcFinalOffset", ex.Message)
     End Try
   End Sub
 
@@ -1339,7 +1344,7 @@ Public Class frmMain
         txtCommStatus.Text = OffsetString
       End With
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("GenerateFinalOffset", ex.Message)
     End Try
   End Sub
 
@@ -1384,7 +1389,7 @@ Public Class frmMain
         End If
       End With
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("CalcCombinedOffset", ex.Message)
     End Try
   End Sub
 
@@ -1426,7 +1431,7 @@ Public Class frmMain
           End With
       End Select
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("UpdateAxisMarkers", ex.Message)
     End Try
   End Sub
 
@@ -1454,7 +1459,7 @@ Public Class frmMain
           End With
       End Select
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("AddTrainingMarker", ex.Message)
     End Try
   End Sub
 
@@ -1489,7 +1494,7 @@ Public Class frmMain
         .set_MarkerColor("Line", HSDISPLAYLib.hsColor.hsYellow)
       End With
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("AddPointMarkers", ex.Message)
     End Try
   End Sub
 
@@ -1592,7 +1597,7 @@ Public Class frmMain
           End With
       End Select
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("AddRectangleMarker", ex.Message)
     End Try
   End Sub
 
@@ -1649,7 +1654,7 @@ Public Class frmMain
       SearchArea.Width = Locator.ToolWidth
       SearchArea.Height = Locator.ToolHeight
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("UpdateRectangleMarker", ex.Message)
     End Try
   End Sub
 
@@ -1670,7 +1675,7 @@ Public Class frmMain
       SearchArea.Height = Locator.ToolHeight
       Locator.SaveModelDatabase(CurrentFilePath & ModelName)
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("SaveRectangleMarker", ex.Message)
     End Try
   End Sub
 
@@ -1693,7 +1698,7 @@ Public Class frmMain
       If InitSuccessSouth Then GetTemperature(helperSouth, lblTemperatureSouth)
       tmrDisplayUpdate.Enabled = True
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("tmrDisplayUpdate_Tick", ex.Message)
     End Try
   End Sub
 
@@ -1705,7 +1710,7 @@ Public Class frmMain
         SaveMarkersTimer.Enabled = False
       End If
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("tmrSaveMarkers", ex.Message)
     End Try
   End Sub
 
@@ -1713,11 +1718,36 @@ Public Class frmMain
     btnSnapBoth.PerformClick()
     tmrSnapAfterlocate.Enabled = False
   End Sub
+
+  'Private Sub OnComm_Timer(sender As Object, e As EventArgs) Handles tmrOnComm.Elapsed
+  '  Static InRoutine As Boolean
+  '  Try
+  '    tmrOnComm.Stop()
+  '    If InRoutine Then
+  '      System.Threading.Thread.Sleep(500)
+  '      InRoutine = False
+  '      Exit Sub
+  '    End If
+  '    InRoutine = True
+  '    'If SerialPortReadIsDone Then
+  '    'btnClearMarkersBoth.PerformClick()
+  '    Snap(NorthSide)
+  '    'CheckRobotMessages()
+  '    '  SerialPortReadIsDone = False
+  '    SerialPortReadIsDone = False
+  '    InRoutine = False
+  '    'End If
+
+  '  Catch ex As Exception
+  '    showvberrors(ex)
+  '    InRoutine = False
+  '  End Try
+  'End Sub
 #End Region
 
 #Region "Serial Handler"
 
-  Public Sub CheckRobotMessages()
+  Private Sub CheckRobotMessages()
     Dim TempPartName As String
     Try
       '
@@ -1737,6 +1767,7 @@ Public Class frmMain
           'OperationString = "LocateBoth"
           LocateBoth()
           SendDataToRobot(txtCommStatus.Text)
+          SerialPortReadIsDone = False
         End If
         Exit Sub
       End If
@@ -1760,7 +1791,7 @@ Public Class frmMain
         Exit Sub
       End If
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("CheckRobotMessages", ex.Message)
     End Try
   End Sub
 
@@ -1812,7 +1843,7 @@ Public Class frmMain
         End If
       End With
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("InitComm", ex.Message)
       InitComm = "Runtime Error"
     End Try
   End Function
@@ -1833,7 +1864,7 @@ Public Class frmMain
         End If
       End With
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("TestComm", ex.Message)
       TestComm = "Error"
     End Try
   End Function
@@ -1844,28 +1875,29 @@ Public Class frmMain
     Try
       SerialPort.Output((UCase(Data)) & vbCr)
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("SendDataToRobot", ex.Message)
     End Try
   End Sub
 
   Private Sub SerialPort_OnComm() Handles SerialPort.OnComm
-    Static BigString As String
     Try
       '
       'Read data.
-      System.Threading.Thread.Sleep(10)
+      Threading.Thread.Sleep(10)
       BigString = BigString + SerialPort.InputString
       BigString = "FIND MASK AND GLASS 1000" & vbCr
       If BigString.Contains(vbCr) Or BigString.Contains(Constants.vbLf) Then
         StringFromRobot = BigString
         BigString = ""
-        SerialPortReadIsDone = True
         CheckRobotMessages()
+        SerialPortReadIsDone = True
       End If
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("SerialPort_OnComm", ex.Message)
     End Try
   End Sub
+
+
 
 #End Region
 
@@ -1888,6 +1920,8 @@ Public Class frmMain
 
   Private Sub btnTest_Click(sender As Object, e As EventArgs) Handles btnTest.Click
     SendDataToRobot("Hi There" & vbLf)
+    tmrOnComm.Enabled = True
+    tmrOnComm.Start()
   End Sub
 
   Private Sub tmrDelay_Tick(sender As Object, e As EventArgs)
@@ -1923,7 +1957,7 @@ Public Class frmMain
       Exit Sub
     Catch ex As Exception
       InRoutine = False
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("CameraSettings_ValueChanged", ex.Message)
     End Try
   End Sub
 
@@ -1962,7 +1996,7 @@ Public Class frmMain
       Try
         FSO.DeleteFolder(KillPath, True)
       Catch ex As Exception
-        ShowVBErrors(ex.Message, "Error Deleting the Directory")
+        ShowVBErrors(ex, "Error Deleting the Directory")
         Exit Sub
       End Try
       MsgBox("Part was permanently deleted", MsgBoxStyle.OkOnly)
@@ -2049,7 +2083,7 @@ Public Class frmMain
       TableName = "Settings"
       frmDataBase.Show()
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("mnuGeneralSettings_Click", ex.Message)
     End Try
   End Sub
 
@@ -2058,19 +2092,18 @@ Public Class frmMain
       TableName = "PartData"
       frmDataBase.Show()
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("mnuPartSettings_Click", ex.Message)
     End Try
 
   End Sub
 
-  Private Sub mnuModifyHexsightControls_Click_1(sender As Object, e As EventArgs) Handles mnuModifyHexsightControls.Click
+  Private Sub mnuModifyHexsightControls_Click(sender As Object, e As EventArgs) Handles mnuModifyHexsightControls.Click
     Try
       frmSetupVision.Show()
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("mnuModifyHexsightControls_Click", ex.Message)
     End Try
   End Sub
-
 
 #End Region
 
@@ -2088,7 +2121,7 @@ Public Class frmMain
       myProcess.Start()
 
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("StartHelp", ex.Message)
       MsgBox("The file that you tried to open was not available" & vbCr &
                                 "It should be located:" & vbCr & HelpFile, MsgBoxStyle.SystemModal)
     End Try
@@ -2098,20 +2131,20 @@ Public Class frmMain
     Try
       StartHelp(HelpPath & "Calibration.pdf", False)
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("mnuHowToCalibrateHelp_Click", ex.Message)
     End Try
   End Sub
 
   Private Sub btnSnapBoth_Click(sender As Object, e As EventArgs) Handles btnSnapBoth.Click
     Do
       Try
-        While chkRepeatSnapBoth.Checked
+        Do
           Snap(NorthSide)
           Snap(SouthSide)
           If chkRepeatSnapBoth.Checked Then DelayTimer(50)
-        End While
+        Loop While chkRepeatSnapBoth.Checked
       Catch ex As Exception
-        ShowVBErrors(ex.Message)
+        ShowVBErrors("btnSnapBoth_Click", ex.Message)
       End Try
     Loop While chkRepeatSnapBoth.Checked = True
   End Sub
@@ -2120,7 +2153,7 @@ Public Class frmMain
     Try
       StartHelp(HelpPath & "line2Manual.pdf", False)
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("mnuSystemDocumentation_Click", ex.Message)
     End Try
   End Sub
 
@@ -2128,7 +2161,7 @@ Public Class frmMain
     Try
       StartHelp(HelpPath & "TrainVisionHelp.pdf", False)
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("mnuTrainingVisionHelp_Click", ex.Message)
     End Try
   End Sub
 
@@ -2136,7 +2169,7 @@ Public Class frmMain
     Try
       StartHelp(HelpPath & "SquaringTrainingProcedure.pdf", False)
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("mnuSquaringTrainingProcedure_Click", ex.Message)
     End Try
 
   End Sub
@@ -2145,7 +2178,7 @@ Public Class frmMain
     Try
       StartHelp("C:\Program Files\HexSight 4.1\Documentation\4.1.1.28-HexSight_User_Guide.pdf", False)
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("mnuHexsightUserGuideHelp_Click", ex.Message)
     End Try
 
   End Sub
@@ -2170,22 +2203,22 @@ Public Class frmMain
       Try
         Success = HSLoc(NorthSide).LoadModelDatabase(CurrentFilePath & "North Mask.hdb")
       Catch ex As Exception
-        ShowVBErrors(ex.Message, "Unable to load the model file for the North Mask")
+        ShowVBErrors(ex, "Unable to load the model file for the North Mask")
       End Try
       Try
         Success = HSLoc(SouthSide).LoadModelDatabase(CurrentFilePath & "South Mask.hdb")
       Catch ex As Exception
-        ShowVBErrors(ex.Message, "Unable to load the model file for the South Mask")
+        ShowVBErrors(ex, "Unable to load the model file for the South Mask")
       End Try
       Try
         Success = HSLoc(NorthSide).LoadModelDatabase(CurrentFilePath & "North Glass.hdb")
       Catch ex As Exception
-        ShowVBErrors(ex.Message, "Unable to load the model file for the North Glass")
+        ShowVBErrors(ex, "Unable to load the model file for the North Glass")
       End Try
       Try
         Success = HSLoc(NorthSide).LoadModelDatabase(CurrentFilePath & "South Glass.hdb")
       Catch ex As Exception
-        ShowVBErrors(ex.Message, "Unable to load the model file for the South Glass")
+        ShowVBErrors(ex, "Unable to load the model file for the South Glass")
       End Try
       HSDisplayNorth.RemoveAllMarker()
       frmSplash.lblStatus.Text = "Camera Settings"
@@ -2196,7 +2229,7 @@ Public Class frmMain
       AddPointMarkers()
       SetCameraSettings()
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("LoadPart", ex.Message)
     End Try
   End Sub
 
@@ -2250,7 +2283,7 @@ Public Class frmMain
       '  Next Obj
       'Next GroupBox
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("UpdateUpDownControls", ex.Message)
     End Try
   End Sub
 
@@ -2264,7 +2297,7 @@ Public Class frmMain
       updnScoreLimitSouthMask.Value = CSng(frmDataBase.GetValue("Settings", "Value", updnScoreLimitSouthMask.Name))
       varSnapAfterLocateDelay = CInt(frmDataBase.GetValue("Settings", "Value", updnScoreLimitSouthMask.Name))
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("GetSettings", ex.Message)
     End Try
   End Sub
 
@@ -2340,7 +2373,7 @@ Public Class frmMain
         End With
       End If
     Catch ex As Exception
-      ShowVBErrors(ex.Message)
+      ShowVBErrors("tabVision", ex.Message)
     End Try
   End Sub
 

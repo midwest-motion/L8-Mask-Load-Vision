@@ -15,7 +15,7 @@
       Loop
       Return txtPassword.Text
     Catch ex As Exception
-      frmMain.ShowVBErrors(ex.Message)
+      frmMain.ShowVBErrors(" GetPassword", ex.Message)
       Return ""
     End Try
   End Function
@@ -33,18 +33,17 @@
       InputString_Renamed = StrConv(InputString_Renamed, VbStrConv.Uppercase)
       InputString_Renamed = UCase(InputString_Renamed)
       PassWord = frmDataBase.GetValue("Settings", "Value", "Password")
-			If InputString_Renamed = UCase(PassWord) Or InputString_Renamed = "MWMOTION" Or InputString_Renamed = "Automation921" Then
-				frmMain.ActivatePassword(True)
-				frmMain.TmrPassword.Interval = (1000 * 60 * 10)
-				frmMain.TmrPassword.Enabled = False
-				txtPassword.Text = ""
-				Me.Hide()
-			Else
-				MsgBox("Password is Incorrect", MsgBoxStyle.SystemModal)
-				txtPassword.Focus()
-			End If
+      If InputString_Renamed = UCase(PassWord) Or InputString_Renamed = "MWMOTION" Or InputString_Renamed = "Automation921" Then
+        frmMain.ActivatePassword(True)
+        frmMain.TmrPassword.Interval = (1000 * 60 * 10)
+        frmMain.TmrPassword.Enabled = False
+        txtPassword.Text = ""
+        Me.Hide()
+      Else
+        MsgBox("Password is Incorrect", MsgBoxStyle.SystemModal)
+        txtPassword.Focus()
+      End If
     End If
-
   End Sub
 
   Public Sub ShowMessage(ByVal Message As String)
@@ -57,12 +56,12 @@
     Loop
     Me.Close()
   End Sub
+
   Private Sub Timer1_tick() Handles Timer1.Tick
     CloseMessageForm = True
   End Sub
 
-
-    Private Sub frmPassword_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+  Private Sub frmPassword_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 		txtPassword.Focus()
     End Sub
 

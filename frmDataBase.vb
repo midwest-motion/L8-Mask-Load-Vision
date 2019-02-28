@@ -93,7 +93,7 @@ Friend Class frmDataBase
       Catch
       End Try
       ErrorString = "Unable to read from the database '" & TableName & "' the value for the item '" & VariableName & "'"
-      frmMain.ShowVBErrors(ex.Message)
+      frmMain.ShowVBErrors("GetValue", ex.Message)
       Return DatabaseValue
     End Try
   End Function
@@ -116,7 +116,7 @@ Friend Class frmDataBase
       Catch
       End Try
       ErrorString = "Unable to write to the database '" & Tablename & "' the value for the item '" & VariableName & "'"
-      frmMain.ShowVBErrors(ex.Message)
+      frmMain.ShowVBErrors("SetValue", ex.Message)
     End Try
   End Sub
 
@@ -163,10 +163,11 @@ Friend Class frmDataBase
 				CommandString & vbCr, MsgBoxStyle.Critical, "Database Error")
 			End If
 		End Try
-		Try
-			SqlCeConn.Close()
-		Catch
-		End Try
+    Try
+      SqlCeConn.Close()
+    Catch ex As Exception
+      frmMain.ShowVBErrors("InsertRow", ex.Message)
+    End Try
 	End Sub
 
 	Public Sub DeleteRow(ByVal VariableName As String)
@@ -188,12 +189,13 @@ Friend Class frmDataBase
 			RowsAffected = cmd.ExecuteNonQuery()
 			If RowsAffected > 0 Then UpdateCount = UpdateCount + 1
 		Catch ex As Exception
-      frmMain.ShowVBErrors(ex.Message)
+      frmMain.ShowVBErrors("DeleteRow", ex.Message)
     End Try
-		Try
-			SqlCeConn.Close()
-		Catch
-		End Try
+    Try
+      SqlCeConn.Close()
+    Catch ex As Exception
+      frmMain.ShowVBErrors("DeleteRow", ex.Message)
+    End Try
 	End Sub
 
 	Public Sub UpdateAllParts()

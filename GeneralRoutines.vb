@@ -12,7 +12,7 @@ Module GeneralRoutines
         System.Windows.Forms.Application.DoEvents()
       Loop While tmrDelay.Enabled
     Catch ex As Exception
-      frmMain.ShowVBErrors(ex.Message)
+      frmMain.ShowVBErrors("DelayTimer", ex.Message)
     End Try
   End Sub
 
@@ -20,7 +20,7 @@ Module GeneralRoutines
     Try
       tmrDelay.Enabled = False
     Catch ex As Exception
-      frmMain.ShowVBErrors(ex.Message)
+      frmMain.ShowVBErrors("tmrDelayEvent", ex.Message)
     End Try
   End Sub
 

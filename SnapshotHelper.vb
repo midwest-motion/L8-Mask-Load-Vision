@@ -39,7 +39,7 @@ Public Class SnapshotHelper
       ' all good
       Return True
     Catch ex As Exception
-      frmMain.ShowVBErrors(ex.Message, "Failed to InitCamera " & CameraId & " ")
+      frmMain.ShowVBErrors("InitCamera" & CameraId, ex.Message) ', "Failed to InitCamera " & CameraId & " ")
       Return False
     End Try
 
@@ -48,19 +48,18 @@ Public Class SnapshotHelper
     camera.Exit()
   End Sub
 
-  '// 
-  '// Determine the number of pixels in a frame
-  '// 
-  '// # pixels = height * width
-  '// When we query the ROI feature, the camera reports the undecimated ROI
-  '// Therefore we have to take the camera's current decimation (pixel addressing value)
-  '// mode into account
   Private Function GetNumPixels() As Integer
+    'Determine the number of pixels in a frame
+    '
+    '# pixels = height * width
+    'When we query the ROI feature, the camera reports the undecimated ROI
+    'Therefore we have to take the camera's current decimation (pixel addressing value)
+    'mode into account
     Try
       camera.Memory.GetSize(s32MemID, s32Width, s32height)
       Return s32Width * s32height
     Catch ex As Exception
-      frmMain.ShowVBErrors(ex.Message)
+      frmMain.ShowVBErrors("GetNumPixels", ex.Message)
     End Try
   End Function
 
@@ -70,7 +69,7 @@ Public Class SnapshotHelper
       camera.PixelFormat.GetBytesPerPixel(bytesPerPixel)
       Return bytesPerPixel * GetNumPixels()
     Catch ex As Exception
-      frmMain.ShowVBErrors(ex.Message)
+      frmMain.ShowVBErrors("DetermineRawImageSize", ex.Message)
     End Try
 
   End Function
@@ -94,7 +93,7 @@ Public Class SnapshotHelper
       image.CopyFromSafeArray(buf, True)
       Return True
     Catch ex As Exception
-      frmMain.ShowVBErrors(ex.Message, "  Camera ID =" & CameraId)
+      frmMain.ShowVBErrors("GetSnapshot - Camera ID =" & CameraId, ex.Message)
       Return False
     End Try
   End Function
@@ -103,7 +102,6 @@ Public Class SnapshotHelper
     Dim ms As New MemoryStream(byteArrayIn)
     Dim returnImage As Image = Image.FromStream(ms)
     Return returnImage
-
   End Function
 
   Public Function SetSimpleFeature(ByVal featureid As String, ByVal param0 As Single) As Boolean
@@ -123,7 +121,7 @@ Public Class SnapshotHelper
         Return False
       End If
     Catch ex As Exception
-      frmMain.ShowVBErrors(ex.Message, " Failed to SetSimpleFeature. Camera ID= " & CameraId)
+      frmMain.ShowVBErrors("SetSimpleFeature", ex.Message) ', " Failed to SetSimpleFeature. Camera ID= " & CameraId)
       Return False
     End Try
   End Function
@@ -140,13 +138,11 @@ Public Class SnapshotHelper
       End Select
       Return FeatureValue
     Catch ex As Exception
-      frmMain.ShowVBErrors(ex.Message, " Failed to GetSimpleFeature. CameraID =" & CameraId)
+      frmMain.ShowVBErrors("GetSimpleFeature", ex.Message) ', " Failed to GetSimpleFeature. CameraID =" & CameraId)
     End Try
   End Function
 
   Public Function isOnline() As Boolean
-
-
     'Dim nInfo As Long
     'Dim RetCode As Long
     'Dim statusRet As uEye.Defines.Status
@@ -160,7 +156,6 @@ Public Class SnapshotHelper
     '           uEyeCam_3.ExitCamera
     '  uEyeCam_3.InitCamera(3)
     'End If
-
 
     Dim Count As Integer
     Dim statusRet As uEye.Defines.Status
@@ -178,35 +173,30 @@ Public Class SnapshotHelper
           CamID = CameraList(Count).CameraID.ToString
           Select Case CamID
             Case "1"
-							Message = "Southside Camera Not Detected"
-							frmMain.lblCameraStatusSouth.Visible = True
-							frmShowError.Show()
-							frmShowError.lblErrorMessage.Text = Message
-							frmMain.ImageSouth.Load(ConfigPath & "NoImage.bmp")
-							Return False
-						Case "2"
-							Message = "Northside Camera Not Detected"
-							frmMain.lblCameraStatusNorth.Visible = True
-							frmShowError.Show()
-							frmShowError.lblErrorMessage.Text = Message
-							frmMain.ImageNorth.Load(ConfigPath & "NoImage.bmp")
-							Return False
-					End Select
-				Next Count
-			Else
-				frmMain.lblCameraStatusNorth.Visible = False
-				frmMain.lblCameraStatusSouth.Visible = False
-				Return True
+              Message = "Southside Camera Not Detected"
+              'frmMain.lblCameraStatusSouth.Visible = True
+              frmShowError.Show()
+              frmShowError.lblErrorMessage.Text = Message
+              frmMain.ImageSouth.Load(ConfigPath & "NoImage.bmp")
+              Return False
+            Case "2"
+              Message = "Northside Camera Not Detected"
+              'frmMain.lblCameraStatusNorth.Visible = True
+              frmShowError.Show()
+              frmShowError.lblErrorMessage.Text = Message
+              frmMain.ImageNorth.Load(ConfigPath & "NoImage.bmp")
+              Return False
+          End Select
+        Next Count
+      Else
+        'frmMain.lblCameraStatusNorth.Visible = False
+        'frmMain.lblCameraStatusSouth.Visible = False
+        Return True
       End If
-      'TODO -Eric
-
       Return True
     Catch ex As Exception
-      frmMain.ShowVBErrors(ex.Message, " Camera IsOnline, cameraID=" & CameraId)
+      frmMain.ShowVBErrors("isOnline", ex.Message) ', " Camera IsOnline, cameraID=" & CameraId)
     End Try
   End Function
-
-
-
 
 End Class

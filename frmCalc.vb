@@ -19,7 +19,7 @@ Friend Class frmCalc
 			ZeroShifted.Y = locNorth.Y - LocSouth.Y
 			CalcAbsAngle = GetAngle(ZeroShifted)
 		Catch ex As Exception
-      frmMain.ShowVBErrors(ex.Message)
+      frmMain.ShowVBErrors("CalcAbsAngle", ex.Message)
     End Try
 	End Function
 
