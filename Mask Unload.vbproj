@@ -238,12 +238,6 @@
     <Compile Include="frmCalc.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmComm.Designer.vb">
-      <DependentUpon>frmComm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="frmComm.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="frmShowError.Designer.vb">
       <DependentUpon>frmShowError.vb</DependentUpon>
     </Compile>
@@ -262,9 +256,6 @@
     <Content Include="Graphics\Mask.jpg" />
     <EmbeddedResource Include="frmCalc.resX">
       <DependentUpon>frmCalc.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmComm.resx">
-      <DependentUpon>frmComm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmShowError.resx">
       <DependentUpon>frmShowError.vb</DependentUpon>

@@ -1337,9 +1337,9 @@ Public Class frmMain
           AddSpace = "" 'Reserve space for sign
         End If
         RString = AddSpace & Format(.R, "000.00")
-        OffsetString = "X = " & XString & " Y = " & YString & " R = " & RString
+        OffsetString = "X = " & XString & " Y = " & YString & " R = " & RString & " " & SerialNumber.ToString
         txtCommStatus.BackColor = SystemColors.Control
-        txtCommStatus.Text = OffsetString
+        txtCommStatus.Text = "Sent: " & vbCr & OffsetString
       End With
     Catch ex As Exception
       ShowVBErrors("GenerateFinalOffset", ex.Message)
@@ -1759,21 +1759,27 @@ Public Class frmMain
       frmComm.lstInputBuffer.Items.Add(StringFromRobot)
       '
       'truncate input string after the linefeed character
-      If StringFromRobot.Contains("FIND MASK AND GLASS 1000") Then
-        'frmMain.txtCommStatus.Text = "Received Robot Command '" + "FIND MASK AND GLASS + "
+      If StringFromRobot.Contains("FIND MASK AND GLASS") Then
+        txtCommStatus.Text = "Received: " & StringFromRobot
+        frmComm.lstInputBuffer.Items.Add(txtCommStatus.Text)
         If ValidSerialNumber() Then
           'OperationString = "LocateBoth"
           LocateBoth()
           SendDataToRobot(txtCommStatus.Text)
+          lstOutputBuffer.Items.Add(txtCommStatus.Text)
           SerialPortReadIsDone = False
+        Else
+          lstInputBuffer.Items.Add(txtCommStatus.Text)
         End If
         Exit Sub
       End If
       '
       'see if the robot got the offset correctly
       If StringFromRobot.Contains("X = ") Then
-        txtCommStatus.Text = "Received Robot Command '" + StringFromRobot + "'"
+        txtCommStatus.Text = "Received: " & StringFromRobot
+        lstInputBuffer.Items.Add(txtCommStatus.Text)
         CheckString = StringFromRobot
+        lstInputBuffer.Items.Add(txtCommStatus.Text)
         Exit Sub
       End If
       '
@@ -1785,7 +1791,8 @@ Public Class frmMain
           Exit Sub
         End If
         LoadPart(PartName)
-        txtCommStatus.Text = "Received Robot Command '" + StringFromRobot + "'"
+        txtCommStatus.Text = "Received: " & StringFromRobot
+        lstInputBuffer.Items.Add(txtCommStatus.Text)
         Exit Sub
       End If
     Catch ex As Exception
@@ -1881,9 +1888,9 @@ Public Class frmMain
     Try
       '
       'Read data.
-      Threading.Thread.Sleep(10)
+      Threading.Thread.Sleep(100)
       BigString = BigString + SerialPort.InputString
-      BigString = "FIND MASK AND GLASS 1000" & vbCr
+      'BigString = "FIND MASK AND GLASS 1000" & vbCr
       If BigString.Contains(vbCr) Or BigString.Contains(Constants.vbLf) Then
         StringFromRobot = BigString
         BigString = ""
@@ -1895,7 +1902,34 @@ Public Class frmMain
     End Try
   End Sub
 
+  Private Sub cmdEnter_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdEnter.Click
+    SendDataToRobot(txtSendCommand.Text & vbCr)
+  End Sub
 
+  Private Sub txtSend_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtSendCommand.KeyUp
+    ' Determine whether the key entered is the F1 key. Display help if it is.
+    If e.KeyCode = Keys.Enter Then
+      ' Display a pop-up help topic to assist the user.
+      SendDataToRobot(txtSendCommand.Text & vbCr)
+    End If
+  End Sub
+  Private Sub lstInputBuffer_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstInputBuffer.DoubleClick
+    lstInputBuffer.Items.Clear()
+    lstOutputBuffer.Items.Clear()
+  End Sub
+
+  Private Sub lstBuffer_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
+    lstInputBuffer.SelectedIndexChanged,
+    lstOutputBuffer.SelectedIndexChanged
+    'This keeps the two list boxes from having greater than 50 values
+    Dim CurrentListBox As Windows.Forms.ListBox
+    CurrentListBox = DirectCast(sender, Windows.Forms.ListBox)
+    If CurrentListBox.Items.Count > 50 Then
+      For Count As Integer = CurrentListBox.Items.Count - 1 To 49 Step -1
+        CurrentListBox.Items.RemoveAt(49)
+      Next Count
+    End If
+  End Sub
 
 #End Region
 
@@ -1924,6 +1958,10 @@ Public Class frmMain
 
   Private Sub tmrDelay_Tick(sender As Object, e As EventArgs)
     tmrDelay.Enabled = False
+  End Sub
+
+  Private Sub mnuShowSerialCommunications_Click(sender As Object, e As EventArgs) Handles mnuShowSerialCommunications.Click
+    frmComm.Show()
   End Sub
 
   Private Sub CameraSettings_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles updnContrastNorth.ValueChanged, updnExposureNorth.ValueChanged, updnContrastSouth.ValueChanged, updnExposureSouth.ValueChanged
