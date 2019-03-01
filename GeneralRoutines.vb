@@ -2,7 +2,6 @@
 Option Explicit On
 Module GeneralRoutines
   Public WithEvents tmrDelay As New Timer
-  Public WithEvents tmrCheckOffset As New Timer
 
   Public Sub DelayTimer(ByRef TimeInterval As Integer)
     Try

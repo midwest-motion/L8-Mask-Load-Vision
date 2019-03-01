@@ -267,6 +267,14 @@
     Me.lblVisionTimeSouthMask = New System.Windows.Forms.Label()
     Me.lblVisionScoreSouthMask = New System.Windows.Forms.Label()
     Me.tabVisionDebug = New System.Windows.Forms.TabPage()
+    Me.grpCommunications = New System.Windows.Forms.GroupBox()
+    Me.txtSendCommand = New System.Windows.Forms.TextBox()
+    Me.lblMessagesToTheRobot = New System.Windows.Forms.Label()
+    Me.lstOutputBuffer = New System.Windows.Forms.ListBox()
+    Me.lstInputBuffer = New System.Windows.Forms.ListBox()
+    Me.cmdEnter = New System.Windows.Forms.Button()
+    Me.lblSendCommand = New System.Windows.Forms.Label()
+    Me.lblMessagesFromTheRobot = New System.Windows.Forms.Label()
     Me.grpMisc = New System.Windows.Forms.GroupBox()
     Me.updnRLimit = New System.Windows.Forms.NumericUpDown()
     Me.Label2 = New System.Windows.Forms.Label()
@@ -334,15 +342,6 @@
     Me.lblPiece2DescR = New System.Windows.Forms.Label()
     Me.grpVBErrors = New System.Windows.Forms.GroupBox()
     Me.lstVBError = New System.Windows.Forms.ListBox()
-    Me.mnuShowSerialCommunications = New System.Windows.Forms.ToolStripMenuItem()
-    Me.grpCommunications = New System.Windows.Forms.GroupBox()
-    Me.lblMessagesToTheRobot = New System.Windows.Forms.Label()
-    Me.lstOutputBuffer = New System.Windows.Forms.ListBox()
-    Me.lstInputBuffer = New System.Windows.Forms.ListBox()
-    Me.cmdEnter = New System.Windows.Forms.Button()
-    Me.lblSendCommand = New System.Windows.Forms.Label()
-    Me.lblMessagesFromTheRobot = New System.Windows.Forms.Label()
-    Me.txtSendCommand = New System.Windows.Forms.TextBox()
     Me.MainMenu1.SuspendLayout()
     CType(Me.updnExposureNorth, System.ComponentModel.ISupportInitialize).BeginInit()
     CType(Me.updnContrastNorth, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -383,6 +382,7 @@
     Me.grpVisionStatusSouthMask.SuspendLayout()
     CType(Me.updnScoreLimitSouthMask, System.ComponentModel.ISupportInitialize).BeginInit()
     Me.tabVisionDebug.SuspendLayout()
+    Me.grpCommunications.SuspendLayout()
     Me.grpMisc.SuspendLayout()
     CType(Me.updnRLimit, System.ComponentModel.ISupportInitialize).BeginInit()
     Me.grpMaskCombined.SuspendLayout()
@@ -399,7 +399,6 @@
     CType(Me.updnRShift, System.ComponentModel.ISupportInitialize).BeginInit()
     Me.grpCombinedOffsetDetail.SuspendLayout()
     Me.grpVBErrors.SuspendLayout()
-    Me.grpCommunications.SuspendLayout()
     Me.SuspendLayout()
     '
     'MainMenu1
@@ -471,7 +470,7 @@
     '
     'mnuConfig
     '
-    Me.mnuConfig.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuGeneralSettings, Me.mnuPositionalSettings, Me.mnuSeperator3, Me.mnuCalibration, Me.mnuSeperator2, Me.mnuVerifyVisionAccuracy, Me.mnuUseSouthCameraOnly, Me.mnuShowSerialCommunications})
+    Me.mnuConfig.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuGeneralSettings, Me.mnuPositionalSettings, Me.mnuSeperator3, Me.mnuCalibration, Me.mnuSeperator2, Me.mnuVerifyVisionAccuracy, Me.mnuUseSouthCameraOnly})
     Me.mnuConfig.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
     Me.mnuConfig.Name = "mnuConfig"
     Me.mnuConfig.Size = New System.Drawing.Size(98, 20)
@@ -480,25 +479,25 @@
     'mnuGeneralSettings
     '
     Me.mnuGeneralSettings.Name = "mnuGeneralSettings"
-    Me.mnuGeneralSettings.Size = New System.Drawing.Size(249, 22)
+    Me.mnuGeneralSettings.Size = New System.Drawing.Size(219, 22)
     Me.mnuGeneralSettings.Text = "General Settings"
     '
     'mnuPositionalSettings
     '
     Me.mnuPositionalSettings.Name = "mnuPositionalSettings"
-    Me.mnuPositionalSettings.Size = New System.Drawing.Size(249, 22)
+    Me.mnuPositionalSettings.Size = New System.Drawing.Size(219, 22)
     Me.mnuPositionalSettings.Text = "Part Settings"
     '
     'mnuSeperator3
     '
     Me.mnuSeperator3.Name = "mnuSeperator3"
-    Me.mnuSeperator3.Size = New System.Drawing.Size(246, 6)
+    Me.mnuSeperator3.Size = New System.Drawing.Size(216, 6)
     '
     'mnuCalibration
     '
     Me.mnuCalibration.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuModifyHexsightControls, Me.mnuCalibrateNorth, Me.mnuCalibrateSouth})
     Me.mnuCalibration.Name = "mnuCalibration"
-    Me.mnuCalibration.Size = New System.Drawing.Size(249, 22)
+    Me.mnuCalibration.Size = New System.Drawing.Size(219, 22)
     Me.mnuCalibration.Text = "Vision Settings"
     '
     'mnuModifyHexsightControls
@@ -522,18 +521,18 @@
     'mnuSeperator2
     '
     Me.mnuSeperator2.Name = "mnuSeperator2"
-    Me.mnuSeperator2.Size = New System.Drawing.Size(246, 6)
+    Me.mnuSeperator2.Size = New System.Drawing.Size(216, 6)
     '
     'mnuVerifyVisionAccuracy
     '
     Me.mnuVerifyVisionAccuracy.Name = "mnuVerifyVisionAccuracy"
-    Me.mnuVerifyVisionAccuracy.Size = New System.Drawing.Size(249, 22)
+    Me.mnuVerifyVisionAccuracy.Size = New System.Drawing.Size(219, 22)
     Me.mnuVerifyVisionAccuracy.Text = "Verify Vision Accuracy"
     '
     'mnuUseSouthCameraOnly
     '
     Me.mnuUseSouthCameraOnly.Name = "mnuUseSouthCameraOnly"
-    Me.mnuUseSouthCameraOnly.Size = New System.Drawing.Size(249, 22)
+    Me.mnuUseSouthCameraOnly.Size = New System.Drawing.Size(219, 22)
     Me.mnuUseSouthCameraOnly.Text = "Use South Camera Only"
     '
     'mnuHelp
@@ -2917,6 +2916,116 @@
     Me.tabVisionDebug.Text = "Debug"
     Me.tabVisionDebug.UseVisualStyleBackColor = True
     '
+    'grpCommunications
+    '
+    Me.grpCommunications.BackColor = System.Drawing.SystemColors.Control
+    Me.grpCommunications.Controls.Add(Me.txtSendCommand)
+    Me.grpCommunications.Controls.Add(Me.lblMessagesToTheRobot)
+    Me.grpCommunications.Controls.Add(Me.lstOutputBuffer)
+    Me.grpCommunications.Controls.Add(Me.lstInputBuffer)
+    Me.grpCommunications.Controls.Add(Me.cmdEnter)
+    Me.grpCommunications.Controls.Add(Me.lblSendCommand)
+    Me.grpCommunications.Controls.Add(Me.lblMessagesFromTheRobot)
+    Me.grpCommunications.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.grpCommunications.ForeColor = System.Drawing.SystemColors.Highlight
+    Me.grpCommunications.Location = New System.Drawing.Point(360, 17)
+    Me.grpCommunications.Name = "grpCommunications"
+    Me.grpCommunications.Padding = New System.Windows.Forms.Padding(0)
+    Me.grpCommunications.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.grpCommunications.Size = New System.Drawing.Size(442, 691)
+    Me.grpCommunications.TabIndex = 90
+    Me.grpCommunications.TabStop = False
+    Me.grpCommunications.Text = "Communications"
+    '
+    'txtSendCommand
+    '
+    Me.txtSendCommand.AcceptsReturn = True
+    Me.txtSendCommand.BackColor = System.Drawing.SystemColors.Window
+    Me.txtSendCommand.Cursor = System.Windows.Forms.Cursors.IBeam
+    Me.txtSendCommand.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.txtSendCommand.ForeColor = System.Drawing.SystemColors.WindowText
+    Me.txtSendCommand.Location = New System.Drawing.Point(99, 26)
+    Me.txtSendCommand.MaxLength = 0
+    Me.txtSendCommand.Name = "txtSendCommand"
+    Me.txtSendCommand.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.txtSendCommand.Size = New System.Drawing.Size(239, 20)
+    Me.txtSendCommand.TabIndex = 13
+    '
+    'lblMessagesToTheRobot
+    '
+    Me.lblMessagesToTheRobot.BackColor = System.Drawing.SystemColors.Control
+    Me.lblMessagesToTheRobot.Cursor = System.Windows.Forms.Cursors.Default
+    Me.lblMessagesToTheRobot.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.lblMessagesToTheRobot.ForeColor = System.Drawing.SystemColors.ControlText
+    Me.lblMessagesToTheRobot.Location = New System.Drawing.Point(25, 382)
+    Me.lblMessagesToTheRobot.Name = "lblMessagesToTheRobot"
+    Me.lblMessagesToTheRobot.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.lblMessagesToTheRobot.Size = New System.Drawing.Size(207, 19)
+    Me.lblMessagesToTheRobot.TabIndex = 12
+    Me.lblMessagesToTheRobot.Text = "Messages to the Robot"
+    '
+    'lstOutputBuffer
+    '
+    Me.lstOutputBuffer.FormattingEnabled = True
+    Me.lstOutputBuffer.ItemHeight = 14
+    Me.lstOutputBuffer.Location = New System.Drawing.Point(24, 404)
+    Me.lstOutputBuffer.Name = "lstOutputBuffer"
+    Me.lstOutputBuffer.ScrollAlwaysVisible = True
+    Me.lstOutputBuffer.Size = New System.Drawing.Size(399, 270)
+    Me.lstOutputBuffer.TabIndex = 11
+    Me.lstOutputBuffer.UseTabStops = False
+    '
+    'lstInputBuffer
+    '
+    Me.lstInputBuffer.FormattingEnabled = True
+    Me.lstInputBuffer.ItemHeight = 14
+    Me.lstInputBuffer.Location = New System.Drawing.Point(24, 84)
+    Me.lstInputBuffer.Name = "lstInputBuffer"
+    Me.lstInputBuffer.ScrollAlwaysVisible = True
+    Me.lstInputBuffer.Size = New System.Drawing.Size(399, 284)
+    Me.lstInputBuffer.TabIndex = 10
+    Me.lstInputBuffer.UseTabStops = False
+    '
+    'cmdEnter
+    '
+    Me.cmdEnter.BackColor = System.Drawing.SystemColors.Control
+    Me.cmdEnter.Cursor = System.Windows.Forms.Cursors.Default
+    Me.cmdEnter.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.cmdEnter.ForeColor = System.Drawing.SystemColors.ControlText
+    Me.cmdEnter.Location = New System.Drawing.Point(344, 25)
+    Me.cmdEnter.Name = "cmdEnter"
+    Me.cmdEnter.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.cmdEnter.Size = New System.Drawing.Size(53, 21)
+    Me.cmdEnter.TabIndex = 8
+    Me.cmdEnter.Text = "Enter"
+    Me.cmdEnter.UseVisualStyleBackColor = False
+    '
+    'lblSendCommand
+    '
+    Me.lblSendCommand.BackColor = System.Drawing.SystemColors.Control
+    Me.lblSendCommand.Cursor = System.Windows.Forms.Cursors.Default
+    Me.lblSendCommand.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.lblSendCommand.ForeColor = System.Drawing.SystemColors.ControlText
+    Me.lblSendCommand.Location = New System.Drawing.Point(60, 28)
+    Me.lblSendCommand.Name = "lblSendCommand"
+    Me.lblSendCommand.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.lblSendCommand.Size = New System.Drawing.Size(36, 17)
+    Me.lblSendCommand.TabIndex = 9
+    Me.lblSendCommand.Text = "Send Command"
+    '
+    'lblMessagesFromTheRobot
+    '
+    Me.lblMessagesFromTheRobot.BackColor = System.Drawing.SystemColors.Control
+    Me.lblMessagesFromTheRobot.Cursor = System.Windows.Forms.Cursors.Default
+    Me.lblMessagesFromTheRobot.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.lblMessagesFromTheRobot.ForeColor = System.Drawing.SystemColors.ControlText
+    Me.lblMessagesFromTheRobot.Location = New System.Drawing.Point(25, 65)
+    Me.lblMessagesFromTheRobot.Name = "lblMessagesFromTheRobot"
+    Me.lblMessagesFromTheRobot.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.lblMessagesFromTheRobot.Size = New System.Drawing.Size(207, 19)
+    Me.lblMessagesFromTheRobot.TabIndex = 7
+    Me.lblMessagesFromTheRobot.Text = "Messages from the Robot"
+    '
     'grpMisc
     '
     Me.grpMisc.BackColor = System.Drawing.SystemColors.Control
@@ -3787,122 +3896,6 @@
     Me.lstVBError.TabIndex = 24
     Me.lstVBError.TabStop = False
     '
-    'mnuShowSerialCommunications
-    '
-    Me.mnuShowSerialCommunications.Name = "mnuShowSerialCommunications"
-    Me.mnuShowSerialCommunications.Size = New System.Drawing.Size(249, 22)
-    Me.mnuShowSerialCommunications.Text = "Show Serial Communications"
-    '
-    'grpCommunications
-    '
-    Me.grpCommunications.BackColor = System.Drawing.SystemColors.Control
-    Me.grpCommunications.Controls.Add(Me.txtSendCommand)
-    Me.grpCommunications.Controls.Add(Me.lblMessagesToTheRobot)
-    Me.grpCommunications.Controls.Add(Me.lstOutputBuffer)
-    Me.grpCommunications.Controls.Add(Me.lstInputBuffer)
-    Me.grpCommunications.Controls.Add(Me.cmdEnter)
-    Me.grpCommunications.Controls.Add(Me.lblSendCommand)
-    Me.grpCommunications.Controls.Add(Me.lblMessagesFromTheRobot)
-    Me.grpCommunications.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.grpCommunications.ForeColor = System.Drawing.SystemColors.Highlight
-    Me.grpCommunications.Location = New System.Drawing.Point(360, 17)
-    Me.grpCommunications.Name = "grpCommunications"
-    Me.grpCommunications.Padding = New System.Windows.Forms.Padding(0)
-    Me.grpCommunications.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.grpCommunications.Size = New System.Drawing.Size(442, 691)
-    Me.grpCommunications.TabIndex = 90
-    Me.grpCommunications.TabStop = False
-    Me.grpCommunications.Text = "Communications"
-    '
-    'lblMessagesToTheRobot
-    '
-    Me.lblMessagesToTheRobot.BackColor = System.Drawing.SystemColors.Control
-    Me.lblMessagesToTheRobot.Cursor = System.Windows.Forms.Cursors.Default
-    Me.lblMessagesToTheRobot.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.lblMessagesToTheRobot.ForeColor = System.Drawing.SystemColors.ControlText
-    Me.lblMessagesToTheRobot.Location = New System.Drawing.Point(25, 382)
-    Me.lblMessagesToTheRobot.Name = "lblMessagesToTheRobot"
-    Me.lblMessagesToTheRobot.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.lblMessagesToTheRobot.Size = New System.Drawing.Size(207, 19)
-    Me.lblMessagesToTheRobot.TabIndex = 12
-    Me.lblMessagesToTheRobot.Text = "Messages to the Robot"
-    '
-    'lstOutputBuffer
-    '
-    Me.lstOutputBuffer.FormattingEnabled = True
-    Me.lstOutputBuffer.ItemHeight = 14
-    Me.lstOutputBuffer.Location = New System.Drawing.Point(24, 404)
-    Me.lstOutputBuffer.Name = "lstOutputBuffer"
-    Me.lstOutputBuffer.ScrollAlwaysVisible = True
-    Me.lstOutputBuffer.Size = New System.Drawing.Size(399, 270)
-    Me.lstOutputBuffer.TabIndex = 11
-    Me.lstOutputBuffer.UseTabStops = False
-    '
-    'lstInputBuffer
-    '
-    Me.lstInputBuffer.FormattingEnabled = True
-    Me.lstInputBuffer.ItemHeight = 14
-    Me.lstInputBuffer.Location = New System.Drawing.Point(24, 84)
-    Me.lstInputBuffer.Name = "lstInputBuffer"
-    Me.lstInputBuffer.ScrollAlwaysVisible = True
-    Me.lstInputBuffer.Size = New System.Drawing.Size(399, 284)
-    Me.lstInputBuffer.TabIndex = 10
-    Me.lstInputBuffer.UseTabStops = False
-    '
-    'cmdEnter
-    '
-    Me.cmdEnter.BackColor = System.Drawing.SystemColors.Control
-    Me.cmdEnter.Cursor = System.Windows.Forms.Cursors.Default
-    Me.cmdEnter.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.cmdEnter.ForeColor = System.Drawing.SystemColors.ControlText
-    Me.cmdEnter.Location = New System.Drawing.Point(344, 25)
-    Me.cmdEnter.Name = "cmdEnter"
-    Me.cmdEnter.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.cmdEnter.Size = New System.Drawing.Size(53, 21)
-    Me.cmdEnter.TabIndex = 8
-    Me.cmdEnter.Text = "Enter"
-    Me.cmdEnter.UseVisualStyleBackColor = False
-    '
-    'lblSendCommand
-    '
-    Me.lblSendCommand.BackColor = System.Drawing.SystemColors.Control
-    Me.lblSendCommand.Cursor = System.Windows.Forms.Cursors.Default
-    Me.lblSendCommand.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.lblSendCommand.ForeColor = System.Drawing.SystemColors.ControlText
-    Me.lblSendCommand.Location = New System.Drawing.Point(60, 28)
-    Me.lblSendCommand.Name = "lblSendCommand"
-    Me.lblSendCommand.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.lblSendCommand.Size = New System.Drawing.Size(36, 17)
-    Me.lblSendCommand.TabIndex = 9
-    Me.lblSendCommand.Text = "Send Command"
-    '
-    'lblMessagesFromTheRobot
-    '
-    Me.lblMessagesFromTheRobot.BackColor = System.Drawing.SystemColors.Control
-    Me.lblMessagesFromTheRobot.Cursor = System.Windows.Forms.Cursors.Default
-    Me.lblMessagesFromTheRobot.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.lblMessagesFromTheRobot.ForeColor = System.Drawing.SystemColors.ControlText
-    Me.lblMessagesFromTheRobot.Location = New System.Drawing.Point(25, 65)
-    Me.lblMessagesFromTheRobot.Name = "lblMessagesFromTheRobot"
-    Me.lblMessagesFromTheRobot.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.lblMessagesFromTheRobot.Size = New System.Drawing.Size(207, 19)
-    Me.lblMessagesFromTheRobot.TabIndex = 7
-    Me.lblMessagesFromTheRobot.Text = "Messages from the Robot"
-    '
-    'txtSendCommand
-    '
-    Me.txtSendCommand.AcceptsReturn = True
-    Me.txtSendCommand.BackColor = System.Drawing.SystemColors.Window
-    Me.txtSendCommand.Cursor = System.Windows.Forms.Cursors.IBeam
-    Me.txtSendCommand.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.txtSendCommand.ForeColor = System.Drawing.SystemColors.WindowText
-    Me.txtSendCommand.Location = New System.Drawing.Point(99, 26)
-    Me.txtSendCommand.MaxLength = 0
-    Me.txtSendCommand.Name = "txtSendCommand"
-    Me.txtSendCommand.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.txtSendCommand.Size = New System.Drawing.Size(239, 20)
-    Me.txtSendCommand.TabIndex = 13
-    '
     'frmMain
     '
     Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 16.0!)
@@ -3979,6 +3972,8 @@
     Me.grpVisionStatusSouthMask.PerformLayout()
     CType(Me.updnScoreLimitSouthMask, System.ComponentModel.ISupportInitialize).EndInit()
     Me.tabVisionDebug.ResumeLayout(False)
+    Me.grpCommunications.ResumeLayout(False)
+    Me.grpCommunications.PerformLayout()
     Me.grpMisc.ResumeLayout(False)
     CType(Me.updnRLimit, System.ComponentModel.ISupportInitialize).EndInit()
     Me.grpMaskCombined.ResumeLayout(False)
@@ -4000,8 +3995,6 @@
     Me.grpCombinedOffsetDetail.ResumeLayout(False)
     Me.grpCombinedOffsetDetail.PerformLayout()
     Me.grpVBErrors.ResumeLayout(False)
-    Me.grpCommunications.ResumeLayout(False)
-    Me.grpCommunications.PerformLayout()
     Me.ResumeLayout(False)
     Me.PerformLayout()
 
@@ -4253,7 +4246,6 @@
   Friend WithEvents lblNorthGlassScore As Label
   Friend WithEvents lblNorthMaskScore As Label
   Public WithEvents btnTest As Button
-  Friend WithEvents mnuShowSerialCommunications As ToolStripMenuItem
   Public WithEvents grpCommunications As GroupBox
   Public WithEvents lblMessagesToTheRobot As Label
   Friend WithEvents lstOutputBuffer As ListBox

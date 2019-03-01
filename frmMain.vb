@@ -54,11 +54,11 @@ Public Class frmMain
   Private NorthSecondPointX, NorthSecondPointY As Single
   Private SouthFirstPointX, SouthFirstPointY As Single
   Private SouthSecondPointX, SouthSecondPointY As Single
-  Public varSnapAfterLocateDelay As Int16
+  Public SnapAfterLocateDelay As Int16
   'Timers
   Public WithEvents SaveMarkersTimer As New Timer
   Public WithEvents tmrSnapAfterlocate As New Timer
-  Public WithEvents tmrOnComm As New Timer
+  Public WithEvents tmrCheckOffset As New Timer
   'Serial Handler
   Private ReceiveBuffer As New StringBuilder(32768)
   Private StringFromRobot As String
@@ -117,8 +117,6 @@ Public Class frmMain
       Application.DoEvents()
       'Timers
       tmrDisplayUpdate.Enabled = True
-      tmrOnComm.Interval = 3000
-      'tmrOnComm.Start()
       'Snap some pictures
       frmSplash.lblStatus.Text = "Snapping Images"
       Snap(NorthSide)
@@ -1717,30 +1715,32 @@ Public Class frmMain
     tmrSnapAfterlocate.Enabled = False
   End Sub
 
-  'Private Sub OnComm_Timer(sender As Object, e As EventArgs) Handles tmrOnComm.Elapsed
-  '  Static InRoutine As Boolean
-  '  Try
-  '    tmrOnComm.Stop()
-  '    If InRoutine Then
-  '      System.Threading.Thread.Sleep(500)
-  '      InRoutine = False
-  '      Exit Sub
-  '    End If
-  '    InRoutine = True
-  '    'If SerialPortReadIsDone Then
-  '    'btnClearMarkersBoth.PerformClick()
-  '    Snap(NorthSide)
-  '    'CheckRobotMessages()
-  '    '  SerialPortReadIsDone = False
-  '    SerialPortReadIsDone = False
-  '    InRoutine = False
-  '    'End If
+  Private Sub tmrCheckoffset_Elapsed(sender As Object, e As EventArgs) Handles tmrCheckOffset.Elapsed
+    Dim OldString As String, NewString As String
+    Try
+      'Waits for the robot to send and
+      OldString = Mid(OffsetString, 1, Len(OffsetString))
+      NewString = Mid(CheckString, 1, Len(CheckString))
+      If CheckString = "Not Checked" Then
+        txtCommStatus.Text = "Due to the part not being found, communications is not being checked."
+        Exit Sub
+      End If
+      If OldString = NewString Then
+        txtCommStatus.Text = "Offset was correctly received by the robot"
+      Else
+        SerialPort.PortOpen = False
+        MsgBox("The robot did not return the same offset that was sent to it. This can cause mislocations.  Watch the deposit position and restart" + vbCr +
+        "this program and the robot program if the problem continues.  Close this Dialog before letting the robot continue." + vbCr + vbCr +
+        "The string sent to the robot was                " + OldString + vbCr +
+        "The string returned from the robot was      " + NewString, vbApplicationModal)
+        SerialPort.PortOpen = True
+      End If
+      tmrCheckOffset.Enabled = False
+    Catch ex As Exception
+      ShowVBErrors("tmrCheckoffset_Elapsed", ex.Message)
+    End Try
+  End Sub
 
-  '  Catch ex As Exception
-  '    showvberrors(ex)
-  '    InRoutine = False
-  '  End Try
-  'End Sub
 #End Region
 
 #Region "Serial Handler"
@@ -1756,20 +1756,16 @@ Public Class frmMain
       If Len(StringFromRobot) < 12 Then
         Exit Sub
       End If
-      frmComm.lstInputBuffer.Items.Add(StringFromRobot)
+      lstInputBuffer.Items.Add(StringFromRobot)
       '
       'truncate input string after the linefeed character
       If StringFromRobot.Contains("FIND MASK AND GLASS") Then
         txtCommStatus.Text = "Received: " & StringFromRobot
-        frmComm.lstInputBuffer.Items.Add(txtCommStatus.Text)
+        lstInputBuffer.Items.Add(txtCommStatus.Text)
         If ValidSerialNumber() Then
-          'OperationString = "LocateBoth"
           LocateBoth()
-          SendDataToRobot(txtCommStatus.Text)
-          lstOutputBuffer.Items.Add(txtCommStatus.Text)
+          CheckOffset()
           SerialPortReadIsDone = False
-        Else
-          lstInputBuffer.Items.Add(txtCommStatus.Text)
         End If
         Exit Sub
       End If
@@ -1779,20 +1775,19 @@ Public Class frmMain
         txtCommStatus.Text = "Received: " & StringFromRobot
         lstInputBuffer.Items.Add(txtCommStatus.Text)
         CheckString = StringFromRobot
-        lstInputBuffer.Items.Add(txtCommStatus.Text)
         Exit Sub
       End If
       '
       'see if the robot requests a part change
       If StringFromRobot.Contains("CHANGE PART NAME TO ") Then
-        TempPartName = StringFromRobot.IndexOf("CHANGE PART NAME TO ")
-        PartName = StringFromRobot.Substring(20)
+        TempPartName = StringFromRobot.Substring(0, Len(StringFromRobot) - 1)
+        TempPartName = StringFromRobot.Substring(Len("CHANGE PART NAME TO "))
+        TempPartName = UCase(PartName.Substring(0, Len(PartName)))
         If (TempPartName = "NO_PART") Or (TempPartName = PartName) Then
           Exit Sub
         End If
         LoadPart(PartName)
         txtCommStatus.Text = "Received: " & StringFromRobot
-        lstInputBuffer.Items.Add(txtCommStatus.Text)
         Exit Sub
       End If
     Catch ex As Exception
@@ -1815,6 +1810,42 @@ Public Class frmMain
       ValidSerialNumber = True
     End If
   End Function
+
+  Private Sub CheckOffset()
+    '
+    'see if new offset value is identical to the old one
+    If (OldOffsetstring = OffsetString) _
+      And (OffsetString <> "Glass and Mask not found") _
+      And (OffsetString <> "Glass not found") _
+      And (OffsetString <> "Mask not found") Then
+      MsgBox("Previous total offset was the same as the current total offset" _
+        + vbCr + "This is an unusual instance. Watch the mask location." _
+        + vbCr + "You may need to quit the vision application and restart it.", vbApplicationModal)
+    End If
+    '
+    'If the part was sucessfully found then add the serial number back on to it
+    If (OffsetString <> "Glass and Mask not found") _
+      And (OffsetString <> "Glass not found") _
+      And (OffsetString <> "Mask not found") Then
+      OffsetString = OffsetString + " SN = " + Str(SerialNumber)
+    End If
+    OldOffsetstring = OffsetString
+    SendDataToRobot(OffsetString)
+    '
+    'enable timer to snap a second picture
+    tmrSnapAfterlocate.Interval = SnapAfterLocateDelay
+    tmrSnapAfterlocate.Enabled = True
+    '
+    'enable a timer to verify that the offset was received and
+    'dont check if an error was sent to the robot
+    CheckString = "Not Checked"
+    tmrCheckOffset.Interval = 3500
+    If (OffsetString <> "Glass and Mask not found") _
+      And (OffsetString <> "Glass not found") _
+      And (OffsetString <> "Mask not found") Then
+      tmrCheckOffset.Enabled = True
+    End If
+  End Sub
 
   Public Function InitComm() As String
     Try
@@ -1879,6 +1910,7 @@ Public Class frmMain
     'send the offset string
     Try
       SerialPort.Output((UCase(Data)) & vbCr)
+      lstOutputBuffer.Items.Add(UCase(Data))
     Catch ex As Exception
       ShowVBErrors("SendDataToRobot", ex.Message)
     End Try
@@ -1890,6 +1922,7 @@ Public Class frmMain
       'Read data.
       Threading.Thread.Sleep(100)
       BigString = BigString + SerialPort.InputString
+      lstInputBuffer.Items.Add(BigString)
       'BigString = "FIND MASK AND GLASS 1000" & vbCr
       If BigString.Contains(vbCr) Or BigString.Contains(Constants.vbLf) Then
         StringFromRobot = BigString
@@ -1913,6 +1946,7 @@ Public Class frmMain
       SendDataToRobot(txtSendCommand.Text & vbCr)
     End If
   End Sub
+
   Private Sub lstInputBuffer_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstInputBuffer.DoubleClick
     lstInputBuffer.Items.Clear()
     lstOutputBuffer.Items.Clear()
@@ -1952,16 +1986,10 @@ Public Class frmMain
 
   Private Sub btnTest_Click(sender As Object, e As EventArgs) Handles btnTest.Click
     SendDataToRobot("Hi There" & vbLf)
-    tmrOnComm.Enabled = True
-    tmrOnComm.Start()
   End Sub
 
   Private Sub tmrDelay_Tick(sender As Object, e As EventArgs)
     tmrDelay.Enabled = False
-  End Sub
-
-  Private Sub mnuShowSerialCommunications_Click(sender As Object, e As EventArgs) Handles mnuShowSerialCommunications.Click
-    frmComm.Show()
   End Sub
 
   Private Sub CameraSettings_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles updnContrastNorth.ValueChanged, updnExposureNorth.ValueChanged, updnContrastSouth.ValueChanged, updnExposureSouth.ValueChanged
@@ -2331,7 +2359,7 @@ Public Class frmMain
       updnScoreLimitSouthGlass.Value = CSng(frmDataBase.GetValue("Settings", "Value", updnScoreLimitSouthGlass.Name))
       updnScoreLimitNorthMask.Value = CSng(frmDataBase.GetValue("Settings", "Value", updnScoreLimitNorthMask.Name))
       updnScoreLimitSouthMask.Value = CSng(frmDataBase.GetValue("Settings", "Value", updnScoreLimitSouthMask.Name))
-      varSnapAfterLocateDelay = CInt(frmDataBase.GetValue("Settings", "Value", updnScoreLimitSouthMask.Name))
+      SnapAfterLocateDelay = CInt(frmDataBase.GetValue("Settings", "Value", SnapAfterLocateDelay))
     Catch ex As Exception
       ShowVBErrors("GetSettings", ex.Message)
     End Try
