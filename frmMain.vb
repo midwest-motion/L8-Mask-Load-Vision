@@ -749,28 +749,28 @@ Public Class frmMain
       '
       Calibrate = HSAcq.ShowCalibDistortionModelDialog(True)
       With Calibrate
-        .DotPitch = 20
+        .DotPitch = 15.935
         .WorldCoordinateSystemType = HSACQUISITIONDEVICELib.hsCoordinateSystemType.hsLeftHanded
         .MaximumDotRadius = 30
         .MinimumDotRadius = 10
         If Side = NorthSide Then
           .OriginPositionXWorld = 0
           .OriginPositionYWorld = 0
-          .OriginPositionX = 1212
-          .OriginPositionY = 48
-          .AxisXPositionX = 1212
-          .AxisXPositionY = 107
-          .AxisYPositionX = 1153
-          .AxisYPositionY = 49.5
+          .OriginPositionX = 153.2
+          .OriginPositionY = 2258.3
+          .AxisXPositionX = 153.2
+          .AxisXPositionY = 2168.6
+          .AxisYPositionX = 241.1
+          .AxisYPositionY = 2258.3
         Else
-          .OriginPositionXWorld = 1000
+          .OriginPositionXWorld = 1225
           .OriginPositionYWorld = 0
-          .OriginPositionX = 1212
-          .OriginPositionY = 48
-          .AxisXPositionX = 1212
-          .AxisXPositionY = 107
-          .AxisYPositionX = 1153
-          .AxisYPositionY = 49.5
+          .OriginPositionX = 96
+          .OriginPositionY = 2598
+          .AxisXPositionX = 96
+          .AxisXPositionY = 2505
+          .AxisYPositionX = 183
+          .AxisYPositionY = 2598
         End If
         .UnitsLength = HSACQUISITIONDEVICELib.hsUnitsLength.hsMillimeter
         .DotConformity = 0.5
@@ -1643,6 +1643,7 @@ Public Class frmMain
   End Sub
 
   Private Sub SaveAllRectangleMarkers()
+    DelayTimer(1000)
     SaveRectangleMarker(NorthMask, "North Mask.hdb", HSLoc(LocNorthMask))
     SaveRectangleMarker(SouthMask, "South Mask.hdb", HSLoc(LocSouthMask))
     SaveRectangleMarker(NorthGlass, "North Glass.hdb", HSLoc(LocNorthGlass))
@@ -1652,11 +1653,6 @@ Public Class frmMain
   Private Sub SaveRectangleMarker(ByRef SearchArea As SearchArea, ByVal ModelName As String, ByRef Locator As HSLOCATORLib.HSLocator)
     'This saves all of the HexSight Search Box variables
     Try
-      SearchArea.CenterX = Locator.ToolPositionX
-      SearchArea.CenterY = Locator.ToolPositionY
-      SearchArea.CenterR = Locator.ToolRotation
-      SearchArea.Width = Locator.ToolWidth
-      SearchArea.Height = Locator.ToolHeight
       Locator.SaveModelDatabase(CurrentFilePath & ModelName)
     Catch ex As Exception
       ShowVBErrors("SaveRectangleMarker", ex.Message)
