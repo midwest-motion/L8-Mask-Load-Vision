@@ -17,8 +17,7 @@
     <GenerateRevisionNumber>True</GenerateRevisionNumber>
     <AssemblyCompanyName>Midwest Motion Inc.  (812) 449-8085</AssemblyCompanyName>
     <StartWithIE>False</StartWithIE>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>Graphics\Mask.ico</ApplicationIcon>
     <RootNamespace>MaskLoad</RootNamespace>
     <FileUpgradeFlags>
     </FileUpgradeFlags>

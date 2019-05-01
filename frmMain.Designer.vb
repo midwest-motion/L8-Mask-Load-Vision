@@ -89,7 +89,7 @@
     Me.mnuCalibrateSouth = New System.Windows.Forms.ToolStripMenuItem()
     Me.mnuSeperator2 = New System.Windows.Forms.ToolStripSeparator()
     Me.mnuVerifyVisionAccuracy = New System.Windows.Forms.ToolStripMenuItem()
-    Me.mnuUseSouthCameraOnly = New System.Windows.Forms.ToolStripMenuItem()
+    Me.mnuSmallMask = New System.Windows.Forms.ToolStripMenuItem()
     Me.mnuHelp = New System.Windows.Forms.ToolStripMenuItem()
     Me.mnuSystemDocumentation = New System.Windows.Forms.ToolStripMenuItem()
     Me.lblPartLoaded = New System.Windows.Forms.Label()
@@ -126,7 +126,7 @@
     Me.btnTrainExistingSouthGlass = New System.Windows.Forms.Button()
     Me.btnDetailsSouthGlass = New System.Windows.Forms.Button()
     Me.lblVisionMessageSouthGlass = New System.Windows.Forms.Label()
-    Me.btnTest = New System.Windows.Forms.Button()
+    Me.btnEnter = New System.Windows.Forms.Button()
     Me.TmrPassword = New System.Windows.Forms.Timer(Me.components)
     Me.tmrDisplayUpdate = New System.Windows.Forms.Timer(Me.components)
     Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
@@ -267,6 +267,20 @@
     Me.lblVisionTimeSouthMask = New System.Windows.Forms.Label()
     Me.lblVisionScoreSouthMask = New System.Windows.Forms.Label()
     Me.tabVisionDebug = New System.Windows.Forms.TabPage()
+    Me.SSTab1 = New System.Windows.Forms.TabControl()
+    Me._SSTab1_TabPage0 = New System.Windows.Forms.TabPage()
+    Me.Label1 = New System.Windows.Forms.Label()
+    Me.Label29 = New System.Windows.Forms.Label()
+    Me.txtRLimit = New System.Windows.Forms.TextBox()
+    Me.cmdOKLimits = New System.Windows.Forms.Button()
+    Me._SSTab1_TabPage1 = New System.Windows.Forms.TabPage()
+    Me.cmdOKGeneralSettings = New System.Windows.Forms.Button()
+    Me.txtRetryCountLimit = New System.Windows.Forms.TextBox()
+    Me.txtSnapAfterLocate = New System.Windows.Forms.TextBox()
+    Me._lblSnapAfterLocate_0 = New System.Windows.Forms.Label()
+    Me._Label8_3 = New System.Windows.Forms.Label()
+    Me._Label8_2 = New System.Windows.Forms.Label()
+    Me._lblSnapAfterLocate_1 = New System.Windows.Forms.Label()
     Me.grpCommunications = New System.Windows.Forms.GroupBox()
     Me.txtSendCommand = New System.Windows.Forms.TextBox()
     Me.lblMessagesToTheRobot = New System.Windows.Forms.Label()
@@ -295,27 +309,18 @@
     Me.Label32 = New System.Windows.Forms.Label()
     Me.Label33 = New System.Windows.Forms.Label()
     Me.grpCombinedOffset = New System.Windows.Forms.GroupBox()
-    Me.SSTab1 = New System.Windows.Forms.TabControl()
-    Me._SSTab1_TabPage0 = New System.Windows.Forms.TabPage()
-    Me.Label1 = New System.Windows.Forms.Label()
-    Me.Label29 = New System.Windows.Forms.Label()
-    Me.txtRLimit = New System.Windows.Forms.TextBox()
-    Me.cmdOKLimits = New System.Windows.Forms.Button()
-    Me._SSTab1_TabPage1 = New System.Windows.Forms.TabPage()
-    Me.cmdOKGeneralSettings = New System.Windows.Forms.Button()
-    Me.txtRetryCountLimit = New System.Windows.Forms.TextBox()
-    Me.txtSnapAfterLocate = New System.Windows.Forms.TextBox()
-    Me._lblSnapAfterLocate_0 = New System.Windows.Forms.Label()
-    Me._Label8_3 = New System.Windows.Forms.Label()
-    Me._Label8_2 = New System.Windows.Forms.Label()
-    Me._lblSnapAfterLocate_1 = New System.Windows.Forms.Label()
     Me.grpCommStatus = New System.Windows.Forms.GroupBox()
     Me.txtCommStatus = New System.Windows.Forms.TextBox()
     Me.grpShiftOffset = New System.Windows.Forms.GroupBox()
+    Me.updnSmallMaskX = New System.Windows.Forms.NumericUpDown()
+    Me.Label6 = New System.Windows.Forms.Label()
+    Me.Label10 = New System.Windows.Forms.Label()
+    Me.Label3 = New System.Windows.Forms.Label()
     Me.updnXShift = New System.Windows.Forms.NumericUpDown()
     Me.updnYShift = New System.Windows.Forms.NumericUpDown()
     Me.Label21 = New System.Windows.Forms.Label()
     Me.Label20 = New System.Windows.Forms.Label()
+    Me.lblVisionTimeBoth = New System.Windows.Forms.Label()
     Me.Label18 = New System.Windows.Forms.Label()
     Me.updnRLinear = New System.Windows.Forms.NumericUpDown()
     Me.Label19 = New System.Windows.Forms.Label()
@@ -327,13 +332,13 @@
     Me.Label13 = New System.Windows.Forms.Label()
     Me.Label23 = New System.Windows.Forms.Label()
     Me.grpCombinedOffsetDetail = New System.Windows.Forms.GroupBox()
+    Me.Label4 = New System.Windows.Forms.Label()
+    Me.Label28 = New System.Windows.Forms.Label()
+    Me.lblTotalTime = New System.Windows.Forms.Label()
     Me.txtRCombined = New System.Windows.Forms.TextBox()
     Me.txtYCombined = New System.Windows.Forms.TextBox()
-    Me.Label28 = New System.Windows.Forms.Label()
     Me.txtXCombined = New System.Windows.Forms.TextBox()
     Me.Label9 = New System.Windows.Forms.Label()
-    Me.lblVisionTimeBoth = New System.Windows.Forms.Label()
-    Me.Label27 = New System.Windows.Forms.Label()
     Me.Label25 = New System.Windows.Forms.Label()
     Me.Label24 = New System.Windows.Forms.Label()
     Me.Label22 = New System.Windows.Forms.Label()
@@ -382,17 +387,18 @@
     Me.grpVisionStatusSouthMask.SuspendLayout()
     CType(Me.updnScoreLimitSouthMask, System.ComponentModel.ISupportInitialize).BeginInit()
     Me.tabVisionDebug.SuspendLayout()
+    Me.SSTab1.SuspendLayout()
+    Me._SSTab1_TabPage0.SuspendLayout()
+    Me._SSTab1_TabPage1.SuspendLayout()
     Me.grpCommunications.SuspendLayout()
     Me.grpMisc.SuspendLayout()
     CType(Me.updnRLimit, System.ComponentModel.ISupportInitialize).BeginInit()
     Me.grpMaskCombined.SuspendLayout()
     Me.grpGlassCombined.SuspendLayout()
     Me.grpCombinedOffset.SuspendLayout()
-    Me.SSTab1.SuspendLayout()
-    Me._SSTab1_TabPage0.SuspendLayout()
-    Me._SSTab1_TabPage1.SuspendLayout()
     Me.grpCommStatus.SuspendLayout()
     Me.grpShiftOffset.SuspendLayout()
+    CType(Me.updnSmallMaskX, System.ComponentModel.ISupportInitialize).BeginInit()
     CType(Me.updnXShift, System.ComponentModel.ISupportInitialize).BeginInit()
     CType(Me.updnYShift, System.ComponentModel.ISupportInitialize).BeginInit()
     CType(Me.updnRLinear, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -407,7 +413,7 @@
     Me.MainMenu1.Location = New System.Drawing.Point(0, 0)
     Me.MainMenu1.Name = "MainMenu1"
     Me.MainMenu1.Padding = New System.Windows.Forms.Padding(7, 2, 0, 2)
-    Me.MainMenu1.Size = New System.Drawing.Size(1904, 24)
+    Me.MainMenu1.Size = New System.Drawing.Size(1299, 24)
     Me.MainMenu1.TabIndex = 48
     '
     'mnuFile
@@ -470,7 +476,7 @@
     '
     'mnuConfig
     '
-    Me.mnuConfig.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuGeneralSettings, Me.mnuPositionalSettings, Me.mnuSeperator3, Me.mnuCalibration, Me.mnuSeperator2, Me.mnuVerifyVisionAccuracy, Me.mnuUseSouthCameraOnly})
+    Me.mnuConfig.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuGeneralSettings, Me.mnuPositionalSettings, Me.mnuSeperator3, Me.mnuCalibration, Me.mnuSeperator2, Me.mnuVerifyVisionAccuracy, Me.mnuSmallMask})
     Me.mnuConfig.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
     Me.mnuConfig.Name = "mnuConfig"
     Me.mnuConfig.Size = New System.Drawing.Size(98, 20)
@@ -479,25 +485,25 @@
     'mnuGeneralSettings
     '
     Me.mnuGeneralSettings.Name = "mnuGeneralSettings"
-    Me.mnuGeneralSettings.Size = New System.Drawing.Size(219, 22)
+    Me.mnuGeneralSettings.Size = New System.Drawing.Size(209, 22)
     Me.mnuGeneralSettings.Text = "General Settings"
     '
     'mnuPositionalSettings
     '
     Me.mnuPositionalSettings.Name = "mnuPositionalSettings"
-    Me.mnuPositionalSettings.Size = New System.Drawing.Size(219, 22)
+    Me.mnuPositionalSettings.Size = New System.Drawing.Size(209, 22)
     Me.mnuPositionalSettings.Text = "Part Settings"
     '
     'mnuSeperator3
     '
     Me.mnuSeperator3.Name = "mnuSeperator3"
-    Me.mnuSeperator3.Size = New System.Drawing.Size(216, 6)
+    Me.mnuSeperator3.Size = New System.Drawing.Size(206, 6)
     '
     'mnuCalibration
     '
     Me.mnuCalibration.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuModifyHexsightControls, Me.mnuCalibrateNorth, Me.mnuCalibrateSouth})
     Me.mnuCalibration.Name = "mnuCalibration"
-    Me.mnuCalibration.Size = New System.Drawing.Size(219, 22)
+    Me.mnuCalibration.Size = New System.Drawing.Size(209, 22)
     Me.mnuCalibration.Text = "Vision Settings"
     '
     'mnuModifyHexsightControls
@@ -521,19 +527,19 @@
     'mnuSeperator2
     '
     Me.mnuSeperator2.Name = "mnuSeperator2"
-    Me.mnuSeperator2.Size = New System.Drawing.Size(216, 6)
+    Me.mnuSeperator2.Size = New System.Drawing.Size(206, 6)
     '
     'mnuVerifyVisionAccuracy
     '
     Me.mnuVerifyVisionAccuracy.Name = "mnuVerifyVisionAccuracy"
-    Me.mnuVerifyVisionAccuracy.Size = New System.Drawing.Size(219, 22)
+    Me.mnuVerifyVisionAccuracy.Size = New System.Drawing.Size(209, 22)
     Me.mnuVerifyVisionAccuracy.Text = "Verify Vision Accuracy"
     '
-    'mnuUseSouthCameraOnly
+    'mnuSmallMask
     '
-    Me.mnuUseSouthCameraOnly.Name = "mnuUseSouthCameraOnly"
-    Me.mnuUseSouthCameraOnly.Size = New System.Drawing.Size(219, 22)
-    Me.mnuUseSouthCameraOnly.Text = "Use South Camera Only"
+    Me.mnuSmallMask.Name = "mnuSmallMask"
+    Me.mnuSmallMask.Size = New System.Drawing.Size(209, 22)
+    Me.mnuSmallMask.Text = "Small Mask"
     '
     'mnuHelp
     '
@@ -1120,23 +1126,21 @@
     Me.ToolTip1.SetToolTip(Me.lblVisionMessageSouthGlass, "The status of the most recent locate attempt.  Click the Details button for more " &
         "information. ")
     '
-    'btnTest
+    'btnEnter
     '
-    Me.btnTest.BackColor = System.Drawing.Color.Transparent
-    Me.btnTest.Cursor = System.Windows.Forms.Cursors.Default
-    Me.btnTest.FlatStyle = System.Windows.Forms.FlatStyle.System
-    Me.btnTest.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.btnTest.ForeColor = System.Drawing.SystemColors.ControlText
-    Me.btnTest.Location = New System.Drawing.Point(362, 60)
-    Me.btnTest.Name = "btnTest"
-    Me.btnTest.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.btnTest.Size = New System.Drawing.Size(138, 26)
-    Me.btnTest.TabIndex = 193
-    Me.btnTest.TabStop = False
-    Me.btnTest.Text = "Test"
-    Me.ToolTip1.SetToolTip(Me.btnTest, "Will locate the glass based on the trained model associated with the part.  Will " &
-        "continuously repeat if the repeat box is checked")
-    Me.btnTest.UseVisualStyleBackColor = False
+    Me.btnEnter.BackColor = System.Drawing.Color.Transparent
+    Me.btnEnter.Cursor = System.Windows.Forms.Cursors.Default
+    Me.btnEnter.FlatStyle = System.Windows.Forms.FlatStyle.System
+    Me.btnEnter.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.btnEnter.ForeColor = System.Drawing.SystemColors.ControlText
+    Me.btnEnter.Location = New System.Drawing.Point(201, 77)
+    Me.btnEnter.Name = "btnEnter"
+    Me.btnEnter.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.btnEnter.Size = New System.Drawing.Size(69, 68)
+    Me.btnEnter.TabIndex = 193
+    Me.btnEnter.TabStop = False
+    Me.btnEnter.Text = "Enter"
+    Me.btnEnter.UseVisualStyleBackColor = False
     '
     'TmrPassword
     '
@@ -1160,7 +1164,7 @@
     Me.GrpRobot.Controls.Add(Me.grpVBErrors)
     Me.GrpRobot.Location = New System.Drawing.Point(0, 28)
     Me.GrpRobot.Name = "GrpRobot"
-    Me.GrpRobot.Size = New System.Drawing.Size(1892, 1013)
+    Me.GrpRobot.Size = New System.Drawing.Size(1301, 1013)
     Me.GrpRobot.TabIndex = 165
     Me.GrpRobot.TabStop = False
     '
@@ -1168,7 +1172,7 @@
     '
     Me.lblPhone.AutoSize = True
     Me.lblPhone.Font = New System.Drawing.Font("Arial", 15.75!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic), System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.lblPhone.Location = New System.Drawing.Point(100, 109)
+    Me.lblPhone.Location = New System.Drawing.Point(74, 111)
     Me.lblPhone.Name = "lblPhone"
     Me.lblPhone.Size = New System.Drawing.Size(163, 24)
     Me.lblPhone.TabIndex = 169
@@ -1179,9 +1183,10 @@
     Me.picLogo.ErrorImage = CType(resources.GetObject("picLogo.ErrorImage"), System.Drawing.Image)
     Me.picLogo.Image = CType(resources.GetObject("picLogo.Image"), System.Drawing.Image)
     Me.picLogo.InitialImage = CType(resources.GetObject("picLogo.InitialImage"), System.Drawing.Image)
-    Me.picLogo.Location = New System.Drawing.Point(0, 19)
+    Me.picLogo.Location = New System.Drawing.Point(7, 13)
     Me.picLogo.Name = "picLogo"
-    Me.picLogo.Size = New System.Drawing.Size(361, 117)
+    Me.picLogo.Size = New System.Drawing.Size(300, 93)
+    Me.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
     Me.picLogo.TabIndex = 170
     Me.picLogo.TabStop = False
     '
@@ -1192,16 +1197,15 @@
     Me.tabCameraControls.Controls.Add(Me.tabVisionSouth)
     Me.tabCameraControls.Controls.Add(Me.tabVisionDebug)
     Me.tabCameraControls.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.tabCameraControls.Location = New System.Drawing.Point(367, 21)
+    Me.tabCameraControls.Location = New System.Drawing.Point(313, 12)
     Me.tabCameraControls.Name = "tabCameraControls"
     Me.tabCameraControls.SelectedIndex = 0
-    Me.tabCameraControls.Size = New System.Drawing.Size(1517, 992)
+    Me.tabCameraControls.Size = New System.Drawing.Size(986, 992)
     Me.tabCameraControls.TabIndex = 165
     '
     'tabVisionBoth
     '
     Me.tabVisionBoth.BackColor = System.Drawing.SystemColors.Control
-    Me.tabVisionBoth.Controls.Add(Me.btnTest)
     Me.tabVisionBoth.Controls.Add(Me.lblSouthMaskScore)
     Me.tabVisionBoth.Controls.Add(Me.lblSouthGlassScore)
     Me.tabVisionBoth.Controls.Add(Me.lblNorthGlassScore)
@@ -1217,43 +1221,43 @@
     Me.tabVisionBoth.Controls.Add(Me.grpNorth)
     Me.tabVisionBoth.Location = New System.Drawing.Point(4, 25)
     Me.tabVisionBoth.Name = "tabVisionBoth"
-    Me.tabVisionBoth.Size = New System.Drawing.Size(1509, 963)
+    Me.tabVisionBoth.Size = New System.Drawing.Size(978, 963)
     Me.tabVisionBoth.TabIndex = 2
     Me.tabVisionBoth.Text = "Both Cameras"
     '
     'lblSouthMaskScore
     '
     Me.lblSouthMaskScore.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-    Me.lblSouthMaskScore.Location = New System.Drawing.Point(1436, 264)
+    Me.lblSouthMaskScore.Location = New System.Drawing.Point(905, 84)
     Me.lblSouthMaskScore.Name = "lblSouthMaskScore"
-    Me.lblSouthMaskScore.Size = New System.Drawing.Size(59, 23)
+    Me.lblSouthMaskScore.Size = New System.Drawing.Size(64, 23)
     Me.lblSouthMaskScore.TabIndex = 192
     Me.lblSouthMaskScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
     '
     'lblSouthGlassScore
     '
     Me.lblSouthGlassScore.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-    Me.lblSouthGlassScore.Location = New System.Drawing.Point(1436, 874)
+    Me.lblSouthGlassScore.Location = New System.Drawing.Point(905, 126)
     Me.lblSouthGlassScore.Name = "lblSouthGlassScore"
-    Me.lblSouthGlassScore.Size = New System.Drawing.Size(59, 23)
+    Me.lblSouthGlassScore.Size = New System.Drawing.Size(64, 23)
     Me.lblSouthGlassScore.TabIndex = 191
     Me.lblSouthGlassScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
     '
     'lblNorthGlassScore
     '
     Me.lblNorthGlassScore.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-    Me.lblNorthGlassScore.Location = New System.Drawing.Point(9, 858)
+    Me.lblNorthGlassScore.Location = New System.Drawing.Point(3, 132)
     Me.lblNorthGlassScore.Name = "lblNorthGlassScore"
-    Me.lblNorthGlassScore.Size = New System.Drawing.Size(59, 23)
+    Me.lblNorthGlassScore.Size = New System.Drawing.Size(69, 23)
     Me.lblNorthGlassScore.TabIndex = 190
     Me.lblNorthGlassScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
     '
     'lblNorthMaskScore
     '
     Me.lblNorthMaskScore.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-    Me.lblNorthMaskScore.Location = New System.Drawing.Point(9, 217)
+    Me.lblNorthMaskScore.Location = New System.Drawing.Point(5, 81)
     Me.lblNorthMaskScore.Name = "lblNorthMaskScore"
-    Me.lblNorthMaskScore.Size = New System.Drawing.Size(59, 23)
+    Me.lblNorthMaskScore.Size = New System.Drawing.Size(67, 23)
     Me.lblNorthMaskScore.TabIndex = 189
     Me.lblNorthMaskScore.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
     '
@@ -1268,7 +1272,7 @@
     Me.GroupBox1.Controls.Add(Me.chkRepeatLocateBoth)
     Me.GroupBox1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
     Me.GroupBox1.ForeColor = System.Drawing.SystemColors.Highlight
-    Me.GroupBox1.Location = New System.Drawing.Point(627, 16)
+    Me.GroupBox1.Location = New System.Drawing.Point(348, 14)
     Me.GroupBox1.Name = "GroupBox1"
     Me.GroupBox1.Padding = New System.Windows.Forms.Padding(0)
     Me.GroupBox1.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -1327,10 +1331,10 @@
     Me.lblSouthGlassPlaceHolder.Cursor = System.Windows.Forms.Cursors.Default
     Me.lblSouthGlassPlaceHolder.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
     Me.lblSouthGlassPlaceHolder.ForeColor = System.Drawing.SystemColors.Highlight
-    Me.lblSouthGlassPlaceHolder.Location = New System.Drawing.Point(1445, 861)
+    Me.lblSouthGlassPlaceHolder.Location = New System.Drawing.Point(902, 113)
     Me.lblSouthGlassPlaceHolder.Name = "lblSouthGlassPlaceHolder"
     Me.lblSouthGlassPlaceHolder.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.lblSouthGlassPlaceHolder.Size = New System.Drawing.Size(50, 13)
+    Me.lblSouthGlassPlaceHolder.Size = New System.Drawing.Size(78, 13)
     Me.lblSouthGlassPlaceHolder.TabIndex = 187
     Me.lblSouthGlassPlaceHolder.Text = "Glass Score"
     '
@@ -1340,10 +1344,10 @@
     Me.lblSouthMaskPlaceHolder.Cursor = System.Windows.Forms.Cursors.Default
     Me.lblSouthMaskPlaceHolder.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
     Me.lblSouthMaskPlaceHolder.ForeColor = System.Drawing.SystemColors.Highlight
-    Me.lblSouthMaskPlaceHolder.Location = New System.Drawing.Point(1447, 247)
+    Me.lblSouthMaskPlaceHolder.Location = New System.Drawing.Point(900, 67)
     Me.lblSouthMaskPlaceHolder.Name = "lblSouthMaskPlaceHolder"
     Me.lblSouthMaskPlaceHolder.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.lblSouthMaskPlaceHolder.Size = New System.Drawing.Size(48, 14)
+    Me.lblSouthMaskPlaceHolder.Size = New System.Drawing.Size(78, 17)
     Me.lblSouthMaskPlaceHolder.TabIndex = 185
     Me.lblSouthMaskPlaceHolder.Text = "Mask Score"
     '
@@ -1353,10 +1357,10 @@
     Me.lblNorthGlassPlaceHolder.Cursor = System.Windows.Forms.Cursors.Default
     Me.lblNorthGlassPlaceHolder.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
     Me.lblNorthGlassPlaceHolder.ForeColor = System.Drawing.SystemColors.Highlight
-    Me.lblNorthGlassPlaceHolder.Location = New System.Drawing.Point(20, 844)
+    Me.lblNorthGlassPlaceHolder.Location = New System.Drawing.Point(2, 118)
     Me.lblNorthGlassPlaceHolder.Name = "lblNorthGlassPlaceHolder"
     Me.lblNorthGlassPlaceHolder.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.lblNorthGlassPlaceHolder.Size = New System.Drawing.Size(48, 14)
+    Me.lblNorthGlassPlaceHolder.Size = New System.Drawing.Size(78, 14)
     Me.lblNorthGlassPlaceHolder.TabIndex = 182
     Me.lblNorthGlassPlaceHolder.Text = "Glass Score"
     '
@@ -1366,12 +1370,12 @@
     Me.lblNorthMaskPlaceHolder.Cursor = System.Windows.Forms.Cursors.Default
     Me.lblNorthMaskPlaceHolder.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
     Me.lblNorthMaskPlaceHolder.ForeColor = System.Drawing.SystemColors.Highlight
-    Me.lblNorthMaskPlaceHolder.Location = New System.Drawing.Point(21, 203)
+    Me.lblNorthMaskPlaceHolder.Location = New System.Drawing.Point(3, 67)
     Me.lblNorthMaskPlaceHolder.Name = "lblNorthMaskPlaceHolder"
     Me.lblNorthMaskPlaceHolder.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.lblNorthMaskPlaceHolder.Size = New System.Drawing.Size(39, 14)
+    Me.lblNorthMaskPlaceHolder.Size = New System.Drawing.Size(81, 14)
     Me.lblNorthMaskPlaceHolder.TabIndex = 179
-    Me.lblNorthMaskPlaceHolder.Text = "Score"
+    Me.lblNorthMaskPlaceHolder.Text = "Mask Score"
     '
     '_Frame1_1
     '
@@ -1384,14 +1388,14 @@
     Me._Frame1_1.Controls.Add(Me._lblPoint_3)
     Me._Frame1_1.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
     Me._Frame1_1.ForeColor = System.Drawing.SystemColors.ControlText
-    Me._Frame1_1.Location = New System.Drawing.Point(1246, 67)
+    Me._Frame1_1.Location = New System.Drawing.Point(637, 62)
     Me._Frame1_1.Name = "_Frame1_1"
     Me._Frame1_1.Padding = New System.Windows.Forms.Padding(0)
     Me._Frame1_1.RightToLeft = System.Windows.Forms.RightToLeft.No
     Me._Frame1_1.Size = New System.Drawing.Size(260, 91)
     Me._Frame1_1.TabIndex = 175
     Me._Frame1_1.TabStop = False
-    Me._Frame1_1.Text = "Distance Measurement (Double Click on Display)"
+    Me._Frame1_1.Text = "Distance Measurement (Drag Yellow Dots)"
     '
     'txtSouthSecondClick
     '
@@ -1444,12 +1448,12 @@
     Me._lblPoint_5.Cursor = System.Windows.Forms.Cursors.Default
     Me._lblPoint_5.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
     Me._lblPoint_5.ForeColor = System.Drawing.SystemColors.ControlText
-    Me._lblPoint_5.Location = New System.Drawing.Point(14, 43)
+    Me._lblPoint_5.Location = New System.Drawing.Point(-6, 43)
     Me._lblPoint_5.Name = "_lblPoint_5"
     Me._lblPoint_5.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me._lblPoint_5.Size = New System.Drawing.Size(69, 27)
+    Me._lblPoint_5.Size = New System.Drawing.Size(89, 27)
     Me._lblPoint_5.TabIndex = 127
-    Me._lblPoint_5.Text = "Second Click"
+    Me._lblPoint_5.Text = "Second Point"
     Me._lblPoint_5.TextAlign = System.Drawing.ContentAlignment.TopRight
     '
     '_lblPoint_4
@@ -1463,7 +1467,7 @@
     Me._lblPoint_4.RightToLeft = System.Windows.Forms.RightToLeft.No
     Me._lblPoint_4.Size = New System.Drawing.Size(55, 21)
     Me._lblPoint_4.TabIndex = 126
-    Me._lblPoint_4.Text = "First Click"
+    Me._lblPoint_4.Text = "First Point"
     Me._lblPoint_4.TextAlign = System.Drawing.ContentAlignment.TopRight
     '
     '_lblPoint_3
@@ -1472,10 +1476,10 @@
     Me._lblPoint_3.Cursor = System.Windows.Forms.Cursors.Default
     Me._lblPoint_3.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
     Me._lblPoint_3.ForeColor = System.Drawing.SystemColors.ControlText
-    Me._lblPoint_3.Location = New System.Drawing.Point(33, 68)
+    Me._lblPoint_3.Location = New System.Drawing.Point(15, 68)
     Me._lblPoint_3.Name = "_lblPoint_3"
     Me._lblPoint_3.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me._lblPoint_3.Size = New System.Drawing.Size(50, 21)
+    Me._lblPoint_3.Size = New System.Drawing.Size(68, 21)
     Me._lblPoint_3.TabIndex = 125
     Me._lblPoint_3.Text = "Distance"
     Me._lblPoint_3.TextAlign = System.Drawing.ContentAlignment.TopRight
@@ -1493,14 +1497,14 @@
     Me._Frame1_0.Controls.Add(Me._lblPoint_1)
     Me._Frame1_0.Font = New System.Drawing.Font("Arial", 8.0!)
     Me._Frame1_0.ForeColor = System.Drawing.Color.Navy
-    Me._Frame1_0.Location = New System.Drawing.Point(14, 67)
+    Me._Frame1_0.Location = New System.Drawing.Point(82, 63)
     Me._Frame1_0.Name = "_Frame1_0"
     Me._Frame1_0.Padding = New System.Windows.Forms.Padding(0)
     Me._Frame1_0.RightToLeft = System.Windows.Forms.RightToLeft.No
     Me._Frame1_0.Size = New System.Drawing.Size(255, 91)
     Me._Frame1_0.TabIndex = 174
     Me._Frame1_0.TabStop = False
-    Me._Frame1_0.Text = "Distance Measurement (Double Click on Display)"
+    Me._Frame1_0.Text = "Distance Measurement (Drag Yellow Dots)"
     '
     'txtCombinedOneHalf
     '
@@ -1600,7 +1604,7 @@
     Me._lblPoint_0.RightToLeft = System.Windows.Forms.RightToLeft.No
     Me._lblPoint_0.Size = New System.Drawing.Size(55, 21)
     Me._lblPoint_0.TabIndex = 115
-    Me._lblPoint_0.Text = "First Click"
+    Me._lblPoint_0.Text = "First Point"
     Me._lblPoint_0.TextAlign = System.Drawing.ContentAlignment.TopRight
     '
     '_lblPoint_1
@@ -1609,28 +1613,28 @@
     Me._lblPoint_1.Cursor = System.Windows.Forms.Cursors.Default
     Me._lblPoint_1.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
     Me._lblPoint_1.ForeColor = System.Drawing.SystemColors.ControlText
-    Me._lblPoint_1.Location = New System.Drawing.Point(14, 42)
+    Me._lblPoint_1.Location = New System.Drawing.Point(3, 42)
     Me._lblPoint_1.Name = "_lblPoint_1"
     Me._lblPoint_1.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me._lblPoint_1.Size = New System.Drawing.Size(69, 27)
+    Me._lblPoint_1.Size = New System.Drawing.Size(80, 27)
     Me._lblPoint_1.TabIndex = 114
-    Me._lblPoint_1.Text = "Second Click"
+    Me._lblPoint_1.Text = "Second Point"
     Me._lblPoint_1.TextAlign = System.Drawing.ContentAlignment.TopRight
     '
     'grpSouth
     '
-    Me.grpSouth.Location = New System.Drawing.Point(759, 163)
+    Me.grpSouth.Location = New System.Drawing.Point(493, 163)
     Me.grpSouth.Name = "grpSouth"
-    Me.grpSouth.Size = New System.Drawing.Size(666, 791)
+    Me.grpSouth.Size = New System.Drawing.Size(482, 791)
     Me.grpSouth.TabIndex = 172
     Me.grpSouth.TabStop = False
     Me.grpSouth.Text = "South Camera"
     '
     'grpNorth
     '
-    Me.grpNorth.Location = New System.Drawing.Point(76, 164)
+    Me.grpNorth.Location = New System.Drawing.Point(6, 164)
     Me.grpNorth.Name = "grpNorth"
-    Me.grpNorth.Size = New System.Drawing.Size(667, 790)
+    Me.grpNorth.Size = New System.Drawing.Size(482, 790)
     Me.grpNorth.TabIndex = 171
     Me.grpNorth.TabStop = False
     Me.grpNorth.Text = "North Camera"
@@ -1641,7 +1645,7 @@
     Me.tabVisionNorth.Location = New System.Drawing.Point(4, 25)
     Me.tabVisionNorth.Name = "tabVisionNorth"
     Me.tabVisionNorth.Padding = New System.Windows.Forms.Padding(3)
-    Me.tabVisionNorth.Size = New System.Drawing.Size(1509, 963)
+    Me.tabVisionNorth.Size = New System.Drawing.Size(978, 963)
     Me.tabVisionNorth.TabIndex = 0
     Me.tabVisionNorth.Text = "North Camera"
     Me.tabVisionNorth.UseVisualStyleBackColor = True
@@ -1685,7 +1689,7 @@
     Me.grpVisionStatusNorthMask.Controls.Add(Me.Label42)
     Me.grpVisionStatusNorthMask.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
     Me.grpVisionStatusNorthMask.ForeColor = System.Drawing.SystemColors.Highlight
-    Me.grpVisionStatusNorthMask.Location = New System.Drawing.Point(213, 178)
+    Me.grpVisionStatusNorthMask.Location = New System.Drawing.Point(3, 695)
     Me.grpVisionStatusNorthMask.Name = "grpVisionStatusNorthMask"
     Me.grpVisionStatusNorthMask.Padding = New System.Windows.Forms.Padding(0)
     Me.grpVisionStatusNorthMask.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -1859,7 +1863,7 @@
     Me.GroupBox2.Controls.Add(Me.chkLocateRepeatNorthMask)
     Me.GroupBox2.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
     Me.GroupBox2.ForeColor = System.Drawing.SystemColors.Highlight
-    Me.GroupBox2.Location = New System.Drawing.Point(5, 178)
+    Me.GroupBox2.Location = New System.Drawing.Point(5, 538)
     Me.GroupBox2.Name = "GroupBox2"
     Me.GroupBox2.Padding = New System.Windows.Forms.Padding(0)
     Me.GroupBox2.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -2061,7 +2065,7 @@
     Me.grpVisionStatusNorthGlass.Controls.Add(Me.lblVisionScoreNorth)
     Me.grpVisionStatusNorthGlass.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
     Me.grpVisionStatusNorthGlass.ForeColor = System.Drawing.SystemColors.Highlight
-    Me.grpVisionStatusNorthGlass.Location = New System.Drawing.Point(207, 538)
+    Me.grpVisionStatusNorthGlass.Location = New System.Drawing.Point(3, 335)
     Me.grpVisionStatusNorthGlass.Name = "grpVisionStatusNorthGlass"
     Me.grpVisionStatusNorthGlass.Padding = New System.Windows.Forms.Padding(0)
     Me.grpVisionStatusNorthGlass.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -2232,11 +2236,11 @@
     Me.grpHSDisplayNorth.FlatStyle = System.Windows.Forms.FlatStyle.System
     Me.grpHSDisplayNorth.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
     Me.grpHSDisplayNorth.ForeColor = System.Drawing.SystemColors.ControlText
-    Me.grpHSDisplayNorth.Location = New System.Drawing.Point(539, 174)
+    Me.grpHSDisplayNorth.Location = New System.Drawing.Point(329, 154)
     Me.grpHSDisplayNorth.Name = "grpHSDisplayNorth"
     Me.grpHSDisplayNorth.Padding = New System.Windows.Forms.Padding(0)
     Me.grpHSDisplayNorth.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.grpHSDisplayNorth.Size = New System.Drawing.Size(961, 776)
+    Me.grpHSDisplayNorth.Size = New System.Drawing.Size(648, 776)
     Me.grpHSDisplayNorth.TabIndex = 77
     Me.grpHSDisplayNorth.TabStop = False
     '
@@ -2269,7 +2273,7 @@
     Me.grpLocatorControlsNorth.Controls.Add(Me.btnTrainExistingNorthGlass)
     Me.grpLocatorControlsNorth.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
     Me.grpLocatorControlsNorth.ForeColor = System.Drawing.SystemColors.Highlight
-    Me.grpLocatorControlsNorth.Location = New System.Drawing.Point(5, 538)
+    Me.grpLocatorControlsNorth.Location = New System.Drawing.Point(5, 178)
     Me.grpLocatorControlsNorth.Name = "grpLocatorControlsNorth"
     Me.grpLocatorControlsNorth.Padding = New System.Windows.Forms.Padding(0)
     Me.grpLocatorControlsNorth.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -2299,7 +2303,7 @@
     Me.tabVisionSouth.Location = New System.Drawing.Point(4, 25)
     Me.tabVisionSouth.Name = "tabVisionSouth"
     Me.tabVisionSouth.Padding = New System.Windows.Forms.Padding(3)
-    Me.tabVisionSouth.Size = New System.Drawing.Size(1509, 963)
+    Me.tabVisionSouth.Size = New System.Drawing.Size(978, 963)
     Me.tabVisionSouth.TabIndex = 1
     Me.tabVisionSouth.Text = "South Camera"
     Me.tabVisionSouth.UseVisualStyleBackColor = True
@@ -2335,7 +2339,7 @@
     Me.grpLocatorControlsSouthGlass.Controls.Add(Me.btnTrainExistingSouthGlass)
     Me.grpLocatorControlsSouthGlass.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
     Me.grpLocatorControlsSouthGlass.ForeColor = System.Drawing.SystemColors.Highlight
-    Me.grpLocatorControlsSouthGlass.Location = New System.Drawing.Point(5, 597)
+    Me.grpLocatorControlsSouthGlass.Location = New System.Drawing.Point(5, 178)
     Me.grpLocatorControlsSouthGlass.Name = "grpLocatorControlsSouthGlass"
     Me.grpLocatorControlsSouthGlass.Padding = New System.Windows.Forms.Padding(0)
     Me.grpLocatorControlsSouthGlass.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -2378,7 +2382,7 @@
     Me.grpVisionStatusSouthGlass.Controls.Add(Me.lblScoreVisionSouthGlass)
     Me.grpVisionStatusSouthGlass.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
     Me.grpVisionStatusSouthGlass.ForeColor = System.Drawing.SystemColors.Highlight
-    Me.grpVisionStatusSouthGlass.Location = New System.Drawing.Point(213, 597)
+    Me.grpVisionStatusSouthGlass.Location = New System.Drawing.Point(5, 335)
     Me.grpVisionStatusSouthGlass.Name = "grpVisionStatusSouthGlass"
     Me.grpVisionStatusSouthGlass.Padding = New System.Windows.Forms.Padding(0)
     Me.grpVisionStatusSouthGlass.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -2572,7 +2576,7 @@
     Me.grpLocatorControlsSouthMask.Controls.Add(Me.btnTrainExistingSouthMask)
     Me.grpLocatorControlsSouthMask.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
     Me.grpLocatorControlsSouthMask.ForeColor = System.Drawing.SystemColors.Highlight
-    Me.grpLocatorControlsSouthMask.Location = New System.Drawing.Point(5, 178)
+    Me.grpLocatorControlsSouthMask.Location = New System.Drawing.Point(5, 597)
     Me.grpLocatorControlsSouthMask.Name = "grpLocatorControlsSouthMask"
     Me.grpLocatorControlsSouthMask.Padding = New System.Windows.Forms.Padding(0)
     Me.grpLocatorControlsSouthMask.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -2603,11 +2607,11 @@
     Me.grpHSDisplaySouth.FlatStyle = System.Windows.Forms.FlatStyle.System
     Me.grpHSDisplaySouth.Font = New System.Drawing.Font("Arial", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
     Me.grpHSDisplaySouth.ForeColor = System.Drawing.SystemColors.ControlText
-    Me.grpHSDisplaySouth.Location = New System.Drawing.Point(539, 174)
+    Me.grpHSDisplaySouth.Location = New System.Drawing.Point(331, 161)
     Me.grpHSDisplaySouth.Name = "grpHSDisplaySouth"
     Me.grpHSDisplaySouth.Padding = New System.Windows.Forms.Padding(0)
     Me.grpHSDisplaySouth.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.grpHSDisplaySouth.Size = New System.Drawing.Size(920, 773)
+    Me.grpHSDisplaySouth.Size = New System.Drawing.Size(644, 773)
     Me.grpHSDisplaySouth.TabIndex = 77
     Me.grpHSDisplaySouth.TabStop = False
     '
@@ -2770,7 +2774,7 @@
     Me.grpVisionStatusSouthMask.Controls.Add(Me.lblVisionScoreSouthMask)
     Me.grpVisionStatusSouthMask.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
     Me.grpVisionStatusSouthMask.ForeColor = System.Drawing.SystemColors.Highlight
-    Me.grpVisionStatusSouthMask.Location = New System.Drawing.Point(213, 178)
+    Me.grpVisionStatusSouthMask.Location = New System.Drawing.Point(3, 754)
     Me.grpVisionStatusSouthMask.Name = "grpVisionStatusSouthMask"
     Me.grpVisionStatusSouthMask.Padding = New System.Windows.Forms.Padding(0)
     Me.grpVisionStatusSouthMask.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -2905,16 +2909,204 @@
     '
     'tabVisionDebug
     '
+    Me.tabVisionDebug.Controls.Add(Me.SSTab1)
     Me.tabVisionDebug.Controls.Add(Me.grpCommunications)
     Me.tabVisionDebug.Controls.Add(Me.grpMisc)
     Me.tabVisionDebug.Controls.Add(Me.grpMaskCombined)
     Me.tabVisionDebug.Controls.Add(Me.grpGlassCombined)
     Me.tabVisionDebug.Location = New System.Drawing.Point(4, 25)
     Me.tabVisionDebug.Name = "tabVisionDebug"
-    Me.tabVisionDebug.Size = New System.Drawing.Size(1509, 963)
+    Me.tabVisionDebug.Size = New System.Drawing.Size(978, 963)
     Me.tabVisionDebug.TabIndex = 3
     Me.tabVisionDebug.Text = "Debug"
     Me.tabVisionDebug.UseVisualStyleBackColor = True
+    '
+    'SSTab1
+    '
+    Me.SSTab1.Controls.Add(Me._SSTab1_TabPage0)
+    Me.SSTab1.Controls.Add(Me._SSTab1_TabPage1)
+    Me.SSTab1.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.SSTab1.ItemSize = New System.Drawing.Size(42, 18)
+    Me.SSTab1.Location = New System.Drawing.Point(16, 729)
+    Me.SSTab1.Name = "SSTab1"
+    Me.SSTab1.SelectedIndex = 0
+    Me.SSTab1.Size = New System.Drawing.Size(352, 158)
+    Me.SSTab1.TabIndex = 162
+    '
+    '_SSTab1_TabPage0
+    '
+    Me._SSTab1_TabPage0.Controls.Add(Me.Label1)
+    Me._SSTab1_TabPage0.Controls.Add(Me.Label29)
+    Me._SSTab1_TabPage0.Controls.Add(Me.txtRLimit)
+    Me._SSTab1_TabPage0.Controls.Add(Me.cmdOKLimits)
+    Me._SSTab1_TabPage0.Location = New System.Drawing.Point(4, 22)
+    Me._SSTab1_TabPage0.Name = "_SSTab1_TabPage0"
+    Me._SSTab1_TabPage0.Size = New System.Drawing.Size(344, 132)
+    Me._SSTab1_TabPage0.TabIndex = 0
+    Me._SSTab1_TabPage0.Text = "Limits"
+    '
+    'Label1
+    '
+    Me.Label1.BackColor = System.Drawing.SystemColors.Control
+    Me.Label1.Cursor = System.Windows.Forms.Cursors.Default
+    Me.Label1.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.Label1.ForeColor = System.Drawing.SystemColors.ControlText
+    Me.Label1.Location = New System.Drawing.Point(204, 74)
+    Me.Label1.Name = "Label1"
+    Me.Label1.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.Label1.Size = New System.Drawing.Size(66, 15)
+    Me.Label1.TabIndex = 7
+    Me.Label1.Text = "degrees"
+    '
+    'Label29
+    '
+    Me.Label29.BackColor = System.Drawing.SystemColors.Control
+    Me.Label29.Cursor = System.Windows.Forms.Cursors.Default
+    Me.Label29.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.Label29.ForeColor = System.Drawing.SystemColors.ControlText
+    Me.Label29.Location = New System.Drawing.Point(4, 69)
+    Me.Label29.Name = "Label29"
+    Me.Label29.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.Label29.Size = New System.Drawing.Size(133, 15)
+    Me.Label29.TabIndex = 9
+    Me.Label29.Text = "Rotation Offset Limit Value"
+    '
+    'txtRLimit
+    '
+    Me.txtRLimit.AcceptsReturn = True
+    Me.txtRLimit.BackColor = System.Drawing.SystemColors.Window
+    Me.txtRLimit.Cursor = System.Windows.Forms.Cursors.IBeam
+    Me.txtRLimit.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.txtRLimit.ForeColor = System.Drawing.SystemColors.WindowText
+    Me.txtRLimit.Location = New System.Drawing.Point(150, 72)
+    Me.txtRLimit.MaxLength = 0
+    Me.txtRLimit.Name = "txtRLimit"
+    Me.txtRLimit.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.txtRLimit.Size = New System.Drawing.Size(48, 20)
+    Me.txtRLimit.TabIndex = 3
+    '
+    'cmdOKLimits
+    '
+    Me.cmdOKLimits.BackColor = System.Drawing.SystemColors.Control
+    Me.cmdOKLimits.Cursor = System.Windows.Forms.Cursors.Default
+    Me.cmdOKLimits.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.cmdOKLimits.ForeColor = System.Drawing.SystemColors.ControlText
+    Me.cmdOKLimits.Location = New System.Drawing.Point(7, 263)
+    Me.cmdOKLimits.Name = "cmdOKLimits"
+    Me.cmdOKLimits.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.cmdOKLimits.Size = New System.Drawing.Size(81, 25)
+    Me.cmdOKLimits.TabIndex = 19
+    Me.cmdOKLimits.Text = "OK"
+    Me.cmdOKLimits.UseVisualStyleBackColor = False
+    '
+    '_SSTab1_TabPage1
+    '
+    Me._SSTab1_TabPage1.Controls.Add(Me.cmdOKGeneralSettings)
+    Me._SSTab1_TabPage1.Controls.Add(Me.txtRetryCountLimit)
+    Me._SSTab1_TabPage1.Controls.Add(Me.txtSnapAfterLocate)
+    Me._SSTab1_TabPage1.Controls.Add(Me._lblSnapAfterLocate_0)
+    Me._SSTab1_TabPage1.Controls.Add(Me._Label8_3)
+    Me._SSTab1_TabPage1.Controls.Add(Me._Label8_2)
+    Me._SSTab1_TabPage1.Controls.Add(Me._lblSnapAfterLocate_1)
+    Me._SSTab1_TabPage1.Location = New System.Drawing.Point(4, 22)
+    Me._SSTab1_TabPage1.Name = "_SSTab1_TabPage1"
+    Me._SSTab1_TabPage1.Size = New System.Drawing.Size(344, 132)
+    Me._SSTab1_TabPage1.TabIndex = 1
+    Me._SSTab1_TabPage1.Text = "General Settings"
+    '
+    'cmdOKGeneralSettings
+    '
+    Me.cmdOKGeneralSettings.BackColor = System.Drawing.SystemColors.Control
+    Me.cmdOKGeneralSettings.Cursor = System.Windows.Forms.Cursors.Default
+    Me.cmdOKGeneralSettings.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.cmdOKGeneralSettings.ForeColor = System.Drawing.SystemColors.ControlText
+    Me.cmdOKGeneralSettings.Location = New System.Drawing.Point(5, 263)
+    Me.cmdOKGeneralSettings.Name = "cmdOKGeneralSettings"
+    Me.cmdOKGeneralSettings.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.cmdOKGeneralSettings.Size = New System.Drawing.Size(81, 25)
+    Me.cmdOKGeneralSettings.TabIndex = 30
+    Me.cmdOKGeneralSettings.Text = "OK"
+    Me.cmdOKGeneralSettings.UseVisualStyleBackColor = False
+    '
+    'txtRetryCountLimit
+    '
+    Me.txtRetryCountLimit.AcceptsReturn = True
+    Me.txtRetryCountLimit.BackColor = System.Drawing.SystemColors.Window
+    Me.txtRetryCountLimit.Cursor = System.Windows.Forms.Cursors.IBeam
+    Me.txtRetryCountLimit.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.txtRetryCountLimit.ForeColor = System.Drawing.SystemColors.WindowText
+    Me.txtRetryCountLimit.Location = New System.Drawing.Point(151, 60)
+    Me.txtRetryCountLimit.MaxLength = 0
+    Me.txtRetryCountLimit.Name = "txtRetryCountLimit"
+    Me.txtRetryCountLimit.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.txtRetryCountLimit.Size = New System.Drawing.Size(48, 20)
+    Me.txtRetryCountLimit.TabIndex = 27
+    '
+    'txtSnapAfterLocate
+    '
+    Me.txtSnapAfterLocate.AcceptsReturn = True
+    Me.txtSnapAfterLocate.BackColor = System.Drawing.SystemColors.Window
+    Me.txtSnapAfterLocate.Cursor = System.Windows.Forms.Cursors.IBeam
+    Me.txtSnapAfterLocate.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.txtSnapAfterLocate.ForeColor = System.Drawing.SystemColors.WindowText
+    Me.txtSnapAfterLocate.Location = New System.Drawing.Point(152, 4)
+    Me.txtSnapAfterLocate.MaxLength = 0
+    Me.txtSnapAfterLocate.Name = "txtSnapAfterLocate"
+    Me.txtSnapAfterLocate.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.txtSnapAfterLocate.Size = New System.Drawing.Size(48, 20)
+    Me.txtSnapAfterLocate.TabIndex = 10
+    '
+    '_lblSnapAfterLocate_0
+    '
+    Me._lblSnapAfterLocate_0.BackColor = System.Drawing.SystemColors.Control
+    Me._lblSnapAfterLocate_0.Cursor = System.Windows.Forms.Cursors.Default
+    Me._lblSnapAfterLocate_0.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me._lblSnapAfterLocate_0.ForeColor = System.Drawing.SystemColors.ControlText
+    Me._lblSnapAfterLocate_0.Location = New System.Drawing.Point(14, 57)
+    Me._lblSnapAfterLocate_0.Name = "_lblSnapAfterLocate_0"
+    Me._lblSnapAfterLocate_0.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me._lblSnapAfterLocate_0.Size = New System.Drawing.Size(133, 43)
+    Me._lblSnapAfterLocate_0.TabIndex = 29
+    Me._lblSnapAfterLocate_0.Text = "Number of times to try to find a contour before reporting an error"
+    '
+    '_Label8_3
+    '
+    Me._Label8_3.BackColor = System.Drawing.SystemColors.Control
+    Me._Label8_3.Cursor = System.Windows.Forms.Cursors.Default
+    Me._Label8_3.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me._Label8_3.ForeColor = System.Drawing.SystemColors.ControlText
+    Me._Label8_3.Location = New System.Drawing.Point(204, 115)
+    Me._Label8_3.Name = "_Label8_3"
+    Me._Label8_3.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me._Label8_3.Size = New System.Drawing.Size(66, 15)
+    Me._Label8_3.TabIndex = 28
+    Me._Label8_3.Text = "counts"
+    '
+    '_Label8_2
+    '
+    Me._Label8_2.BackColor = System.Drawing.SystemColors.Control
+    Me._Label8_2.Cursor = System.Windows.Forms.Cursors.Default
+    Me._Label8_2.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me._Label8_2.ForeColor = System.Drawing.SystemColors.ControlText
+    Me._Label8_2.Location = New System.Drawing.Point(205, 6)
+    Me._Label8_2.Name = "_Label8_2"
+    Me._Label8_2.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me._Label8_2.Size = New System.Drawing.Size(66, 15)
+    Me._Label8_2.TabIndex = 12
+    Me._Label8_2.Text = "milliseconds"
+    '
+    '_lblSnapAfterLocate_1
+    '
+    Me._lblSnapAfterLocate_1.BackColor = System.Drawing.SystemColors.Control
+    Me._lblSnapAfterLocate_1.Cursor = System.Windows.Forms.Cursors.Default
+    Me._lblSnapAfterLocate_1.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me._lblSnapAfterLocate_1.ForeColor = System.Drawing.SystemColors.ControlText
+    Me._lblSnapAfterLocate_1.Location = New System.Drawing.Point(15, 6)
+    Me._lblSnapAfterLocate_1.Name = "_lblSnapAfterLocate_1"
+    Me._lblSnapAfterLocate_1.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me._lblSnapAfterLocate_1.Size = New System.Drawing.Size(133, 69)
+    Me._lblSnapAfterLocate_1.TabIndex = 11
+    Me._lblSnapAfterLocate_1.Text = "Time to wait after vision locaton before snapping a picture."
     '
     'grpCommunications
     '
@@ -3265,7 +3457,6 @@
     'grpCombinedOffset
     '
     Me.grpCombinedOffset.BackColor = System.Drawing.Color.LightSteelBlue
-    Me.grpCombinedOffset.Controls.Add(Me.SSTab1)
     Me.grpCombinedOffset.Controls.Add(Me.grpCommStatus)
     Me.grpCombinedOffset.Controls.Add(Me.grpShiftOffset)
     Me.grpCombinedOffset.Controls.Add(Me.grpCombinedOffsetDetail)
@@ -3275,203 +3466,16 @@
     Me.grpCombinedOffset.Name = "grpCombinedOffset"
     Me.grpCombinedOffset.Padding = New System.Windows.Forms.Padding(0)
     Me.grpCombinedOffset.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.grpCombinedOffset.Size = New System.Drawing.Size(354, 475)
+    Me.grpCombinedOffset.Size = New System.Drawing.Size(302, 538)
     Me.grpCombinedOffset.TabIndex = 1
     Me.grpCombinedOffset.TabStop = False
-    '
-    'SSTab1
-    '
-    Me.SSTab1.Controls.Add(Me._SSTab1_TabPage0)
-    Me.SSTab1.Controls.Add(Me._SSTab1_TabPage1)
-    Me.SSTab1.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.SSTab1.ItemSize = New System.Drawing.Size(42, 18)
-    Me.SSTab1.Location = New System.Drawing.Point(3, 334)
-    Me.SSTab1.Name = "SSTab1"
-    Me.SSTab1.SelectedIndex = 0
-    Me.SSTab1.Size = New System.Drawing.Size(352, 142)
-    Me.SSTab1.TabIndex = 161
-    '
-    '_SSTab1_TabPage0
-    '
-    Me._SSTab1_TabPage0.Controls.Add(Me.Label1)
-    Me._SSTab1_TabPage0.Controls.Add(Me.Label29)
-    Me._SSTab1_TabPage0.Controls.Add(Me.txtRLimit)
-    Me._SSTab1_TabPage0.Controls.Add(Me.cmdOKLimits)
-    Me._SSTab1_TabPage0.Location = New System.Drawing.Point(4, 22)
-    Me._SSTab1_TabPage0.Name = "_SSTab1_TabPage0"
-    Me._SSTab1_TabPage0.Size = New System.Drawing.Size(344, 116)
-    Me._SSTab1_TabPage0.TabIndex = 0
-    Me._SSTab1_TabPage0.Text = "Limits"
-    '
-    'Label1
-    '
-    Me.Label1.BackColor = System.Drawing.SystemColors.Control
-    Me.Label1.Cursor = System.Windows.Forms.Cursors.Default
-    Me.Label1.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.Label1.ForeColor = System.Drawing.SystemColors.ControlText
-    Me.Label1.Location = New System.Drawing.Point(204, 74)
-    Me.Label1.Name = "Label1"
-    Me.Label1.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.Label1.Size = New System.Drawing.Size(66, 15)
-    Me.Label1.TabIndex = 7
-    Me.Label1.Text = "degrees"
-    '
-    'Label29
-    '
-    Me.Label29.BackColor = System.Drawing.SystemColors.Control
-    Me.Label29.Cursor = System.Windows.Forms.Cursors.Default
-    Me.Label29.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.Label29.ForeColor = System.Drawing.SystemColors.ControlText
-    Me.Label29.Location = New System.Drawing.Point(13, 74)
-    Me.Label29.Name = "Label29"
-    Me.Label29.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.Label29.Size = New System.Drawing.Size(133, 15)
-    Me.Label29.TabIndex = 9
-    Me.Label29.Text = "Rotation Offset Limit Value"
-    '
-    'txtRLimit
-    '
-    Me.txtRLimit.AcceptsReturn = True
-    Me.txtRLimit.BackColor = System.Drawing.SystemColors.Window
-    Me.txtRLimit.Cursor = System.Windows.Forms.Cursors.IBeam
-    Me.txtRLimit.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.txtRLimit.ForeColor = System.Drawing.SystemColors.WindowText
-    Me.txtRLimit.Location = New System.Drawing.Point(150, 72)
-    Me.txtRLimit.MaxLength = 0
-    Me.txtRLimit.Name = "txtRLimit"
-    Me.txtRLimit.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.txtRLimit.Size = New System.Drawing.Size(48, 20)
-    Me.txtRLimit.TabIndex = 3
-    '
-    'cmdOKLimits
-    '
-    Me.cmdOKLimits.BackColor = System.Drawing.SystemColors.Control
-    Me.cmdOKLimits.Cursor = System.Windows.Forms.Cursors.Default
-    Me.cmdOKLimits.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.cmdOKLimits.ForeColor = System.Drawing.SystemColors.ControlText
-    Me.cmdOKLimits.Location = New System.Drawing.Point(7, 263)
-    Me.cmdOKLimits.Name = "cmdOKLimits"
-    Me.cmdOKLimits.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.cmdOKLimits.Size = New System.Drawing.Size(81, 25)
-    Me.cmdOKLimits.TabIndex = 19
-    Me.cmdOKLimits.Text = "OK"
-    Me.cmdOKLimits.UseVisualStyleBackColor = False
-    '
-    '_SSTab1_TabPage1
-    '
-    Me._SSTab1_TabPage1.Controls.Add(Me.cmdOKGeneralSettings)
-    Me._SSTab1_TabPage1.Controls.Add(Me.txtRetryCountLimit)
-    Me._SSTab1_TabPage1.Controls.Add(Me.txtSnapAfterLocate)
-    Me._SSTab1_TabPage1.Controls.Add(Me._lblSnapAfterLocate_0)
-    Me._SSTab1_TabPage1.Controls.Add(Me._Label8_3)
-    Me._SSTab1_TabPage1.Controls.Add(Me._Label8_2)
-    Me._SSTab1_TabPage1.Controls.Add(Me._lblSnapAfterLocate_1)
-    Me._SSTab1_TabPage1.Location = New System.Drawing.Point(4, 22)
-    Me._SSTab1_TabPage1.Name = "_SSTab1_TabPage1"
-    Me._SSTab1_TabPage1.Size = New System.Drawing.Size(344, 116)
-    Me._SSTab1_TabPage1.TabIndex = 1
-    Me._SSTab1_TabPage1.Text = "General Settings"
-    '
-    'cmdOKGeneralSettings
-    '
-    Me.cmdOKGeneralSettings.BackColor = System.Drawing.SystemColors.Control
-    Me.cmdOKGeneralSettings.Cursor = System.Windows.Forms.Cursors.Default
-    Me.cmdOKGeneralSettings.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.cmdOKGeneralSettings.ForeColor = System.Drawing.SystemColors.ControlText
-    Me.cmdOKGeneralSettings.Location = New System.Drawing.Point(5, 263)
-    Me.cmdOKGeneralSettings.Name = "cmdOKGeneralSettings"
-    Me.cmdOKGeneralSettings.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.cmdOKGeneralSettings.Size = New System.Drawing.Size(81, 25)
-    Me.cmdOKGeneralSettings.TabIndex = 30
-    Me.cmdOKGeneralSettings.Text = "OK"
-    Me.cmdOKGeneralSettings.UseVisualStyleBackColor = False
-    '
-    'txtRetryCountLimit
-    '
-    Me.txtRetryCountLimit.AcceptsReturn = True
-    Me.txtRetryCountLimit.BackColor = System.Drawing.SystemColors.Window
-    Me.txtRetryCountLimit.Cursor = System.Windows.Forms.Cursors.IBeam
-    Me.txtRetryCountLimit.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.txtRetryCountLimit.ForeColor = System.Drawing.SystemColors.WindowText
-    Me.txtRetryCountLimit.Location = New System.Drawing.Point(151, 60)
-    Me.txtRetryCountLimit.MaxLength = 0
-    Me.txtRetryCountLimit.Name = "txtRetryCountLimit"
-    Me.txtRetryCountLimit.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.txtRetryCountLimit.Size = New System.Drawing.Size(48, 20)
-    Me.txtRetryCountLimit.TabIndex = 27
-    '
-    'txtSnapAfterLocate
-    '
-    Me.txtSnapAfterLocate.AcceptsReturn = True
-    Me.txtSnapAfterLocate.BackColor = System.Drawing.SystemColors.Window
-    Me.txtSnapAfterLocate.Cursor = System.Windows.Forms.Cursors.IBeam
-    Me.txtSnapAfterLocate.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.txtSnapAfterLocate.ForeColor = System.Drawing.SystemColors.WindowText
-    Me.txtSnapAfterLocate.Location = New System.Drawing.Point(152, 4)
-    Me.txtSnapAfterLocate.MaxLength = 0
-    Me.txtSnapAfterLocate.Name = "txtSnapAfterLocate"
-    Me.txtSnapAfterLocate.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.txtSnapAfterLocate.Size = New System.Drawing.Size(48, 20)
-    Me.txtSnapAfterLocate.TabIndex = 10
-    '
-    '_lblSnapAfterLocate_0
-    '
-    Me._lblSnapAfterLocate_0.BackColor = System.Drawing.SystemColors.Control
-    Me._lblSnapAfterLocate_0.Cursor = System.Windows.Forms.Cursors.Default
-    Me._lblSnapAfterLocate_0.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me._lblSnapAfterLocate_0.ForeColor = System.Drawing.SystemColors.ControlText
-    Me._lblSnapAfterLocate_0.Location = New System.Drawing.Point(14, 57)
-    Me._lblSnapAfterLocate_0.Name = "_lblSnapAfterLocate_0"
-    Me._lblSnapAfterLocate_0.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me._lblSnapAfterLocate_0.Size = New System.Drawing.Size(133, 43)
-    Me._lblSnapAfterLocate_0.TabIndex = 29
-    Me._lblSnapAfterLocate_0.Text = "Number of times to try to find a contour before reporting an error"
-    '
-    '_Label8_3
-    '
-    Me._Label8_3.BackColor = System.Drawing.SystemColors.Control
-    Me._Label8_3.Cursor = System.Windows.Forms.Cursors.Default
-    Me._Label8_3.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me._Label8_3.ForeColor = System.Drawing.SystemColors.ControlText
-    Me._Label8_3.Location = New System.Drawing.Point(204, 115)
-    Me._Label8_3.Name = "_Label8_3"
-    Me._Label8_3.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me._Label8_3.Size = New System.Drawing.Size(66, 15)
-    Me._Label8_3.TabIndex = 28
-    Me._Label8_3.Text = "counts"
-    '
-    '_Label8_2
-    '
-    Me._Label8_2.BackColor = System.Drawing.SystemColors.Control
-    Me._Label8_2.Cursor = System.Windows.Forms.Cursors.Default
-    Me._Label8_2.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me._Label8_2.ForeColor = System.Drawing.SystemColors.ControlText
-    Me._Label8_2.Location = New System.Drawing.Point(205, 6)
-    Me._Label8_2.Name = "_Label8_2"
-    Me._Label8_2.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me._Label8_2.Size = New System.Drawing.Size(66, 15)
-    Me._Label8_2.TabIndex = 12
-    Me._Label8_2.Text = "milliseconds"
-    '
-    '_lblSnapAfterLocate_1
-    '
-    Me._lblSnapAfterLocate_1.BackColor = System.Drawing.SystemColors.Control
-    Me._lblSnapAfterLocate_1.Cursor = System.Windows.Forms.Cursors.Default
-    Me._lblSnapAfterLocate_1.Font = New System.Drawing.Font("Arial", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me._lblSnapAfterLocate_1.ForeColor = System.Drawing.SystemColors.ControlText
-    Me._lblSnapAfterLocate_1.Location = New System.Drawing.Point(15, 6)
-    Me._lblSnapAfterLocate_1.Name = "_lblSnapAfterLocate_1"
-    Me._lblSnapAfterLocate_1.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me._lblSnapAfterLocate_1.Size = New System.Drawing.Size(133, 69)
-    Me._lblSnapAfterLocate_1.TabIndex = 11
-    Me._lblSnapAfterLocate_1.Text = "Time to wait after vision locaton before snapping a picture."
     '
     'grpCommStatus
     '
     Me.grpCommStatus.Controls.Add(Me.txtCommStatus)
     Me.grpCommStatus.Location = New System.Drawing.Point(6, 17)
     Me.grpCommStatus.Name = "grpCommStatus"
-    Me.grpCommStatus.Size = New System.Drawing.Size(343, 121)
+    Me.grpCommStatus.Size = New System.Drawing.Size(288, 121)
     Me.grpCommStatus.TabIndex = 219
     Me.grpCommStatus.TabStop = False
     Me.grpCommStatus.Text = "Serial Communication Status"
@@ -3489,15 +3493,21 @@
     Me.txtCommStatus.Name = "txtCommStatus"
     Me.txtCommStatus.RightToLeft = System.Windows.Forms.RightToLeft.No
     Me.txtCommStatus.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-    Me.txtCommStatus.Size = New System.Drawing.Size(337, 93)
+    Me.txtCommStatus.Size = New System.Drawing.Size(282, 93)
     Me.txtCommStatus.TabIndex = 89
     '
     'grpShiftOffset
     '
+    Me.grpShiftOffset.Controls.Add(Me.btnEnter)
+    Me.grpShiftOffset.Controls.Add(Me.updnSmallMaskX)
+    Me.grpShiftOffset.Controls.Add(Me.Label6)
+    Me.grpShiftOffset.Controls.Add(Me.Label10)
+    Me.grpShiftOffset.Controls.Add(Me.Label3)
     Me.grpShiftOffset.Controls.Add(Me.updnXShift)
     Me.grpShiftOffset.Controls.Add(Me.updnYShift)
     Me.grpShiftOffset.Controls.Add(Me.Label21)
     Me.grpShiftOffset.Controls.Add(Me.Label20)
+    Me.grpShiftOffset.Controls.Add(Me.lblVisionTimeBoth)
     Me.grpShiftOffset.Controls.Add(Me.Label18)
     Me.grpShiftOffset.Controls.Add(Me.updnRLinear)
     Me.grpShiftOffset.Controls.Add(Me.Label19)
@@ -3509,19 +3519,71 @@
     Me.grpShiftOffset.Controls.Add(Me.Label13)
     Me.grpShiftOffset.Controls.Add(Me.Label23)
     Me.grpShiftOffset.ForeColor = System.Drawing.Color.Navy
-    Me.grpShiftOffset.Location = New System.Drawing.Point(8, 226)
+    Me.grpShiftOffset.Location = New System.Drawing.Point(8, 260)
     Me.grpShiftOffset.Name = "grpShiftOffset"
-    Me.grpShiftOffset.Size = New System.Drawing.Size(343, 102)
+    Me.grpShiftOffset.Size = New System.Drawing.Size(286, 263)
     Me.grpShiftOffset.TabIndex = 218
     Me.grpShiftOffset.TabStop = False
     Me.grpShiftOffset.Text = "Shift Offset"
+    '
+    'updnSmallMaskX
+    '
+    Me.updnSmallMaskX.DecimalPlaces = 1
+    Me.updnSmallMaskX.Increment = New Decimal(New Integer() {5, 0, 0, 65536})
+    Me.updnSmallMaskX.Location = New System.Drawing.Point(6, 215)
+    Me.updnSmallMaskX.Minimum = New Decimal(New Integer() {800, 0, 0, -2147483648})
+    Me.updnSmallMaskX.Name = "updnSmallMaskX"
+    Me.updnSmallMaskX.Size = New System.Drawing.Size(67, 22)
+    Me.updnSmallMaskX.TabIndex = 241
+    Me.updnSmallMaskX.Tag = ""
+    Me.updnSmallMaskX.UpDownAlign = System.Windows.Forms.LeftRightAlignment.Left
+    Me.updnSmallMaskX.Value = New Decimal(New Integer() {1, 0, 0, 0})
+    '
+    'Label6
+    '
+    Me.Label6.BackColor = System.Drawing.Color.Transparent
+    Me.Label6.Cursor = System.Windows.Forms.Cursors.Default
+    Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold)
+    Me.Label6.ForeColor = System.Drawing.Color.LightYellow
+    Me.Label6.Location = New System.Drawing.Point(8, 238)
+    Me.Label6.Name = "Label6"
+    Me.Label6.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.Label6.Size = New System.Drawing.Size(74, 25)
+    Me.Label6.TabIndex = 240
+    Me.Label6.Text = "+ is North"
+    '
+    'Label10
+    '
+    Me.Label10.BackColor = System.Drawing.Color.Transparent
+    Me.Label10.Cursor = System.Windows.Forms.Cursors.Default
+    Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold)
+    Me.Label10.ForeColor = System.Drawing.SystemColors.ControlText
+    Me.Label10.Location = New System.Drawing.Point(6, 199)
+    Me.Label10.Name = "Label10"
+    Me.Label10.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.Label10.Size = New System.Drawing.Size(150, 14)
+    Me.Label10.TabIndex = 239
+    Me.Label10.Text = "Small Mask X Offset"
+    '
+    'Label3
+    '
+    Me.Label3.BackColor = System.Drawing.Color.Transparent
+    Me.Label3.Cursor = System.Windows.Forms.Cursors.Default
+    Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold)
+    Me.Label3.ForeColor = System.Drawing.Color.LightYellow
+    Me.Label3.Location = New System.Drawing.Point(108, 132)
+    Me.Label3.Name = "Label3"
+    Me.Label3.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.Label3.Size = New System.Drawing.Size(72, 46)
+    Me.Label3.TabIndex = 238
+    Me.Label3.Text = "+ Rotates mask CCW"
     '
     'updnXShift
     '
     Me.updnXShift.DecimalPlaces = 1
     Me.updnXShift.Increment = New Decimal(New Integer() {5, 0, 0, 65536})
-    Me.updnXShift.Location = New System.Drawing.Point(2, 32)
-    Me.updnXShift.Maximum = New Decimal(New Integer() {500, 0, 0, 0})
+    Me.updnXShift.Location = New System.Drawing.Point(2, 28)
+    Me.updnXShift.Maximum = New Decimal(New Integer() {200, 0, 0, 0})
     Me.updnXShift.Minimum = New Decimal(New Integer() {500, 0, 0, -2147483648})
     Me.updnXShift.Name = "updnXShift"
     Me.updnXShift.Size = New System.Drawing.Size(67, 22)
@@ -3534,7 +3596,7 @@
     '
     Me.updnYShift.DecimalPlaces = 1
     Me.updnYShift.Increment = New Decimal(New Integer() {5, 0, 0, 65536})
-    Me.updnYShift.Location = New System.Drawing.Point(114, 32)
+    Me.updnYShift.Location = New System.Drawing.Point(114, 28)
     Me.updnYShift.Maximum = New Decimal(New Integer() {500, 0, 0, 0})
     Me.updnYShift.Minimum = New Decimal(New Integer() {500, 0, 0, -2147483648})
     Me.updnYShift.Name = "updnYShift"
@@ -3549,8 +3611,8 @@
     Me.Label21.BackColor = System.Drawing.Color.Transparent
     Me.Label21.Cursor = System.Windows.Forms.Cursors.Default
     Me.Label21.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold)
-    Me.Label21.ForeColor = System.Drawing.Color.Navy
-    Me.Label21.Location = New System.Drawing.Point(107, 55)
+    Me.Label21.ForeColor = System.Drawing.Color.LightYellow
+    Me.Label21.Location = New System.Drawing.Point(107, 51)
     Me.Label21.Name = "Label21"
     Me.Label21.RightToLeft = System.Windows.Forms.RightToLeft.No
     Me.Label21.Size = New System.Drawing.Size(74, 25)
@@ -3562,19 +3624,32 @@
     Me.Label20.BackColor = System.Drawing.Color.Transparent
     Me.Label20.Cursor = System.Windows.Forms.Cursors.Default
     Me.Label20.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold)
-    Me.Label20.ForeColor = System.Drawing.Color.Navy
-    Me.Label20.Location = New System.Drawing.Point(1, 55)
+    Me.Label20.ForeColor = System.Drawing.Color.LightYellow
+    Me.Label20.Location = New System.Drawing.Point(1, 51)
     Me.Label20.Name = "Label20"
     Me.Label20.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.Label20.Size = New System.Drawing.Size(74, 25)
+    Me.Label20.Size = New System.Drawing.Size(74, 21)
     Me.Label20.TabIndex = 226
     Me.Label20.Text = "+ is North"
+    '
+    'lblVisionTimeBoth
+    '
+    Me.lblVisionTimeBoth.BackColor = System.Drawing.Color.Transparent
+    Me.lblVisionTimeBoth.Cursor = System.Windows.Forms.Cursors.Default
+    Me.lblVisionTimeBoth.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold)
+    Me.lblVisionTimeBoth.ForeColor = System.Drawing.SystemColors.ControlText
+    Me.lblVisionTimeBoth.Location = New System.Drawing.Point(5, -22)
+    Me.lblVisionTimeBoth.Name = "lblVisionTimeBoth"
+    Me.lblVisionTimeBoth.RightToLeft = System.Windows.Forms.RightToLeft.No
+    Me.lblVisionTimeBoth.Size = New System.Drawing.Size(42, 16)
+    Me.lblVisionTimeBoth.TabIndex = 222
+    Me.lblVisionTimeBoth.Text = "Time"
     '
     'Label18
     '
     Me.Label18.AutoSize = True
     Me.Label18.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.Label18.Location = New System.Drawing.Point(300, 78)
+    Me.Label18.Location = New System.Drawing.Point(77, 161)
     Me.Label18.Name = "Label18"
     Me.Label18.Size = New System.Drawing.Size(32, 16)
     Me.Label18.TabIndex = 225
@@ -3583,9 +3658,11 @@
     'updnRLinear
     '
     Me.updnRLinear.DecimalPlaces = 1
-    Me.updnRLinear.Location = New System.Drawing.Point(229, 75)
+    Me.updnRLinear.Location = New System.Drawing.Point(5, 161)
+    Me.updnRLinear.Maximum = New Decimal(New Integer() {50, 0, 0, 0})
+    Me.updnRLinear.Minimum = New Decimal(New Integer() {50, 0, 0, -2147483648})
     Me.updnRLinear.Name = "updnRLinear"
-    Me.updnRLinear.Size = New System.Drawing.Size(66, 22)
+    Me.updnRLinear.Size = New System.Drawing.Size(72, 22)
     Me.updnRLinear.TabIndex = 224
     Me.updnRLinear.Tag = ""
     Me.updnRLinear.UpDownAlign = System.Windows.Forms.LeftRightAlignment.Left
@@ -3596,11 +3673,11 @@
     Me.Label19.BackColor = System.Drawing.Color.Transparent
     Me.Label19.Cursor = System.Windows.Forms.Cursors.Default
     Me.Label19.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold)
-    Me.Label19.ForeColor = System.Drawing.Color.Navy
-    Me.Label19.Location = New System.Drawing.Point(229, 56)
+    Me.Label19.ForeColor = System.Drawing.Color.Black
+    Me.Label19.Location = New System.Drawing.Point(4, 126)
     Me.Label19.Name = "Label19"
     Me.Label19.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.Label19.Size = New System.Drawing.Size(120, 16)
+    Me.Label19.Size = New System.Drawing.Size(68, 32)
     Me.Label19.TabIndex = 223
     Me.Label19.Text = "Linear Rotation"
     '
@@ -3608,7 +3685,7 @@
     '
     Me.Label8.AutoSize = True
     Me.Label8.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.Label8.Location = New System.Drawing.Point(301, 34)
+    Me.Label8.Location = New System.Drawing.Point(74, 93)
     Me.Label8.Name = "Label8"
     Me.Label8.Size = New System.Drawing.Size(32, 16)
     Me.Label8.TabIndex = 219
@@ -3618,7 +3695,7 @@
     '
     Me.Label7.AutoSize = True
     Me.Label7.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.Label7.Location = New System.Drawing.Point(184, 36)
+    Me.Label7.Location = New System.Drawing.Point(184, 32)
     Me.Label7.Name = "Label7"
     Me.Label7.Size = New System.Drawing.Size(32, 16)
     Me.Label7.TabIndex = 218
@@ -3629,8 +3706,8 @@
     Me.Label14.BackColor = System.Drawing.Color.Transparent
     Me.Label14.Cursor = System.Windows.Forms.Cursors.Default
     Me.Label14.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold)
-    Me.Label14.ForeColor = System.Drawing.SystemColors.ControlText
-    Me.Label14.Location = New System.Drawing.Point(145, 13)
+    Me.Label14.ForeColor = System.Drawing.Color.Black
+    Me.Label14.Location = New System.Drawing.Point(115, 9)
     Me.Label14.Name = "Label14"
     Me.Label14.RightToLeft = System.Windows.Forms.RightToLeft.No
     Me.Label14.Size = New System.Drawing.Size(34, 17)
@@ -3640,7 +3717,7 @@
     'updnRShift
     '
     Me.updnRShift.DecimalPlaces = 3
-    Me.updnRShift.Location = New System.Drawing.Point(228, 32)
+    Me.updnRShift.Location = New System.Drawing.Point(1, 91)
     Me.updnRShift.Minimum = New Decimal(New Integer() {100, 0, 0, -2147483648})
     Me.updnRShift.Name = "updnRShift"
     Me.updnRShift.Size = New System.Drawing.Size(67, 22)
@@ -3654,8 +3731,8 @@
     Me.Label15.BackColor = System.Drawing.Color.Transparent
     Me.Label15.Cursor = System.Windows.Forms.Cursors.Default
     Me.Label15.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold)
-    Me.Label15.ForeColor = System.Drawing.SystemColors.ControlText
-    Me.Label15.Location = New System.Drawing.Point(28, 15)
+    Me.Label15.ForeColor = System.Drawing.Color.Black
+    Me.Label15.Location = New System.Drawing.Point(6, 11)
     Me.Label15.Name = "Label15"
     Me.Label15.RightToLeft = System.Windows.Forms.RightToLeft.No
     Me.Label15.Size = New System.Drawing.Size(34, 17)
@@ -3666,7 +3743,7 @@
     '
     Me.Label13.AutoSize = True
     Me.Label13.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.Label13.Location = New System.Drawing.Point(72, 35)
+    Me.Label13.Location = New System.Drawing.Point(72, 31)
     Me.Label13.Name = "Label13"
     Me.Label13.Size = New System.Drawing.Size(32, 16)
     Me.Label13.TabIndex = 212
@@ -3677,23 +3754,23 @@
     Me.Label23.BackColor = System.Drawing.Color.Transparent
     Me.Label23.Cursor = System.Windows.Forms.Cursors.Default
     Me.Label23.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold)
-    Me.Label23.ForeColor = System.Drawing.SystemColors.ControlText
-    Me.Label23.Location = New System.Drawing.Point(248, 13)
+    Me.Label23.ForeColor = System.Drawing.Color.Black
+    Me.Label23.Location = New System.Drawing.Point(4, 75)
     Me.Label23.Name = "Label23"
     Me.Label23.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.Label23.Size = New System.Drawing.Size(34, 16)
+    Me.Label23.Size = New System.Drawing.Size(124, 18)
     Me.Label23.TabIndex = 169
-    Me.Label23.Text = "R"
+    Me.Label23.Text = "Angular Rotation"
     '
     'grpCombinedOffsetDetail
     '
+    Me.grpCombinedOffsetDetail.Controls.Add(Me.Label4)
+    Me.grpCombinedOffsetDetail.Controls.Add(Me.Label28)
+    Me.grpCombinedOffsetDetail.Controls.Add(Me.lblTotalTime)
     Me.grpCombinedOffsetDetail.Controls.Add(Me.txtRCombined)
     Me.grpCombinedOffsetDetail.Controls.Add(Me.txtYCombined)
-    Me.grpCombinedOffsetDetail.Controls.Add(Me.Label28)
     Me.grpCombinedOffsetDetail.Controls.Add(Me.txtXCombined)
     Me.grpCombinedOffsetDetail.Controls.Add(Me.Label9)
-    Me.grpCombinedOffsetDetail.Controls.Add(Me.lblVisionTimeBoth)
-    Me.grpCombinedOffsetDetail.Controls.Add(Me.Label27)
     Me.grpCombinedOffsetDetail.Controls.Add(Me.Label25)
     Me.grpCombinedOffsetDetail.Controls.Add(Me.Label24)
     Me.grpCombinedOffsetDetail.Controls.Add(Me.Label22)
@@ -3703,10 +3780,40 @@
     Me.grpCombinedOffsetDetail.ForeColor = System.Drawing.Color.Navy
     Me.grpCombinedOffsetDetail.Location = New System.Drawing.Point(8, 144)
     Me.grpCombinedOffsetDetail.Name = "grpCombinedOffsetDetail"
-    Me.grpCombinedOffsetDetail.Size = New System.Drawing.Size(343, 72)
+    Me.grpCombinedOffsetDetail.Size = New System.Drawing.Size(286, 110)
     Me.grpCombinedOffsetDetail.TabIndex = 201
     Me.grpCombinedOffsetDetail.TabStop = False
     Me.grpCombinedOffsetDetail.Text = "Final Offset"
+    '
+    'Label4
+    '
+    Me.Label4.AutoSize = True
+    Me.Label4.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.Label4.Location = New System.Drawing.Point(15, 63)
+    Me.Label4.Name = "Label4"
+    Me.Label4.Size = New System.Drawing.Size(40, 16)
+    Me.Label4.TabIndex = 239
+    Me.Label4.Text = "Time"
+    '
+    'Label28
+    '
+    Me.Label28.AutoSize = True
+    Me.Label28.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+    Me.Label28.Location = New System.Drawing.Point(68, 83)
+    Me.Label28.Name = "Label28"
+    Me.Label28.Size = New System.Drawing.Size(14, 16)
+    Me.Label28.TabIndex = 238
+    Me.Label28.Text = "s"
+    '
+    'lblTotalTime
+    '
+    Me.lblTotalTime.BackColor = System.Drawing.SystemColors.Control
+    Me.lblTotalTime.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+    Me.lblTotalTime.Location = New System.Drawing.Point(4, 81)
+    Me.lblTotalTime.Name = "lblTotalTime"
+    Me.lblTotalTime.Size = New System.Drawing.Size(63, 20)
+    Me.lblTotalTime.TabIndex = 237
+    Me.lblTotalTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
     '
     'txtRCombined
     '
@@ -3738,16 +3845,6 @@
     Me.txtYCombined.Size = New System.Drawing.Size(65, 20)
     Me.txtYCombined.TabIndex = 235
     '
-    'Label28
-    '
-    Me.Label28.AutoSize = True
-    Me.Label28.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.Label28.Location = New System.Drawing.Point(331, 33)
-    Me.Label28.Name = "Label28"
-    Me.Label28.Size = New System.Drawing.Size(14, 16)
-    Me.Label28.TabIndex = 224
-    Me.Label28.Text = "s"
-    '
     'txtXCombined
     '
     Me.txtXCombined.AcceptsReturn = True
@@ -3773,34 +3870,11 @@
     Me.Label9.TabIndex = 223
     Me.Label9.Text = "deg"
     '
-    'lblVisionTimeBoth
-    '
-    Me.lblVisionTimeBoth.BackColor = System.Drawing.Color.Transparent
-    Me.lblVisionTimeBoth.Cursor = System.Windows.Forms.Cursors.Default
-    Me.lblVisionTimeBoth.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold)
-    Me.lblVisionTimeBoth.ForeColor = System.Drawing.SystemColors.ControlText
-    Me.lblVisionTimeBoth.Location = New System.Drawing.Point(291, 14)
-    Me.lblVisionTimeBoth.Name = "lblVisionTimeBoth"
-    Me.lblVisionTimeBoth.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.lblVisionTimeBoth.Size = New System.Drawing.Size(42, 16)
-    Me.lblVisionTimeBoth.TabIndex = 222
-    Me.lblVisionTimeBoth.Text = "Time"
-    '
-    'Label27
-    '
-    Me.Label27.BackColor = System.Drawing.SystemColors.Control
-    Me.Label27.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-    Me.Label27.Location = New System.Drawing.Point(288, 31)
-    Me.Label27.Name = "Label27"
-    Me.Label27.Size = New System.Drawing.Size(44, 20)
-    Me.Label27.TabIndex = 221
-    Me.Label27.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-    '
     'Label25
     '
     Me.Label25.AutoSize = True
     Me.Label25.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-    Me.Label25.Location = New System.Drawing.Point(254, 32)
+    Me.Label25.Location = New System.Drawing.Point(253, 32)
     Me.Label25.Name = "Label25"
     Me.Label25.Size = New System.Drawing.Size(32, 16)
     Me.Label25.TabIndex = 220
@@ -3871,11 +3945,11 @@
     Me.grpVBErrors.Controls.Add(Me.lstVBError)
     Me.grpVBErrors.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
     Me.grpVBErrors.ForeColor = System.Drawing.Color.DarkRed
-    Me.grpVBErrors.Location = New System.Drawing.Point(7, 647)
+    Me.grpVBErrors.Location = New System.Drawing.Point(3, 682)
     Me.grpVBErrors.Name = "grpVBErrors"
     Me.grpVBErrors.Padding = New System.Windows.Forms.Padding(0)
     Me.grpVBErrors.RightToLeft = System.Windows.Forms.RightToLeft.No
-    Me.grpVBErrors.Size = New System.Drawing.Size(359, 286)
+    Me.grpVBErrors.Size = New System.Drawing.Size(298, 286)
     Me.grpVBErrors.TabIndex = 23
     Me.grpVBErrors.TabStop = False
     Me.grpVBErrors.Text = "Program Notifications   (Double Click to Clear)"
@@ -3888,11 +3962,11 @@
     Me.lstVBError.ForeColor = System.Drawing.SystemColors.WindowText
     Me.lstVBError.HorizontalScrollbar = True
     Me.lstVBError.ItemHeight = 14
-    Me.lstVBError.Location = New System.Drawing.Point(13, 17)
+    Me.lstVBError.Location = New System.Drawing.Point(13, 23)
     Me.lstVBError.Name = "lstVBError"
     Me.lstVBError.RightToLeft = System.Windows.Forms.RightToLeft.No
     Me.lstVBError.ScrollAlwaysVisible = True
-    Me.lstVBError.Size = New System.Drawing.Size(340, 256)
+    Me.lstVBError.Size = New System.Drawing.Size(281, 256)
     Me.lstVBError.TabIndex = 24
     Me.lstVBError.TabStop = False
     '
@@ -3900,11 +3974,11 @@
     '
     Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 16.0!)
     Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-    Me.AutoSize = True
+    Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
     Me.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange
     Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
     Me.CausesValidation = False
-    Me.ClientSize = New System.Drawing.Size(1904, 1041)
+    Me.ClientSize = New System.Drawing.Size(1299, 1041)
     Me.Controls.Add(Me.GrpRobot)
     Me.Controls.Add(Me.lblPartLoaded)
     Me.Controls.Add(Me.lblPartTitle)
@@ -3913,13 +3987,12 @@
     Me.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
     Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
     Me.KeyPreview = True
-    Me.MaximumSize = New System.Drawing.Size(1920, 1080)
+    Me.MaximumSize = New System.Drawing.Size(1315, 1080)
     Me.Name = "frmMain"
     Me.RightToLeft = System.Windows.Forms.RightToLeft.No
     Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
     Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
     Me.Text = "Line 8 Mask Unload"
-    Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
     Me.MainMenu1.ResumeLayout(False)
     Me.MainMenu1.PerformLayout()
     CType(Me.updnExposureNorth, System.ComponentModel.ISupportInitialize).EndInit()
@@ -3972,6 +4045,11 @@
     Me.grpVisionStatusSouthMask.PerformLayout()
     CType(Me.updnScoreLimitSouthMask, System.ComponentModel.ISupportInitialize).EndInit()
     Me.tabVisionDebug.ResumeLayout(False)
+    Me.SSTab1.ResumeLayout(False)
+    Me._SSTab1_TabPage0.ResumeLayout(False)
+    Me._SSTab1_TabPage0.PerformLayout()
+    Me._SSTab1_TabPage1.ResumeLayout(False)
+    Me._SSTab1_TabPage1.PerformLayout()
     Me.grpCommunications.ResumeLayout(False)
     Me.grpCommunications.PerformLayout()
     Me.grpMisc.ResumeLayout(False)
@@ -3979,15 +4057,11 @@
     Me.grpMaskCombined.ResumeLayout(False)
     Me.grpGlassCombined.ResumeLayout(False)
     Me.grpCombinedOffset.ResumeLayout(False)
-    Me.SSTab1.ResumeLayout(False)
-    Me._SSTab1_TabPage0.ResumeLayout(False)
-    Me._SSTab1_TabPage0.PerformLayout()
-    Me._SSTab1_TabPage1.ResumeLayout(False)
-    Me._SSTab1_TabPage1.PerformLayout()
     Me.grpCommStatus.ResumeLayout(False)
     Me.grpCommStatus.PerformLayout()
     Me.grpShiftOffset.ResumeLayout(False)
     Me.grpShiftOffset.PerformLayout()
+    CType(Me.updnSmallMaskX, System.ComponentModel.ISupportInitialize).EndInit()
     CType(Me.updnXShift, System.ComponentModel.ISupportInitialize).EndInit()
     CType(Me.updnYShift, System.ComponentModel.ISupportInitialize).EndInit()
     CType(Me.updnRLinear, System.ComponentModel.ISupportInitialize).EndInit()
@@ -4148,28 +4222,12 @@
   Public WithEvents btnLocateBoth As Button
   Public WithEvents chkRepeatLocateBoth As CheckBox
   Friend WithEvents grpCommStatus As GroupBox
-  Friend WithEvents Label28 As Label
   Friend WithEvents Label9 As Label
   Public WithEvents lblVisionTimeBoth As Label
-  Friend WithEvents Label27 As Label
-  Public WithEvents SSTab1 As TabControl
-  Public WithEvents _SSTab1_TabPage0 As TabPage
-  Public WithEvents Label1 As Label
-  Public WithEvents Label29 As Label
-  Public WithEvents txtRLimit As TextBox
-  Public WithEvents cmdOKLimits As Button
-  Public WithEvents _SSTab1_TabPage1 As TabPage
-  Public WithEvents cmdOKGeneralSettings As Button
-  Public WithEvents txtRetryCountLimit As TextBox
-  Public WithEvents txtSnapAfterLocate As TextBox
-  Public WithEvents _lblSnapAfterLocate_0 As Label
-  Public WithEvents _Label8_3 As Label
-  Public WithEvents _Label8_2 As Label
-  Public WithEvents _lblSnapAfterLocate_1 As Label
   Public WithEvents txtRCombined As TextBox
   Public WithEvents txtYCombined As TextBox
   Public WithEvents txtXCombined As TextBox
-  Friend WithEvents mnuUseSouthCameraOnly As ToolStripMenuItem
+  Friend WithEvents mnuSmallMask As ToolStripMenuItem
   Public WithEvents grpVisionStatusNorthMask As GroupBox
   Friend WithEvents lblVisionPoseScoreNorthMask As Label
   Friend WithEvents lblVisionPoseTimeNorthMask As Label
@@ -4245,7 +4303,7 @@
   Friend WithEvents lblSouthGlassScore As Label
   Friend WithEvents lblNorthGlassScore As Label
   Friend WithEvents lblNorthMaskScore As Label
-  Public WithEvents btnTest As Button
+  Public WithEvents btnEnter As Button
   Public WithEvents grpCommunications As GroupBox
   Public WithEvents lblMessagesToTheRobot As Label
   Friend WithEvents lstOutputBuffer As ListBox
@@ -4254,5 +4312,26 @@
   Public WithEvents lblSendCommand As Label
   Public WithEvents lblMessagesFromTheRobot As Label
   Public WithEvents txtSendCommand As TextBox
+  Public WithEvents Label3 As Label
+  Friend WithEvents lblTotalTime As Label
+  Friend WithEvents Label4 As Label
+  Friend WithEvents Label28 As Label
+  Public WithEvents SSTab1 As TabControl
+  Public WithEvents _SSTab1_TabPage0 As TabPage
+  Public WithEvents Label1 As Label
+  Public WithEvents Label29 As Label
+  Public WithEvents txtRLimit As TextBox
+  Public WithEvents cmdOKLimits As Button
+  Public WithEvents _SSTab1_TabPage1 As TabPage
+  Public WithEvents cmdOKGeneralSettings As Button
+  Public WithEvents txtRetryCountLimit As TextBox
+  Public WithEvents txtSnapAfterLocate As TextBox
+  Public WithEvents _lblSnapAfterLocate_0 As Label
+  Public WithEvents _Label8_3 As Label
+  Public WithEvents _Label8_2 As Label
+  Public WithEvents _lblSnapAfterLocate_1 As Label
+  Public WithEvents updnSmallMaskX As NumericUpDown
+  Public WithEvents Label6 As Label
+  Public WithEvents Label10 As Label
 #End Region
 End Class

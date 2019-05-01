@@ -843,16 +843,23 @@ Public Class frmMain
     Try
       Do
         '
-        'btnLocateBoth.Enabled = False
+        btnLocateBoth.Enabled = False
         Locate(LocNorthMask, True)
         Application.DoEvents()
         Locate(LocNorthGlass, True)
         Application.DoEvents()
-        Locate(LocSouthMask, True)
-        Application.DoEvents()
+        If Not mnuSmallMask.Checked Then
+          Locate(LocSouthMask, True)
+          LocatorResults(LocSouthGlass).X = 0
+          LocatorResults(LocSouthGlass).Y = 0
+          LocatorResults(LocSouthGlass).R = 0
+          LocatorResults(LocSouthGlass).Score = 100
+          LocatorResults(LocSouthGlass).Success = True
+          Application.DoEvents()
+        End If
         Locate(LocSouthGlass, True)
         Application.DoEvents()
-        'btnLocateBoth.Enabled = True
+        btnLocateBoth.Enabled = True
         CalcFinalOffset()
       Loop While chkRepeatLocateBoth.CheckState
     Catch ex As Exception
@@ -906,7 +913,7 @@ Public Class frmMain
           btnLocateSouthMask.Enabled = True
           btnLocateOnlySouthMask.Enabled = True
           HSDisplaySouth.Refresh()
-          lblVisionPoseTimeSouthMask.Text = (VB.Timer - StartTimer).ToString("N2") & " Secs."
+          lblVisionPoseTimeSouthGlass.Text = (VB.Timer - StartTimer).ToString("N2") & " Secs."
         Case LocSouthMask
           btnLocateSouthMask.Enabled = False
           btnLocateOnlySouthMask.Enabled = False
@@ -1204,45 +1211,186 @@ Public Class frmMain
   End Sub
 
   Private Sub CalcGlassOffset()
-    CalcCombinedOffset(LocatorResults(LocNorthGlass), LocatorResults(LocSouthGlass), LocatorResults(FinalGlassOffset))
-    With LocatorResults(FinalGlassOffset)
-      If .Success Then
-        'Update the text boxes
-        lblGlassCombinedX.Text = .X.ToString("0.00")
-        lblGlassCombinedY.Text = .Y.ToString("0.00")
-        lblGlassCombinedR.Text = .R.ToString("0.00")
-      End If
-      lblGlassCombinedStatus.Text = .Status
-    End With
+    'Calculates an offset using the two locator offsets passed to it.  The result is passed to the "Final"  Offsettype.
+    'Dim strLength As String
+    Try
+      With LocatorResults(FinalGlassOffset)
+        CalcCombinedOffset(LocatorResults(LocNorthGlass), LocatorResults(LocSouthGlass), LocatorResults(FinalGlassOffset))
+        If mnuSmallMask.Checked Then
+          LocatorResults(FinalGlassOffset).R = - .R
+        End If
+        If .Success Then
+          'Update the text boxes
+          lblGlassCombinedX.Text = .X.ToString("0.00")
+          lblGlassCombinedY.Text = .Y.ToString("0.00")
+          lblGlassCombinedR.Text = .R.ToString("0.00")
+        End If
+        lblGlassCombinedStatus.Text = .Status
+      End With
+    Catch ex As Exception
+      ShowVBErrors("CalcGlassOffset", ex.Message)
+    End Try
+  End Sub
+
+  Private Sub CalcGlassOffsetSmallMask()
+    'Calculates an offset using the two locator offsets passed to it.  The result is passed to the "Final"  Offsettype.
+    Dim strLength As String
+    Try
+      With LocatorResults(FinalGlassOffset)
+        'CalcCombinedOffset(LocatorResults(LocNorthGlass), LocatorResults(LocSouthGlass), LocatorResults(FinalGlassOffset))
+        .Success = True
+        'If mnuSmallMask is checked find midpoint of Glass
+        If mnuSmallMask.Checked Then
+          .X = (LocatorResults(LocSouthGlass).X - LocatorResults(LocNorthGlass).X) / 2
+          .Y = LocatorResults(LocNorthGlass).Y
+          .R = LocatorResults(LocNorthGlass).R
+          'If mnuSmallMask is not checked then calc rotation based on two corners
+        Else
+          .X = LocatorResults(LocNorthGlass).X
+          .Y = LocatorResults(LocNorthGlass).Y
+          .R = Atan((LocatorResults(LocSouthGlass).Y - LocatorResults(LocNorthGlass).Y) _
+                   / LocatorResults(LocSouthGlass).X - LocatorResults(LocNorthGlass).X)
+          LocatorResults(FinalGlassOffset).R = ((.R * (180 / PI)) + 180) * -1
+          'Compensate if the rotation is way out of whack
+          If .R > 145 Then
+            .R = .R - 180
+          End If
+          If .R < -145 Then
+            .R = .R + 180
+          End If
+        End If
+        'Calculate the Length
+        .Length = Sqrt(((LocatorResults(LocSouthGlass).X - LocatorResults(LocNorthGlass).X) ^ 2) _
+                   + ((LocatorResults(LocSouthGlass).Y - LocatorResults(LocNorthGlass).Y) ^ 2))
+        'Check for Limit Errors
+        If Abs(.R) > updnRLimit.Value Then
+          .Status = "R Limit Exceeded"
+          .Success = False
+        End If
+        If .Success Then
+          strLength = Format(.Length, "0.000")
+          .Status = "Distance between targets is " & strLength & " millimeters"
+        Else
+          .Status = "Problem"
+        End If
+        If .Success Then
+          'Update the text boxes
+          lblGlassCombinedX.Text = .X.ToString("0.00")
+          lblGlassCombinedY.Text = .Y.ToString("0.00")
+          lblGlassCombinedR.Text = .R.ToString("0.00")
+        End If
+        lblGlassCombinedStatus.Text = .Status
+      End With
+    Catch ex As Exception
+      ShowVBErrors("CalcGlassOffset", ex.Message)
+    End Try
   End Sub
 
   Private Sub CalcMaskOffset()
     CalcCombinedOffset(LocatorResults(LocNorthMask), LocatorResults(LocSouthMask), LocatorResults(FinalMaskOffset))
-    With LocatorResults(FinalMaskOffset)
-      If .Success Then
-        'Update the text boxes
-        lblMaskCombinedX.Text = .X.ToString("0.00")
-        lblMaskCombinedY.Text = .Y.ToString("0.00")
-        lblMaskCombinedR.Text = .R.ToString("0.00")
-      End If
-      lblMaskCombinedStatus.Text = .Status
-    End With
+    'Calculates an offset using the two locator offsets passed to it.  The result is passed to the "Final"  Offsettype.
+    Try
+      With LocatorResults(FinalMaskOffset)
+
+        If .Success Then
+          'Update the text boxes
+          lblMaskCombinedX.Text = .X.ToString("0.00")
+          lblMaskCombinedY.Text = .Y.ToString("0.00")
+          lblMaskCombinedR.Text = .R.ToString("0.00")
+        End If
+        lblMaskCombinedStatus.Text = .Status
+      End With
+    Catch ex As Exception
+      ShowVBErrors("CalcMaskOffset", ex.Message)
+    End Try
+  End Sub
+
+  Private Sub CalcSmallMaskOffset()
+    'Calculates an offset using the two locator offsets passed to it.  The result is passed to the "Final"  Offsettype.
+    Dim strLength As String
+    Try
+      With LocatorResults(FinalMaskOffset)
+        .Success = True
+        'If mnuSmallMask is checked offset = North Mask
+        If mnuSmallMask.Checked Then
+          .X = LocatorResults(LocNorthMask).X
+          .Y = LocatorResults(LocNorthMask).Y
+          .Y = LocatorResults(LocNorthMask).Y
+          .R = -LocatorResults(LocNorthMask).R
+          .Length = 0
+          'Compensate if the rotation is way out of whack
+          If .R > 145 Then
+            .R = .R - 180
+          End If
+          If .R < -145 Then
+            .R = .R + 180
+          End If
+        End If
+        'Calculate the Length
+        .Length = Sqrt(((LocatorResults(LocSouthGlass).X - LocatorResults(LocNorthGlass).X) ^ 2) _
+                     + ((LocatorResults(LocSouthGlass).Y - LocatorResults(LocNorthGlass).Y) ^ 2))
+        'Check for Limit Errors
+        If Abs(.R) > updnRLimit.Value Then
+          .Status = "R Limit Exceeded"
+          .Success = False
+        End If
+        If .Success Then
+          strLength = Format(.Length, "0.000")
+          .Status = "Distance between targets is " & strLength & " millimeters"
+        Else
+          .Status = "Problem"
+        End If
+        If .Success Then
+          'Update the text boxes
+          lblMaskCombinedX.Text = .X.ToString("0.00")
+          lblMaskCombinedY.Text = .Y.ToString("0.00")
+          lblMaskCombinedR.Text = .R.ToString("0.00")
+        End If
+        lblMaskCombinedStatus.Text = .Status
+      End With
+    Catch ex As Exception
+      ShowVBErrors("CalcGlassOffset", ex.Message)
+    End Try
   End Sub
 
   Private Sub CalcFinalOffset()
     Try
       '
       'Update status if either locator is unsucessful
-      If Not LocatorResults(LocNorthGlass).Success Or Not LocatorResults(LocNorthMask).Success Then
-        LocatorResults(FinalOffset).Status = "Problem with North Side"
+      LocatorResults(FinalOffset).Status = ""
+      'No Small Mask and North and South Glass
+      If Not mnuSmallMask.Checked And (Not LocatorResults(LocNorthGlass).Success Or Not LocatorResults(LocSouthGlass).Success) Then
+        LocatorResults(FinalOffset).Status = "GLASS NOT FOUND"
         lblFinalStatus.BackColor = Color.Red
         LocatorResults(FinalOffset).Success = False
-      ElseIf Not LocatorResults(LocSouthGlass).Success Or Not LocatorResults(LocSouthMask).Success Then
-        LocatorResults(FinalOffset).Status = "Problem with South Side"
+        '
+        'No Small Mask and North and South Mask
+      ElseIf Not mnuSmallMask.Checked And (Not LocatorResults(LocNorthMask).Success Or Not LocatorResults(LocSouthMask).Success) Then
+        LocatorResults(FinalOffset).Status = "MASK NOT FOUND"
         lblFinalStatus.BackColor = Color.Red
         LocatorResults(FinalOffset).Success = False
-      ElseIf Not LocatorResults(LocSouthGlass).Success And Not LocatorResults(LocSouthMask).Success Then
-        LocatorResults(FinalOffset).Status = "Problem with Both Sides"
+        '
+        'Small Mask Only
+      ElseIf mnuSmallMask.Checked And Not LocatorResults(LocNorthMask).Success Then
+        LocatorResults(FinalOffset).Status = "MASK NOT FOUND"
+        lblFinalStatus.BackColor = Color.Red
+        LocatorResults(FinalOffset).Success = False
+        '
+        'No Small Mask and South Mask and South Glass
+      ElseIf Not mnuSmallMask.Checked And (Not LocatorResults(LocSouthGlass).Success Or Not LocatorResults(LocSouthMask).Success) Then
+        LocatorResults(FinalOffset).Status = "GLASS AND MASK NOT FOUND"
+        lblFinalStatus.BackColor = Color.Red
+        LocatorResults(FinalOffset).Success = False
+        '
+        'No Small Mask and North Mask and North Glass
+      ElseIf Not mnuSmallMask.Checked And (Not LocatorResults(LocNorthGlass).Success Or Not LocatorResults(LocNorthMask).Success) Then
+        LocatorResults(FinalOffset).Status = "GLASS AND MASK NOT FOUND"
+        lblFinalStatus.BackColor = Color.Red
+        LocatorResults(FinalOffset).Success = False
+        '
+        'No Locator Status set
+      ElseIf LocatorResults(FinalOffset).Status <> "" Then
+        LocatorResults(FinalOffset).Status = "GLASS AND MASK NOT FOUND"
         lblFinalStatus.BackColor = Color.Red
         LocatorResults(FinalOffset).Success = False
       Else
@@ -1250,14 +1398,6 @@ Public Class frmMain
         LocatorResults(FinalOffset).Status = "Sucessfully Completed the Inspection"
         GenerateFinalOffset()
         LocatorResults(FinalOffset).Success = True
-      End If
-      'Update the error string going to the robot
-      If Not LocatorResults(FinalGlassOffset).Success And LocatorResults(FinalMaskOffset).Success Then
-        OffsetString = "Glass not found"
-      ElseIf LocatorResults(FinalGlassOffset).Success And Not LocatorResults(FinalMaskOffset).Success Then
-        OffsetString = "Mask not found"
-      ElseIf Not LocatorResults(FinalGlassOffset).Success And Not LocatorResults(FinalGlassOffset).Success Then
-        OffsetString = "Glass and Mask not found"
       End If
       lblFinalStatus.Text = LocatorResults(FinalOffset).Status
     Catch ex As Exception
@@ -1269,63 +1409,82 @@ Public Class frmMain
     Dim XShift As Double, YShift As Double, Angle As Double
     Dim XLength As Double, YLength As Double
     Dim Hypotunse As Double
-    Dim XString As String, YString As String, RString As String
+    Dim XString, YString, RString, SmallMaskXString As String
     Dim AddSpace As String
+    Dim DummyX As Single
+    Dim DummyY As Single
+    Dim DummyR As Single
     Try
       With LocatorResults(FinalOffset)
-        '
-        'Calculate the offset by subtracting the glass offset from the mask offset
-        .X = LocatorResults(FinalMaskOffset).X - LocatorResults(FinalGlassOffset).X + updnXShift.Value
-        .Y = LocatorResults(FinalMaskOffset).Y - LocatorResults(FinalGlassOffset).Y + updnYShift.Value
-        If mnuUseSouthCameraOnly.Checked Then
-          .R = LocatorResults(FinalMaskOffset).R + LocatorResults(FinalGlassOffset).R + updnRShift.Value
+        If LocatorResults(FinalOffset).Status <> "Sucessfully Completed the Inspection" Then
+          LocatorResults(FinalOffset).X = 0
+          LocatorResults(FinalOffset).Y = 0
+          LocatorResults(FinalOffset).R = 0
+          OffsetString = LocatorResults(FinalOffset).Status
         Else
-          .R = LocatorResults(FinalMaskOffset).R - LocatorResults(FinalGlassOffset).R + updnRShift.Value
+          '
+          'Calculate the offset by subtracting the glass offset from the mask offset
+          .X = LocatorResults(FinalMaskOffset).X - LocatorResults(FinalGlassOffset).X + updnXShift.Value
+          DummyX = .X
+          .Y = LocatorResults(FinalMaskOffset).Y - LocatorResults(FinalGlassOffset).Y + updnYShift.Value
+          DummyY = .Y
+          If mnuSmallMask.Checked Then
+            .R = LocatorResults(FinalMaskOffset).R + LocatorResults(FinalGlassOffset).R + updnRShift.Value
+          Else
+            .R = LocatorResults(FinalMaskOffset).R - LocatorResults(FinalGlassOffset).R + updnRShift.Value
+          End If
+          DummyR = .R
+          '
+          'The following code will create a shift offset that needs to be applied
+          'to the offset above.  The offset above will calculate the x,y and rotation
+          'values based on the part rotating about the vison system origin point.
+          'unfortunately rotating about the vision origin point will cause the x,y
+          'values to shift by the hypotunse and angle of the located mask corner.
+          'The code below calculates how far the x,y values are off by finding the new
+          'lengths of the new angle and subtracting the old lengths from them.
+          Angle = Atan(LocatorResults(FinalMaskOffset).Y / LocatorResults(FinalMaskOffset).X) * (180 / PI) + .R
+          Hypotunse = Sqrt(LocatorResults(FinalMaskOffset).X ^ 2 + LocatorResults(FinalMaskOffset).Y ^ 2)
+          YLength = Sin(Angle * PI / 180) * Hypotunse
+          XLength = Cos(Angle * PI / 180) * Hypotunse
+          XShift = LocatorResults(FinalMaskOffset).X - XLength
+          YShift = LocatorResults(FinalMaskOffset).Y - YLength
+          '
+          'Shift the polarities so the robot moves in the correct direction
+          .X = - .X + XShift
+          .Y = - .Y + YShift
+          '
+          'Convert the offset values to Strings
+          If .X > 0 Then
+            AddSpace = " "
+          Else
+            AddSpace = "" 'Reserve space for sign
+          End If
+          XString = AddSpace & Format(.X, "000.00")
+          If .Y > 0 Then
+            AddSpace = " "
+          Else
+            AddSpace = "" 'Reserve space for sign
+          End If
+          YString = AddSpace & Format(.Y, "000.00")
+          If .R > 0 Then
+            AddSpace = " "
+          Else
+            AddSpace = "" 'Reserve space for sign
+          End If
+          RString = AddSpace & Format(.R, "000.00")
+          If updnSmallMaskX.Value > 0 Then
+            AddSpace = " "
+          Else
+            AddSpace = "" 'Reserve space for sign
+          End If
+          SmallMaskXString = AddSpace & Format(updnSmallMaskX.Value, "000.00")
+          OffsetString = "X = " & XString & " Y = " & YString & " R = " & RString & " SM = " & SmallMaskXString
         End If
-        '
-        'The following code will create a shift offset that needs to be applied
-        'to the offset above.  The offset above will calculate the x,y and rotation
-        'values based on the part rotating about the vison system origin point.
-        'unfortunately rotating about the vision origin point will cause the x,y
-        'values to shift by the hypotunse and angle of the located mask corner.
-        'The code below calculates how far the x,y values are off by finding the new
-        'lengths of the new angle and subtracting the old lengths from them.
-        Angle = Atan(LocatorResults(FinalMaskOffset).Y / LocatorResults(FinalMaskOffset).X) * (180 / PI) + .R
-        Hypotunse = Sqrt(LocatorResults(FinalMaskOffset).X ^ 2 + LocatorResults(FinalMaskOffset).Y ^ 2)
-        YLength = Sin(Angle * PI / 180) * Hypotunse
-        XLength = Cos(Angle * PI / 180) * Hypotunse
-        XShift = LocatorResults(FinalMaskOffset).X - XLength
-        YShift = LocatorResults(FinalMaskOffset).Y - YLength
-        '
-        'Shift the polarities so the robot moves in the correct direction
-        .X = - .X + XShift
-        .Y = - .Y + YShift
         '
         'Update the text boxes
         txtXCombined.Text = .X.ToString("0.00")
         txtYCombined.Text = .Y.ToString("0.00")
         txtRCombined.Text = .R.ToString("0.00")
-        '
-        'Convert the offset values to Strings
-        If .X > 0 Then
-          AddSpace = " "
-        Else
-          AddSpace = "" 'Reserve space for sign
-        End If
-        XString = AddSpace & Format(.X, "000.00")
-        If .Y > 0 Then
-          AddSpace = " "
-        Else
-          AddSpace = "" 'Reserve space for sign
-        End If
-        YString = AddSpace & Format(.Y, "000.00")
-        If .R > 0 Then
-          AddSpace = " "
-        Else
-          AddSpace = "" 'Reserve space for sign
-        End If
-        RString = AddSpace & Format(.R, "000.00")
-        OffsetString = "X = " & XString & " Y = " & YString & " R = " & RString
       End With
     Catch ex As Exception
       ShowVBErrors("GenerateFinalOffset", ex.Message)
@@ -1338,32 +1497,24 @@ Public Class frmMain
     Try
       With Final
         .Success = True
-        'Calculate the offset from the input offsets
-        If mnuUseSouthCameraOnly.Checked Then
-          .X = South.X
-          .Y = South.Y
-          .R = South.R
-        Else
-          .X = North.X
-          .Y = North.Y
-          .R = Atan((South.Y - North.Y) / (South.X - North.X))
-          .R = ((.R * (180 / PI)) + 180) * -1
-          'Compensate if the rotation is way out of whack
-          If .R > 145 Then
+        'If mnuSmallMask is checked and we are calculating the mask offset
+        .X = North.X
+        .Y = North.Y
+        .R = Atan((South.Y - North.Y) / (South.X - North.X))
+        .R = ((.R * (180 / PI)) + 180) * -1
+        'Compensate if the rotation is way out of whack
+        If .R > 145 Then
             .R = .R - 180
           End If
           If .R < -145 Then
             .R = .R + 180
           End If
-        End If
         'Calculate the Length
         .Length = Sqrt(((South.X - North.X) ^ 2) + ((South.X - North.X) ^ 2))
         'Check for Limit Errors
-        If Not mnuUseSouthCameraOnly.Checked Then
-          If Abs(.R) > updnRLimit.Value Then
-            .Status = "R Limit Exceeded"
-            .Success = False
-          End If
+        If Abs(.R) > updnRLimit.Value Then
+          .Status = "R Limit Exceeded"
+          .Success = False
         End If
         If .Success Then
           strLength = Format(.Length, "0.000")
@@ -1451,30 +1602,30 @@ Public Class frmMain
     Try
       With HSDisplayNorth
         'First Point
-        .AddPointMarker("Measure Point 1", 100, 101, True)
+        .AddPointMarker("Measure Point 1", 100, 100, True)
         .set_MarkerDisplayName("Measure Point 1", True)
         .set_MarkerColor("Measure Point 1", HSDISPLAYLib.hsColor.hsYellow)
         .set_PointMarkerConstraints("Measure Point 1", HSDISPLAYLib.hsPointMarkerConstraints.hsPointNoConstraints)
         'Second Point
-        .AddPointMarker("Measure Point 2", 100, 201, True)
+        .AddPointMarker("Measure Point 2", 100, 200, True)
         .set_MarkerDisplayName("Measure Point 2", True)
         .set_MarkerColor("Measure Point 2", HSDISPLAYLib.hsColor.hsYellow)
         .set_PointMarkerConstraints("Measure Point 2", HSDISPLAYLib.hsPointMarkerConstraints.hsPointNoConstraints)
-        .AddLineMarker("Line", 100, 101, 100, 201, True)
+        .AddLineMarker("Line", 100, 100, 100, 200, True)
         .set_MarkerColor("Line", HSDISPLAYLib.hsColor.hsYellow)
       End With
       With HSDisplaySouth
         'First Point
-        .AddPointMarker("Measure Point 1", 1000, 101, True)
+        .AddPointMarker("Measure Point 1", 1400, 100, True)
         .set_MarkerDisplayName("Measure Point 1", True)
         .set_MarkerColor("Measure Point 1", HSDISPLAYLib.hsColor.hsYellow)
         .set_PointMarkerConstraints("Measure Point 1", HSDISPLAYLib.hsPointMarkerConstraints.hsPointNoConstraints)
         'Second Point
-        .AddPointMarker("Measure Point 2", 1000, 201, True)
+        .AddPointMarker("Measure Point 2", 1400, 200, True)
         .set_MarkerDisplayName("Measure Point 2", True)
         .set_MarkerColor("Measure Point 2", HSDISPLAYLib.hsColor.hsYellow)
         .set_PointMarkerConstraints("Measure Point 2", HSDISPLAYLib.hsPointMarkerConstraints.hsPointNoConstraints)
-        .AddLineMarker("Line", 1000, 101, 1000, 201, True)
+        .AddLineMarker("Line", 1400, 100, 1400, 200, True)
         .set_MarkerColor("Line", HSDISPLAYLib.hsColor.hsYellow)
       End With
     Catch ex As Exception
@@ -1516,10 +1667,8 @@ Public Class frmMain
   End Sub
 
   Private Sub AddAllRectangleMarkers()
-    AddRectangleMarker(LocNorthMask)
-    AddRectangleMarker(LocNorthGlass)
-    AddRectangleMarker(LocSouthMask)
-    AddRectangleMarker(LocSouthGlass)
+    AddRectangleMarker(NorthSide)
+    AddRectangleMarker(SouthSide)
   End Sub
 
   Private Sub AddRectangleMarker(Side As Integer)
@@ -1551,6 +1700,7 @@ Public Class frmMain
               .set_MarkerLineStyle("Search Area Glass", HSDISPLAYLib.hsMarkerLineStyle.hsSolid)
               .set_RectangleMarkerConstraints("Search Area Glass", HSDISPLAYLib.hsRectangleMarkerConstraints.hsRectangleNoConstraints)
             End If
+            .Update()
           End With
         Case SouthSide
           With HSDisplaySouth
@@ -1578,6 +1728,7 @@ Public Class frmMain
               .set_MarkerLineStyle("Search Area Glass", HSDISPLAYLib.hsMarkerLineStyle.hsSolid)
               .set_RectangleMarkerConstraints("Search Area Glass", HSDISPLAYLib.hsRectangleMarkerConstraints.hsRectangleNoConstraints)
             End If
+            .Update()
           End With
       End Select
     Catch ex As Exception
@@ -1644,13 +1795,13 @@ Public Class frmMain
 
   Private Sub SaveAllRectangleMarkers()
     DelayTimer(1000)
-    SaveRectangleMarker(NorthMask, "North Mask.hdb", HSLoc(LocNorthMask))
-    SaveRectangleMarker(SouthMask, "South Mask.hdb", HSLoc(LocSouthMask))
-    SaveRectangleMarker(NorthGlass, "North Glass.hdb", HSLoc(LocNorthGlass))
-    SaveRectangleMarker(SouthGlass, "South Glass.hdb", HSLoc(LocSouthGlass))
+    SaveRectangleMarker("North Mask.hdb", HSLoc(LocNorthMask))
+    SaveRectangleMarker("South Mask.hdb", HSLoc(LocSouthMask))
+    SaveRectangleMarker("North Glass.hdb", HSLoc(LocNorthGlass))
+    SaveRectangleMarker("South Glass.hdb", HSLoc(LocSouthGlass))
   End Sub
 
-  Private Sub SaveRectangleMarker(ByRef SearchArea As SearchArea, ByVal ModelName As String, ByRef Locator As HSLOCATORLib.HSLocator)
+  Private Sub SaveRectangleMarker(ByVal ModelName As String, ByRef Locator As HSLOCATORLib.HSLocator)
     'This saves all of the HexSight Search Box variables
     Try
       Locator.SaveModelDatabase(CurrentFilePath & ModelName)
@@ -1733,6 +1884,7 @@ Public Class frmMain
 
   Private Sub CheckRobotMessages()
     Dim TempPartName As String
+    Dim StartTimer As Single
     Try
       '
       'Read data.
@@ -1748,20 +1900,18 @@ Public Class frmMain
       If StringFromRobot.Contains("FIND MASK AND GLASS") Then
         txtCommStatus.Text = "Received: " & StringFromRobot
         If ValidSerialNumber() Then
+          StartTimer = VB.Timer
           LocateBoth()
-          LocatorResults(LocNorthMask).X = 175.12 'TODO remove line
-          LocatorResults(LocNorthMask).Y = 425.91 'TODO remove line
-          LocatorResults(LocNorthGlass).X = 157.67 'TODO remove line
-          LocatorResults(LocNorthGlass).Y = 98.38 'TODO remove line
-          LocatorResults(LocSouthMask).X = 1401.98 'TODO remove line
-          LocatorResults(LocSouthMask).Y = 431.27 'TODO remove line
-          LocatorResults(LocSouthGlass).X = 1378.63 'TODO remove line
-          LocatorResults(LocSouthGlass).Y = 64.6 'TODO remove line
-          CalcGlassOffset() 'TODO remove line
-          CalcMaskOffset() 'TODO remove line
-          GenerateFinalOffset() 'TODO remove line
+          CalcGlassOffset()
+          If mnuSmallMask.Checked Then
+            CalcSmallMaskOffset()
+          Else
+            CalcMaskOffset()
+          End If
+          GenerateFinalOffset()
           CheckOffset()
           SerialPortReadIsDone = False
+          lblTotalTime.Text = (VB.Timer - StartTimer).ToString("N2")
         End If
         Exit Sub
       End If
@@ -1814,18 +1964,18 @@ Public Class frmMain
     '
     'see if new offset value is identical to the old one
     If (OldOffsetstring = OffsetString) _
-      And (OffsetString <> "Glass and Mask not found") _
-      And (OffsetString <> "Glass not found") _
-      And (OffsetString <> "Mask not found") Then
+      And (OffsetString <> "GLASS AND MASK NOT FOUND") _
+      And (OffsetString <> "GLASS NOT FOUND") _
+      And (OffsetString <> "MASK NOT FOUND") Then
       MsgBox("Previous total offset was the same as the current total offset" _
         + vbCr + "This is an unusual instance. Watch the mask location." _
         + vbCr + "You may need to quit the vision application and restart it.", vbApplicationModal)
     End If
     '
     'If the part was sucessfully found then add the serial number back on to it
-    If (OffsetString <> "Glass and Mask not found") _
-      And (OffsetString <> "Glass not found") _
-      And (OffsetString <> "Mask not found") Then
+    If (OffsetString <> "GLASS AND MASK NOT FOUND") _
+      And (OffsetString <> "GLASS NOT FOUND") _
+      And (OffsetString <> "MASK NOT FOUND") Then
       OffsetString = OffsetString & " SN = " & Str(SerialNumber)
       txtCommStatus.BackColor = SystemColors.Control
       txtCommStatus.Text = "Sent: " & OffsetString & vbCr
@@ -1922,7 +2072,7 @@ Public Class frmMain
     Try
       '
       'Read data.
-      If InRoutine Then Exit Sub
+      'If InRoutine Then Exit Sub
       InRoutine = True
       Threading.Thread.Sleep(100)
       BigString = BigString + SerialPort.InputString
@@ -1987,15 +2137,47 @@ Public Class frmMain
   End Sub
 
   Private Sub btn_LocateBoth(sender As Object, e As EventArgs) Handles btnLocateBoth.Click
+    Dim StartTimer As Single
+    StartTimer = VB.Timer
     LocateBoth()
+    CalcGlassOffset()
+    CalcMaskOffset()
+    GenerateFinalOffset()
+    CheckOffset()
+    lblTotalTime.Text = (VB.Timer - StartTimer).ToString("N2")
   End Sub
 
-  Private Sub btnTest_Click(sender As Object, e As EventArgs) Handles btnTest.Click
-    SendDataToRobot("Hi There" & vbLf)
+  Private Sub btnEnter_Click(sender As Object, e As EventArgs) Handles btnEnter.Click
+
   End Sub
 
   Private Sub tmrDelay_Tick(sender As Object, e As EventArgs)
     tmrDelay.Enabled = False
+  End Sub
+
+  Private Sub updnShift_ValueChanged(sender As Object, e As EventArgs) Handles _
+    updnXShift.ValueChanged,
+    updnYShift.ValueChanged,
+    updnRShift.ValueChanged,
+    updnRLinear.ValueChanged,
+    updnRLinear.ValueChanged,
+    updnSmallMaskX.ValueChanged
+    Dim updn As NumericUpDown
+    '
+    'Initialize
+    Try
+      If UpdatingPartData Then Exit Sub
+      updn = DirectCast(sender, NumericUpDown)
+      frmDataBase.SetValue("PartData", "Value", updn.Name, Str(updn.Value))
+      If updn.Name = updnRLinear.Name Then
+        CalcRotationFromLinear()
+      End If
+      If updn.Name = updnRShift.Name Then
+        CalcLinearRotation()
+      End If
+    Catch ex As Exception
+      ShowVBErrors(" updnShift_ValueChanged", ex.Message)
+    End Try
   End Sub
 
   Private Sub CameraSettings_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles updnContrastNorth.ValueChanged, updnExposureNorth.ValueChanged, updnContrastSouth.ValueChanged, updnExposureSouth.ValueChanged
@@ -2028,6 +2210,60 @@ Public Class frmMain
     Catch ex As Exception
       InRoutine = False
       ShowVBErrors("CameraSettings_ValueChanged", ex.Message)
+    End Try
+  End Sub
+
+  Public Sub CalcLinearRotation()
+    Dim Rotation As Single
+    Dim LinearRotation As Single
+    Dim NorthX As Single, NorthY As Single
+    Dim SouthX As Single, SouthY As Single
+    Dim MaskLength As Single
+    Try
+      Rotation = updnRShift.Value
+      NorthX = HSLoc(LocNorthGlass).ModelOriginPositionX(0)
+      NorthY = HSLoc(LocNorthGlass).ModelOriginPositionY(0)
+      SouthX = HSLoc(LocSouthGlass).ModelOriginPositionX(0)
+      SouthY = HSLoc(LocSouthGlass).ModelOriginPositionY(0)
+      MaskLength = Sqrt((SouthX - NorthX) ^ 2 + (SouthY - NorthY) ^ 2)
+      LinearRotation = (Tan(Rotation * PI / 180)) * MaskLength
+      updnRLinear.Value = LinearRotation
+    Catch ex As Exception
+      ShowVBErrors("CalcLinearRotation", ex.Message)
+    End Try
+  End Sub
+
+  Private Sub mnuSmallMask_Click(sender As Object, e As EventArgs) Handles mnuSmallMask.Click
+    Try
+      mnuSmallMask.Checked = Not mnuSmallMask.Checked
+      frmDataBase.SetValue("Partdata", "Value", mnuSmallMask.Name, CStr(mnuSmallMask.Checked))
+    Catch ex As Exception
+      ShowVBErrors("mnuSmallMask_Click", ex.Message)
+    End Try
+  End Sub
+
+  Private Sub Label10_Click(sender As Object, e As EventArgs) Handles Label10.Click
+
+  End Sub
+
+  Public Sub CalcRotationFromLinear()
+    Dim Rotation As Single
+    Dim LinearRotation As Single
+    Dim NorthX As Single, NorthY As Single
+    Dim SouthX As Single, SouthY As Single
+    Dim MaskLength As Single
+    Try
+      Rotation = updnRShift.Value
+      NorthX = HSLoc(LocNorthGlass).ModelOriginPositionX(0)
+      NorthY = HSLoc(LocNorthGlass).ModelOriginPositionY(0)
+      SouthX = HSLoc(LocSouthGlass).ModelOriginPositionX(0)
+      SouthY = HSLoc(LocSouthGlass).ModelOriginPositionY(0)
+      MaskLength = Math.Sqrt((SouthX - NorthX) ^ 2 + (SouthY - NorthY) ^ 2)
+      LinearRotation = updnRLinear.Value
+      Rotation = Math.Atan(LinearRotation / MaskLength) * (180 / PI)
+      updnRShift.Value = Rotation
+    Catch ex As Exception
+      ShowVBErrors("CalcLinearRotation", ex.Message)
     End Try
   End Sub
 
@@ -2271,26 +2507,27 @@ Public Class frmMain
       frmDataBase.SetValue("Settings", "Value", "Current Part Name", PartName)
       'Load the model files
       Try
-        Success = HSLoc(NorthSide).LoadModelDatabase(CurrentFilePath & "North Mask.hdb")
+        Success = HSLoc(LocNorthMask).LoadModelDatabase(CurrentFilePath & "North Mask.hdb")
       Catch ex As Exception
         ShowVBErrors("LoadPart", "Unable to load the model file for the North Mask")
       End Try
       Try
-        Success = HSLoc(SouthSide).LoadModelDatabase(CurrentFilePath & "South Mask.hdb")
+        Success = HSLoc(LocSouthMask).LoadModelDatabase(CurrentFilePath & "South Mask.hdb")
       Catch ex As Exception
         ShowVBErrors("LoadPart", "Unable to load the model file for the South Mask")
       End Try
       Try
-        Success = HSLoc(NorthSide).LoadModelDatabase(CurrentFilePath & "North Glass.hdb")
+        Success = HSLoc(LocNorthGlass).LoadModelDatabase(CurrentFilePath & "North Glass.hdb")
       Catch ex As Exception
         ShowVBErrors("LoadPart", "Unable to load the model file for the North Glass")
       End Try
       Try
-        Success = HSLoc(NorthSide).LoadModelDatabase(CurrentFilePath & "South Glass.hdb")
+        Success = HSLoc(LocSouthGlass).LoadModelDatabase(CurrentFilePath & "South Glass.hdb")
       Catch ex As Exception
         ShowVBErrors("LoadPart", "Unable to load the model file for the South Glass")
       End Try
       HSDisplayNorth.RemoveAllMarker()
+      HSDisplaySouth.RemoveAllMarker()
       frmSplash.lblStatus.Text = "Camera Settings"
       'Update Camera Images with current exposures, contrast, gain
       UpdateUpDownControls()
@@ -2315,6 +2552,8 @@ Public Class frmMain
       updnYShift.Value = CSng(frmDataBase.GetValue("Partdata", "Value", updnYShift.Name))
       updnRShift.Value = CSng(frmDataBase.GetValue("Partdata", "Value", updnRShift.Name))
       updnRLinear.Value = CSng(frmDataBase.GetValue("Partdata", "Value", updnRLinear.Name))
+      updnSmallMaskX.Value = CSng(frmDataBase.GetValue("Partdata", "Value", updnSmallMaskX.Name))
+      mnuSmallMask.Checked = CBool(frmDataBase.GetValue("Partdata", "Value", mnuSmallMask.Name))
 
       'For Each GroupBox As Windows.Forms.GroupBox In grpCombinedOffset.Controls
       '  For Each Obj As Object In GroupBox.Controls
